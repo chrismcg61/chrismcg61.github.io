@@ -1,0 +1,29 @@
+<script src="https://rawgit.com/chrismcg61/TechDemos/master/MyLibs/FullDivButtons.js"></script>
+<link rel="stylesheet" type="text/css" href="https://rawgit.com/chrismcg61/TechDemos/master/MyLibs/FullDivButtons.css">
+
+
+<div id="myBtnGroup" class="btn-group " style="position: absolute; left:0; top:0; width:100%; height: 100vh;">  
+</div>
+
+
+
+<script>
+
+var myButtonList = [
+	new BtnGroupButton(),
+	new BtnGroupButton("Custom Label"),
+
+];
+
+
+var myColor = {
+  r: Math.floor( Math.random()*255 ), 
+  g: Math.floor( Math.random()*255 ), 
+  b: Math.floor( Math.random()*255 ), 
+  a: 0.7};
+var myColorFactor = {r:0.5, g:0.9, b:0.9};
+
+var isHorizontal = 1;
+createBtnGroup(myBtnGroup, myButtonList, isHorizontal, myColor, myColorFactor, 0);
+
+</script>
