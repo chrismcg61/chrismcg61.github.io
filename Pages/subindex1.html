@@ -6,8 +6,15 @@
 </style>
 
 
+
 <div id="myBtnGroup" class="btn-group " style="position: absolute; left:0; top:0; width:200px; height: 100vh;">  
 </div>
+
+<iframe id="myIframe" 
+style="position:absolute; left:200px; right:0px; height:100vh;"
+src="" >
+<p>Your browser does not support iframes.</p>
+</iframe>
 
 
 
@@ -15,8 +22,8 @@
 	
 	var myButtonList = [
 		
-		new BtnGroupButton("Root Index", function(){ window.location.assign("../index.html") }, ),
-    new BtnGroupButton("Root Index2", function(){ window.location.assign("../index2.html") }, ),
+		new BtnGroupButton("Root Index", function(){ myIframe.src = "../index.html"; }, ),
+		new BtnGroupButton("Root Index2", function(){ myIframe.src = "../index2.html"; }, ),
 
 	];
 
