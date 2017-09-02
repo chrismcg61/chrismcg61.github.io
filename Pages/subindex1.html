@@ -2,12 +2,15 @@
 <link rel="stylesheet" type="text/css" href="https://rawgit.com/chrismcg61/TechDemos/0.1e/MyLibs/FullDivButtons.css">
 
 <style>
-	
+	.animDiv{
+		-webkit-transition: width 1s, height 1s; /* For Safari 3.1 to 6.0 */
+		transition: width 1s, height 1s;
+	}
 </style>
 
 
 
-<div id="myBtnGroup" class="btn-group " style="position: absolute; left:0px; top:0px; width:200px; height: 100vh; z-index:1;">  
+<div id="myBtnGroup" class="btn-group animDiv" style="position: absolute; left:0px; top:0px; width:200px; height: 100vh; z-index:1;">  
 </div>
 
 <div id="toggleDivBtn" class="btn-group " style="position: absolute; left:0px; top:0px; height: 100vh; z-index:2;">  
