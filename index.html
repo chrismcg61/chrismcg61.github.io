@@ -8,22 +8,22 @@
 
 
 <script>
+	
+	var myButtonList = [
+		new BtnGroupButton("Index2", function(){ window.location.assign("index2.html") }, ),
+		new BtnGroupButton("SubIndex1", function(){ window.location.assign("Pages/subindex1.html") },),
 
-var myButtonList = [
-	new BtnGroupButton(),
-	new BtnGroupButton("Custom Label"),
-
-];
+	];
 
 
-var myColor = {
-  r: Math.floor( Math.random()*255 ), 
-  g: Math.floor( Math.random()*255 ), 
-  b: Math.floor( Math.random()*255 ), 
-  a: 0.7};
-var myColorFactor = {r:0.5, g:0.9, b:0.9};
+	var myColor = {
+	  r: Math.floor( Math.random()*255 ), 
+	  g: Math.floor( Math.random()*255 ), 
+	  b: Math.floor( Math.random()*255 ), 
+	  a: 0.7};
+	var myColorFactor = {r:0.5, g:0.9, b:0.9};
 
-var isHorizontal = 1;
-createBtnGroup(myBtnGroup, myButtonList, isHorizontal, myColor, myColorFactor, 0);
+	var isHorizontal = 1;
+	createBtnGroup(myBtnGroup, myButtonList, isHorizontal, myColor, myColorFactor, 0);
 
 </script>
