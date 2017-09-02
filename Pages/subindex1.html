@@ -1,5 +1,5 @@
-<script src="https://rawgit.com/chrismcg61/TechDemos/master/MyLibs/FullDivButtons.js"></script>
-<link rel="stylesheet" type="text/css" href="https://rawgit.com/chrismcg61/TechDemos/master/MyLibs/FullDivButtons.css">
+<script src="https://rawgit.com/chrismcg61/TechDemos/0.1e/MyLibs/FullDivButtons.js"></script>
+<link rel="stylesheet" type="text/css" href="https://rawgit.com/chrismcg61/TechDemos/0.1e/MyLibs/FullDivButtons.css">
 
 <style>
 	
@@ -7,8 +7,14 @@
 
 
 
-<div id="myBtnGroup" class="btn-group " style="position: absolute; left:0px; top:0px; width:200px; height: 100vh; z-index:99;">  
+<div id="myBtnGroup" class="btn-group " style="position: absolute; left:0px; top:0px; width:200px; height: 100vh; z-index:1;">  
 </div>
+
+<div id="toggleDivBtn" class="btn-group " style="position: absolute; left:0px; top:0px; height: 100vh; z-index:2;">  
+	<div id="" class="button" style="background: red; height:100%; width:100%; "> X </div>
+</div>
+
+
 
 <iframe id="myIframe" 
 style="position:absolute; left:0px; top:0px; width:100%; height:100vh;"
@@ -19,6 +25,9 @@ src="" >
 
 
 <script>
+	var isSideHorizontal = 1;
+	toggleDivBtn.onclick = function(){toggleDiv(myBtnGroup, isSideHorizontal);};
+	
 	
 	var myButtonList = [
 		
@@ -36,7 +45,7 @@ src="" >
 	var myColorFactor = {r:0.5, g:0.9, b:0.9};
 
 	var isHorizontal = 1;
-  var isRandomColor = 1;
+  	var isRandomColor = 1;
 	createBtnGroup(myBtnGroup, myButtonList, !isHorizontal, myColor, myColorFactor, isRandomColor);
 
 </script>
