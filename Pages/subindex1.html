@@ -1,1 +1,43 @@
-SUBINDEX 1
+<script src="https://rawgit.com/chrismcg61/TechDemos/master/MyLibs/FullDivButtons.js"></script>
+<link rel="stylesheet" type="text/css" href="https://rawgit.com/chrismcg61/TechDemos/master/MyLibs/FullDivButtons.css">
+
+<style>
+	
+	.radialGrad {
+	    background: -webkit-radial-gradient(circle, black, white, black); /* For Safari 5.1 to 6.0 */
+	    background: -o-radial-gradient     (circle, black, white, black); /* For Opera 11.6 to 12.0 */
+	    background: -moz-radial-gradient   (circle, black, white, black); /* For Fx 3.6 to 15 */
+	    background: radial-gradient        (circle, black, white, black); /* Standard syntax (must be last) */
+	}
+	
+</style>
+
+
+<div id="myBtnGroup" class="btn-group radialGrad" style="position: absolute; left:0; top:0; width:200px; height: 100vh;">  
+</div>
+
+
+
+<script>
+	
+	var myButtonList = [
+		
+		new BtnGroupButton("Root Index", function(){ window.location.assign("../index.html") }, ),
+    new BtnGroupButton("Root Index2", function(){ window.location.assign("../index2.html") }, ),
+
+	];
+
+
+	var myColor = {
+	  r: Math.floor( Math.random()*255 ), 
+	  g: Math.floor( Math.random()*255 ), 
+	  b: Math.floor( Math.random()*255 ), 
+	  a: 0.9};
+	var myColorFactor = {r:0.5, g:0.9, b:0.9};
+
+	var isHorizontal = 1;
+  var isRandomColor = 1;
+	createBtnGroup(myBtnGroup, myButtonList, !isHorizontal, myColor, myColorFactor, isRandomColor);
+
+</script>
+
