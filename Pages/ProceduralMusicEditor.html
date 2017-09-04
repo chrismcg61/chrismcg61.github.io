@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Procedural Music Editor</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+	<!-- <script type="text/javascript" src="standard.jWebAudio.js"></script> -->
+	
+	<script src="..\highlight.min.js"></script>
+	<link href="..\googlecode.min.css" rel="stylesheet" type="text/css" />
+	
+	<script src="https://rawgit.com/chrismcg61/TechDemos/0.2f/MyLibs/FileManager.js"></script>
+	<script src="https://rawgit.com/chrismcg61/TechDemos/0.2f/MyLibs/WebAudio.js"></script>
+	
+	<script src="https://rawgit.com/chrismcg61/TechDemos/0.3b/MyLibs/MyTags.js"></script>
+	<script src="https://rawgit.com/chrismcg61/TechDemos/0.2h/MyLibs/FullDivButtons.js"></script>
+	
+</head>
+
+
+<body >
+   
+<h2>
+Procedural Music Editor (with Short Sounds)
+<!-- <i>[12 semitones max (Up & Down) = 2 Octaves]</i> -->
+</h2>
+   
+<!-- <input type="button" id="addSoundBtn" onclick="addSound()" value="Add Sound" /> -->
+<input type="button" id="cloneDivBtn" onclick="cloneDiv()" value="Add Sound" />
+<!-- <input type="button" onclick="playDefaultSound()" value="Play Default Sound" /> -->
+   
+ </br>  
+ </br>  
+ 
+ 
+ 
+ 
+ 
+<div id="soundInstanceDiv" style="display:none;"> 
+
+<h2>Sound #0</h2>
+<form id="playerForm">
+	<input type="file" id="audioFileSelect" />
+</form>   
+
+<!-- <h3>Change Tune Setup :</h3> -->
+<button id="editTuneBtn" onclick="toggleEditTune(0)" >Show/Hide Editable Tune</button>
+<button id="playTuneBtn" onclick="playTune(0)" >Play Tune</button>
+<!-- <input type="button" id="playTuneBtn" onclick="playTune(0)" value="Play Tune" /> -->
+
+<!-- <pre id="codeWrapper" style="height:200px; overflow-y:scroll; border-style: solid; transition: height 1s;"> -->
+<!-- <code contenteditable="true" id="codeTag" class="javascript"  -->
+<!-- > -->
+<pre >
+<code id="codeTag" style="transition: height 1s;  " 
+>/**************
+* Global Params:
+* Tone Offset & Tempo
+***************/
+offset = 7;
+baseTempo = 400;
+
+/***************
+* Tune Setup:
+* "addNote(TEMPO, SEMITONE)"
+* (default = "Game Of Throne" Theme)
+***************/
+addNote(1/1, +5);
+
+addNote(1/1, -2);
+
+addNote(1/2, +1);
+addNote(1/2, +3);
+addNote(1/1, +5);				
+
+addNote(1/1, -2);	
+
+addNote(1/2, +1);
+addNote(1/2, +3);				
+addNote(1/1, +0);					
+
+addNote(1/1, -7);
+
+addNote(1/2, -3);
+addNote(1/2, -2);
+addNote(1/1, +0);				
+
+addNote(1/1, -7);
+
+addNote(1/2, -3);
+addNote(1/2, -2);
+addNote(1/1, +0);	
+
+//Repeat:
+repeat(1/1);
+</code></pre>
+
+
+<button id="playRandTuneBtn" onclick="initRandomTune(0)" >Play Random Tune</button>
+Random Tune Length : <input type="number" id="randTuneLength" value=20 style="width:40px;"/>
+Loop: <input type="checkbox" id="randLoop">
+<!-- </br>  -->
+
+</div>
+
+	   
+	   
+   <script type="text/javascript">
+
+		var defaultAudioUrl = "https://rawgit.com/chrismcg61/TechDemos/master/Media/Ting.mp3";
+
+		var fileInputs = [];		
+		var randTuneLengths = [];
+		var randLoops = [];
+		var codeTags = [];
+		
+		var randomTunes = [];		
+		
+		var mySourceBufferList = [];
+		var mySourceList = [];		
+		
+		//var tone = 0;
+		var sourceId = 0;
+		var sourceNb = 0;
+		
+
+		function addToneButtons(newSoundDiv)
+		{
+			newSoundDiv.appendChild( document.createElement('p') );		
+			
+			var newLine = document.createElement('span');
+			newLine.innerHTML = "Play Sound Tones :";
+			newSoundDiv.appendChild(newLine);			
+			
+			for(var i = -12; i <= 12; i++){
+				var newButton = document.createElement('button');
+				newSoundDiv.appendChild(newButton);
+				newButton.innerHTML = ""+i;
+				
+				var newSourceId = mySourceList.length-1;
+				newButton.onclick = 
+				(function(i) {return function() {		//Wrapping an extra Scope to retain i & j values in Event Listeners
+					playSound(i, newSourceId);
+				};})(i);
+			}
+		}
+		
+		
+		cloneDiv();
+		function cloneDiv(){						
+			var id = sourceNb;
+			sourceNb++;
+			
+			var newSoundDiv = soundInstanceDiv.cloneNode(true);
+			newSoundDiv.style.display = "block";
+			document.body.appendChild(newSoundDiv);			
+			
+			newSoundDiv.getElementsByTagName("h2")[0].innerHTML = "Sound #"+id;
+			
+			fileInputs.push(newSoundDiv.getElementsByTagName("input")[0]);
+			fileInputs[id].addEventListener("change", 
+				function(){ 
+					mySourceBufferList[id].push(null);
+					readFile_ArrayBuffer( 
+						fileInputs[id].files[0], 
+						function(arrayBuf){ onAudioFileLoaded(arrayBuf, mySourceBufferList[id]); }
+					);
+				}	
+			);	
+			//Load Default Audio From URL:
+			readFile_ArrayBuffer_FromURL(
+				defaultAudioUrl, 
+				function(arrayBuf){ onAudioFileLoaded(arrayBuf, mySourceBufferList[id]); }
+			);
+			
+			randTuneLengths.push(newSoundDiv.getElementsByTagName("input")[1]);
+			randLoops.push(newSoundDiv.getElementsByTagName("input")[2]);
+			
+			mySourceBufferList.push( [] );
+			randomTunes.push( [] );
+			mySourceList.push(null);
+			
+			codeTags.push(newSoundDiv.getElementsByTagName("code")[0]);		
+			MYTAGS.initEditableCodeTag( codeTags[id] , "javascript");
+				
+			newSoundDiv.getElementsByTagName("button")[0].onclick = function(){ toggleEditTune(id); };			
+			
+			newSoundDiv.getElementsByTagName("button")[1].onclick = function(){ playTune(id); };	
+			
+			newSoundDiv.getElementsByTagName("button")[2].onclick = function(){ initRandomTune(id); };		
+			
+			addToneButtons(newSoundDiv);
+		}
+		
+
+		
+		function playSound(newTone, newSourceId){
+			//console.log(newTone);
+			sourceId = newSourceId;
+			tone = newTone;
+			
+			console.log( "mySourceList = ", mySourceList);
+			var startTume = 0;
+			var log = false;
+			mySourceList[newSourceId] = //Comment to play sounds to the end
+				playDecodedBuffer( mySourceList[newSourceId], mySourceBufferList[newSourceId][0], startTume, newTone, log);
+			
+		}
+		
+		
+		
+		var curTime = 0;
+		var offset = 7;
+		var baseTempo = 500;
+		function addNote(tempo, semitone){
+			setTimeout(playSound, curTime, offset+semitone, sourceId);
+			curTime += baseTempo*tempo;
+		}
+		function repeat(tempo){
+			setTimeout(playTune, curTime, sourceId);
+			curTime += baseTempo*tempo;
+		}
+		
+		function playTune(newSourceId)
+		{			
+			sourceId = newSourceId;
+			curTime = 0;
+			
+			var fn = Function( codeTags[sourceId].textContent );
+			fn();
+		}
+		
+		
+		function repeatRandom(tempo){
+			setTimeout(playRandomTune, curTime, sourceId);
+			curTime += baseTempo*tempo;
+		}
+		function initRandomTune(id){
+			randomTunes[id] = [];
+			
+			var randomNotes = randomTunes[id];
+			
+			var baseSpeed = 2;			
+			var maxSpeedFactor = 2;			
+			for(var i = 0; i < randTuneLengths[sourceId].value; i++){				
+				var randSpeedFactor = Math.floor( Math.random()*maxSpeedFactor );
+				randomNotes.push( {
+					tempo: baseSpeed / Math.pow(2, randSpeedFactor), 
+					semitone: Math.floor( Math.random()*24 ) - 12
+				} );	
+			}
+			//repeat(  baseSpeed / Math.pow(2, randSpeedFactor)  );
+			
+			playRandomTune(id);
+			
+		}
+		function playRandomTune(id)
+		{
+			curTime = 0;
+			sourceId = id;
+			
+			var randomNotes = randomTunes[id];
+			for(var i = 0; i < randomNotes.length; i++){
+				addNote( randomNotes[i].tempo, randomNotes[i].semitone );
+			}
+			if(randLoops[sourceId].checked) 
+				repeatRandom( randomNotes[ randomNotes.length-1 ].tempo );
+		}
+		
+		function toggleEditTune(id){
+			var tag = codeTags[id];
+			toggleDiv(tag, 0);
+		}
+		
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+
+	   
+	   
+	   	/***************************************************************************************************************************************************
+		* We're using the File API to obtain the Audio bytes, here but they could also come from an XMLHttpRequest 
+		* object that has downloaded an Audio file from the internet, or any other ArrayBuffer containing Audio data. 
+		***************************************************************************************************************************************************/
+		/*
+		function getBufferAndDecode(newSourceId)
+		{
+		  //event.stopPropagation();
+		  var fileInput = fileInputs[newSourceId]; 
+		  if (fileInput.files.length > 0 && ["audio/mpeg", "audio/Audio", "audio/wav", "audio/ogg"].includes(fileInput.files[0].type)) {
+			getAudioBuffer(
+				fileInput.files[0], 
+				function (audioBuffer) {
+				  decodeAudioBuffer(audioBuffer);  
+				}
+			);
+		  } 
+		  else alert("Error! No attached file or attached file was of the wrong type!");
+
+		}
+		*/
+		
+		
+
+		/*
+		function dataURItoBlob(dataURI) {
+		  // convert base64 to raw binary data held in a string
+		  // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+		  var byteString = atob(dataURI.split(',')[1]);
+
+		  // separate out the mime component
+		  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+		  // write the bytes of the string to an ArrayBuffer
+		  var ab = new ArrayBuffer(byteString.length);
+
+		  // create a view into the buffer
+		  var ia = new Uint8Array(ab);
+
+		  // set the bytes of the buffer to the correct values
+		  for (var i = 0; i < byteString.length; i++) {
+			  ia[i] = byteString.charCodeAt(i);
+		  }
+
+		  // write the ArrayBuffer to a blob, and you're done
+		  var blob = new Blob([ab], {type: mimeString});
+		  return blob;
+
+		}
+		*/
+		
+		/*
+		function playDefaultSound(){
+			//console.log("mySource = ", mySource);
+			mySource = playDecodedBuffer(mySource, mySourceBufferPointer[0], 0, 0, 0);
+			//console.log("mySource = ", mySource);
+			
+			//mySource = audioContext.createBufferSource();
+			//mySource.buffer = mySourceBuffers[0]; 
+			//mySource.connect(audioContext.destination); 	
+			//mySource.start( 0 );
+			
+			
+			
+			
+			var dataURL = localStorage.getItem("decodedAudioBuffer");
+			console.log( dataURL );
+			//var blob = new Blob([ dataURL ],  {type : 'audio/mpeg'});
+			var blob = dataURItoBlob(dataURL);
+			//var defaultBuffer = JSON.parse( JSONbuffer );
+			//console.log( defaultBuffer );
+			//playDecodedBuffer( defaultBuffer );
+			
+			getAudioBuffer(
+				blob, 
+				function (audioBuffer) {
+				  decodeAudioBuffer(audioBuffer);  
+				}
+			);
+			
+		}
+		*/
+		
+		
+
+		/*************************************************************************************************************************************************** 
+		* Use the File API in order to asynchronously obtain the bytes of the file that the user selected in the 
+		* file input box. The bytes are returned using a callback method that passes the resulting ArrayBuffer. 
+		***************************************************************************************************************************************************/
+		/*
+		function getAudioBuffer(selectedFile, callback) {
+		  var reader = new FileReader(); 
+		  reader.onload = function (ev) {
+			// The FileReader returns us the bytes from the computer's file system as an ArrayBuffer  
+			var audioBuffer = reader.result; 			
+			callback(audioBuffer); 
+		  }
+		  reader.readAsArrayBuffer(selectedFile);
+		  
+		  
+		  //Data URL Creation:
+		  var readerURL = new FileReader(); 
+		  readerURL.onload = function (ev) {
+			// The FileReader returns us the bytes from the computer's file system as an ArrayBuffer  
+			var dataURL = readerURL.result; 			
+			//console.log( audioJSON );
+			//var JSONbuffer = JSON.stringify( audioJSON);
+			//var JSONbuffer = String.fromCharCode.apply(null, new Uint16Array( audioJSON ));
+			console.log( dataURL );
+			localStorage.setItem("decodedAudioBuffer", dataURL);
+			
+			//callback(audioJSON); 
+		  }
+		  readerURL.readAsDataURL(selectedFile);
+		}
+		*/
+		
+
+
+		/***************************************************************************************************************************************************
+		* The AudioContext will asynchronously decode the bytes in the ArrayBuffer for us and return us
+		* the decoded samples in an AudioBuffer object.  
+		***************************************************************************************************************************************************/
+		/*
+		function decodeAudioBuffer(audioBuffer) {
+			audioContext.decodeAudioData(audioBuffer, function (decodedSamplesAsAudioBuffer) {
+				mySourceBufferList[sourceId] = decodedSamplesAsAudioBuffer;
+				//playDecodedBuffer(decodedSamplesAsAudioBuffer);
+				
+				console.log(decodedSamplesAsAudioBuffer);
+				var JSONbuffer = JSON.stringify( decodedSamplesAsAudioBuffer );
+				console.log( JSONbuffer );
+				localStorage.setItem("decodedAudioBuffer", JSONbuffer);
+				
+			}); 
+		}
+		*/
+		
+		/***************************************************************************************************************************************************
+		* In order to play the decoded samples contained in the audio buffer we need to wrap them in  
+		* an AudioBufferSourceNode object. This object will stream the audio samples to any other 
+		* AudioNode or AudioDestinationNode object. 
+		***************************************************************************************************************************************************/
+		/*
+		function myPlayDecodedBuffer(decodedSamplesAsAudioBuffer) {
+			// Clear any existing audio source that we might be using:
+			if (mySourceList[sourceId] != null) {
+			  mySourceList[sourceId].disconnect(audioContext.destination);
+			  mySourceList[sourceId] = null; // Leave existing source to garbage collection
+			} 
+			
+			mySourceList[sourceId] = audioContext.createBufferSource();
+			mySourceList[sourceId].buffer = decodedSamplesAsAudioBuffer; // set the buffer to play to our audio buffer
+			mySourceList[sourceId].connect(audioContext.destination); // connect the source to the output destinarion 
+
+			mySourceList[sourceId].detune.value = tone * 100;
+			mySourceList[sourceId].start(0); // tell the audio buffer to play from the beginning
+			//console.log("Audio source = ", mySourceList[sourceId]);
+			
+		}
+		*/
+	   
+	</script>
+	
+</body>
+</html>
