@@ -43,9 +43,15 @@ src="" >
 		myIframe.src = hashResult;
 	}
 	
+	function myLoadPage(url)
+	{
+		location.assign("subindex1.html#" + url);
+		location.reload();
+	}
+	
 	var myButtonList = [
 		
-		new BtnGroupButton("ProceduralMusicEditor_Hash", function(){ window.location.assign("subindex1.html#ProceduralMusicEditor.html"); }, ),
+		new BtnGroupButton("ProceduralMusicEditor_Hash", function(){ myLoadPage("ProceduralMusicEditor.html"); }, ),
 		new BtnGroupButton("ProceduralMusicEditor", function(){ myIframe.src = "ProceduralMusicEditor.html"; }, ),
 
 	];
