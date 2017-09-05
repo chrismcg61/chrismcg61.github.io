@@ -36,10 +36,18 @@ src="" >
 	var isSideHorizontal = 1;
 	toggleDivBtn.onclick = function(){toggleDiv(myBtnGroup, isSideHorizontal);};
 	
+	var hash = location.hash;
+	if(hash != "")  
+	{
+	  	var hashResult = hash.substr( 1 );
+		myIframe.src = hashResult;
+	}
+
+	info.innerHTML = hashResult;
 	
 	var myButtonList = [
 		
-		new BtnGroupButton("Root Index", function(){ myIframe.src = "../index.html"; }, ),
+		new BtnGroupButton("ProceduralMusicEditor_Hash", function(){ myIframe.src = "../index.html"; }, ),
 		new BtnGroupButton("ProceduralMusicEditor", function(){ myIframe.src = "ProceduralMusicEditor.html"; }, ),
 
 	];
