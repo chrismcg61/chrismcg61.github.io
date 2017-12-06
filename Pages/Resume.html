@@ -1,0 +1,376 @@
+<!-- GENERIC LIBS : -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- MY CSS : -->
+<link rel="stylesheet" type="text/css" href="https://rawgit.com/chrismcg61/TechDemos/0.8e/MyLibs/Resume/Modal.css">
+<link rel="stylesheet" type="text/css" href="https://rawgit.com/chrismcg61/TechDemos/0.8e/MyLibs/Resume/Tooltip.css">
+<link rel="stylesheet" type="text/css" href="https://rawgit.com/chrismcg61/TechDemos/0.8e/MyLibs/Resume/NeonSigns.css">
+
+<link rel="stylesheet" type="text/css" href="https://rawgit.com/chrismcg61/TechDemos/master/MyLibs/Resume/Resume.css">
+
+
+<!-- MY JS : -->
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/0.9f/MyLibs/Resume/Modal.js"></script>
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/0.9f/MyLibs/Resume/ResumeFuncs.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/master/MyLibs/Resume/ResumeAngularApp.js"></script>
+
+
+<!-- MY DATA : -->
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/master/MyLibs/Resume/Data/Jobs.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/master/MyLibs/Resume/Data/Skills.js"></script>
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/master/MyLibs/Resume/Data/CorpCats.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/master/MyLibs/Resume/Data/Corps.js"></script>
+
+
+
+
+
+
+<!-- HTML BODY: -->
+<div ng-app="myApp">
+  <div ng-controller="mainCtrl">
+
+    <div class="testBorder colDiv" style=" left:0px; ">
+      <div class="borderDiv" >
+        <neon-sign class="titles" style="font-size:50px;">
+          Chris McGARRY
+        </neon-sign>
+                
+        <div>
+          <i class="fa fa-address-card fa-fw" style=""></i>
+          <b class="values">French</b>
+          <i class="fa fa-ellipsis-v fa-fw" style=""></i>
+          Age:<b class="values">{{ myAge }}</b>
+          <i class="fa fa-ellipsis-v fa-fw" style=""></i>
+          XP:<b class="values">{{ myXP }}</b>
+        </div>
+        
+        <div> 
+          <i class="fa fa-graduation-cap fa-fw" style=""></i>
+          <b class="values">ESIEA Engineer</b> 
+          since 
+          <b class="values">2006</b>  
+        </div>
+        
+        <div>
+          <i class="fa fa-globe fa-fw" style=""></i>
+          <b>Mobility: </b>
+          Normandy 
+          <!-- <i><i class="fa fa-compass fa-fw" style=""></i> -->
+          <span class="subSkill">(S-W)</span>
+          <i class="fa fa-chevron-circle-right fa-fw" style=""></i>
+          France
+          <i class="fa fa-chevron-circle-right fa-fw" style=""></i>
+          EU
+          <i class="fa fa-chevron-circle-right fa-fw" style=""></i>
+          World
+        </div>
+        
+        <div>
+          <i class="fa fa-file-text fa-fw" style=""></i>
+          <b>All Contracts </b>
+          <span class="subSkill">(Project, Freelance, Telework...)</span>
+        </div>
+                
+        <div>
+          <i class="fa fa-internet-explorer fa-fw" style=""></i>
+          <b>a.com</b> 
+          <span class="subSkill">(Interactive Resume & Tech Demos)</span>
+        </div>
+        <div>
+          <i class="fa fa-envelope fa-fw" style=""></i>
+          <b>a@a.com</b> 
+          <!-- <i class="fa fa-phone fa-fw" style=""></i> -->          
+          <small>
+            <i class="fa fa-ellipsis-v fa-fw" style=""></i>
+            (+33) 6 1234 5678
+          </small>
+          <span class="subSkill">[10am-7pm CET]</span>
+        </div>
+        
+       
+      </div>
+      
+      <div> &nbsp </div>
+
+      <div class="borderDiv" style="float:left;">
+        
+        <b class="titles" style="">
+          <i class="fa fa-tasks fa-fw" style=""></i>
+          EXPERIENCES 
+        </b>
+        
+        <span style="color:blue;" class="tooltip" >
+
+          <i class="fa fa-info-circle fa-lg" style=""
+             ng-click="openMyModal()"></i>
+
+          <!-- TOOLTIP -->
+          <div class="tooltiptext" 
+               style="bottom:100%;">
+            Click for Timeline
+          </div>
+        </span>
+        
+        
+        
+        <!-- MODAL -->
+        <div id="myModal" class="modal" style="">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close" ng-click="closeModal( )">&times;</span>          
+            <h3>
+              <!-- <i class="fa fa-industry fa-fw" style=""></i> -->
+              <i class="fa fa-calendar fa-fw" style=""></i>
+              COMPANIES TIMELINE
+            </h3>
+            
+            <div ng-repeat="corp in corps" 
+                 ng-style="generateStyle(categories[corp.category].rgb, 0)">
+
+              <b class="values">
+                {{getY(corp.date.start.f)}} [Q{{getQ(corp.date.start.f)}}] -
+                {{getY(corp.date.end.f)}} [Q{{getQ(corp.date.end.f)}}]
+              </b>   
+              <b class="alten" ng-if="corp.alten == true">[SSII]</b> 
+              <b>{{corp.name}}</b>  
+              <span class="subSkill">{{corp.location}} - FR</span>
+              
+              <div ng-repeat="i in corp.date.duration" >
+                &nbsp
+              </div>
+              
+            </div>
+
+
+          </div>
+
+        </div>
+        
+
+       
+        <div ng-repeat="cat in categories" >
+          <div ng-style="generateStyle(cat.rgb, 0)"> 
+            <b> {{cat.title}} </b>
+          </div>
+          
+          <div ng-repeat="corp in corps" 
+            ng-style="generateStyle(cat.rgb, 1)" style=""
+            ng-if="corp.category == cat.index">
+            
+            <b class="values">
+              {{getY(corp.date.start.f)}} [Q{{getQ(corp.date.start.f)}}] -
+              {{getY(corp.date.end.f)}} [Q{{getQ(corp.date.end.f)}}]
+            </b>   
+            <b class="alten" ng-if="corp.alten == true">[SSII]</b> 
+            <b>{{corp.name}}</b>      
+            <span class="subSkill">{{corp.location}} - FR</span>
+          </div>
+
+          <div ng-repeat="catJob in cat.jobs" 
+            ng-style="generateStyle(cat.rgb, 2)" style="">
+            {{catJob.title}}
+
+            <span style="color:blue;" class="tooltip" >
+
+              <i class="fa fa-info-circle fa-fw" style=""></i>
+
+              <!-- TOOLTIP -->
+              <div class="tooltiptext" style="">
+                <div ng-repeat="subJob in catJob.subJobs" >
+                  <b>{{subJob}}</b>
+                </div>
+              </div>
+            </span>
+          </div>              
+
+        </div>
+        
+      </div>
+    </div>
+
+    
+
+
+    <div class="testBorder colDiv" style=" right:0px;">
+      <div class="borderDiv">
+        <neon-sign class="titles" style="">
+          VERSATILE PROGRAMMER
+        </neon-sign>
+
+        <div ng-repeat="job in jobs" >
+          <div ng-style=""> 
+            
+            <span ng-style="job.style">
+              {{job.mainTitle}}
+            </span>
+            <span class="subSkill" ng-if="job.smallTitle.length > 0">
+              ({{job.smallTitle}})
+            </span>
+
+            <span style="color:blue;" class="tooltip" >
+
+              <i class="fa fa-info-circle fa-fw" style=""></i>
+
+
+              <!-- TOOLTIP -->
+              <div class="tooltiptext" 
+               style="left:100%; margin-left: -300px; 
+                bottom:auto; top:100%; ">
+                <div ng-repeat="subTitle in job.subTitles" >
+                  <b>{{subTitle}}</b>
+                </div>
+
+              </div>
+            </span>
+          </div>
+        </div>
+        
+        
+      </div>
+      
+      
+      
+      
+      <div> &nbsp </div>
+
+      <div class="testBorder floatDiv" >
+        <div class="borderDiv " style="">
+
+          <b class="titles" style="">
+            <i class="fa fa-cog fa-fw" style=""></i>
+            SKILLS
+          </b>
+
+          <!--
+<div class="borderDiv">
+XXX  <span style="float:right;"> &nbsp RRR </span>
+</div>
+-->
+
+          <div ng-repeat="skillCat in skillCats" >
+            <div class="" ng-style="generateStyle(skillCat.rgb, 0)">
+              <b>{{skillCat.title}}</b>
+            </div>
+
+            <div ng-repeat="skill in skillCat.skills" 
+             ng-style="generateStyle(skillCat.rgb, 1)">
+              <b>{{ skill.name }}</b>
+              <span class="subSkill" ng-if="skill.subTitle.length > 0">
+                ({{ skill.subTitle }})
+              </span>
+
+              <div class="tooltip" 
+                   style="float:right;"> 
+                &nbsp 
+                <i ng-repeat="i in skill.rating.main"
+                   class="fa fa-star fa-spin fa-fw values"></i>
+
+
+                <!-- TOOLTIP -->
+                <div class="tooltiptext" 
+                     style="left:100%; margin-left: -300px; bottom:100%;">
+                  <div>
+                    XP:
+                    <i ng-repeat="i in skill.rating.detail.xp"
+                       class="fa fa-star fa-spin fa-fw" 
+                       style="float: right;"></i>
+                  </div>
+
+                  <div>
+                    Relevance:
+                    <i ng-repeat="i in skill.rating.detail.relevance"
+                       class="fa fa-star fa-spin fa-fw" 
+                       style="float: right;"></i>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+        
+        
+         <div> &nbsp </div>
+        
+        <div class="borderDiv " style="">
+
+          <b class="titles" style="">
+            <i class="fa fa-wechat fa-fw" style=""></i>
+            LANGUAGES
+          </b>
+
+          <div ng-repeat="skill in languages" >
+            <b>{{ skill.name }}</b>
+            <span class="subSkill" ng-if="skill.subTitle.length > 0">
+              ({{ skill.subTitle }})
+            </span>
+            
+            <div class="" style="float:right;"> 
+              &nbsp 
+              <i ng-repeat="i in skill.rating.main"
+                 class="fa fa-star fa-spin fa-fw values"></i>
+
+            </div>
+          </div>
+
+        </div>
+        
+        
+        <div> &nbsp </div>
+        
+        <div class="borderDiv " style="">
+
+          <b class="titles" style="">
+            <i class="fa fa-soccer-ball-o fa-fw" style=""></i>
+            HOBBIES
+          </b>          
+
+          <div ng-repeat="skillCat in hobbyCats" >
+            <div class="" ng-style="generateStyle(skillCat.rgb, 0)">
+              <b>{{skillCat.title}}</b>
+            </div>
+
+            <div ng-repeat="skill in skillCat.skills" 
+                 ng-style="generateStyle(skillCat.rgb, 1)">
+
+              <b>{{ skill.name }}</b>
+              <span class="subSkill" ng-if="skill.subTitle.length > 0">
+                ({{ skill.subTitle }})
+              </span>
+
+              <div class="" style="float:right;"> 
+                &nbsp 
+                <i ng-repeat="i in skill.rating.main"
+                   class="fa fa-star fa-spin fa-fw values"></i>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+    
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- POST-INCLUDES: -->
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/0.8b/MyLibs/Resume/NeonSigns.js "></script>
