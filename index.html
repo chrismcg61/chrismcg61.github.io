@@ -1,6 +1,7 @@
 <script src="https://rawgit.com/chrismcg61/TechDemos/master/MyLibs/FullDivButtons.js"></script>
 <link rel="stylesheet" type="text/css" href="https://rawgit.com/chrismcg61/TechDemos/master/MyLibs/FullDivButtons.css">
 
+
 <style>
 	
 	.radialGrad {
@@ -19,11 +20,16 @@
 
 
 <script>
-	
+
 	var myButtonList = [
 		new BtnGroupButton("Interactive Resume", function(){ window.location.assign("Pages/Resume.html") }, ),
-		new BtnGroupButton("Tech Demos", function(){ window.location.assign("Pages/subindex1.html") },),
-		new BtnGroupButton("My CodePens", function(){ window.location.assign("https://codepen.io/chrismcg61/pens/public/?grid_type=list#") },),
+		new BtnGroupButton("Latest Advanced Tech Demos", function(){ window.location.assign("Pages/subindex1.html") },),
+		new BtnGroupButton("My CodePens (WebApps, WebGL, AI, Canvas...)", function(){ window.location.assign(
+			"https://codepen.io/chrismcg61/pens/public/?grid_type=list#"
+		)},),
+		new BtnGroupButton("My GitHub Repos (Custom WebGL/WebApp Libs...)", function(){ window.location.assign(
+			"https://github.com/chrismcg61"
+		)},),
 
 	];
 
