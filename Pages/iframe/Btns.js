@@ -25,5 +25,6 @@ Btns.initBtns = function( defaultBtn, links ){
 
 function clickHandler( url ){
 	//alert( i ); 
-	return function(){ window.location.assign( url ); }
+	return function(){ window.open(url, '_blank'); };	
+	// window.location.assign( url );
 }
