@@ -1,0 +1,1331 @@
+var customCorps = [
+  {
+    "title" : "Dassault",
+	"type":	{
+		"title":"ISTRES",
+		"desc":"Istres (Marseille)"
+	},
+    "catId": 3,
+    "dates": getDates( 3 ),      
+    "ratings": getRatingList(ratingD,ratingD,ratingA), 
+  },
+  
+  {
+    "title" : "ELB",
+	"type":	{
+		"title":"LYON",
+		"desc":"Lyon Contract"
+	},
+    "catId": 1,
+    "dates": getDates( 3 ),  	
+    "ratings": getRatingList(ratingD,ratingD,ratingD), 
+  },  
+  {
+    "title" : "Phoenix",
+	"type":	{
+		"title":"LYON",
+		"desc":"Lyon Contract"
+	},
+    "catId": 1,
+    "dates": getDates( 9 ),         
+    "ratings": getRatingList(ratingD,ratingD,ratingD), 
+  },
+  
+  {
+    "title" : "Sword",
+	"type":	{
+		"title":"LYON-SSII",
+		"desc":"Lyon SSII Mission"
+	},
+    "catId": 4,
+    "dates": getDates( 1 ),       
+    "ratings": getRatingList(ratingD,ratingD,ratingD), 
+  },  
+
+  {
+    "title" : "NeoPost",
+	"type":	altenType,
+    "catId": 3,
+    "dates": getDates( 2 ),     
+    "ratings": getRatingList(ratingD,ratingD,ratingD), 
+  },  
+  
+  {
+    "title" : "Nagra",
+	"type":	altenType,
+    "catId": 4,
+    "dates": getDates( 1 ),    
+    "ratings": getRatingList(ratingD,ratingD,ratingD), 
+  }, 
+
+  {
+    "title" : "SAH",
+	"type":	altenType_Rennes,
+    "catId": 2,
+    "dates": getDates( 5 ),         
+    "ratings": getRatingList(ratingD,ratingD,ratingD), 
+  },  
+
+  {
+    "title" : "Technicolor",
+	"type":	altenType,
+    "catId": 4,
+    "dates": getDates( 1 ),   
+	"ratings": getRatingList(ratingD,ratingD,ratingD), 
+  }, 
+  {
+    "title" : "SagemCom",
+	"type":	altenType,
+    "catId": 4,
+    "dates": getDates( 1 ),         
+	"ratings": getRatingList(ratingD,ratingD,ratingD), 
+  }, 
+
+  {
+    "title" : "Bouygues",
+	"type":	altenType,
+    "catId": 2,
+    "dates": getDates( 4 ),     
+	"ratings": getRatingList(ratingD,ratingD,ratingD), 
+  },  
+    
+  {
+    "title" : "Parrot",
+	"type":	altenType,
+    "catId": 4,
+    "dates": getDates( 1 ),    
+	"ratings": getRatingList(ratingD,ratingD,ratingD), 
+  }, 
+
+  {
+    "title" : "Cisco",
+	"type":	altenType,
+    "catId": 2,
+    "dates": getDates( 5 ),         
+	"ratings": getRatingList(ratingD,ratingD,ratingD), 
+  },
+
+  {
+    "title" : "Unity3D Proj",
+    "catId": 1,
+    "dates": getDates( 6 ),         
+  },
+  {
+    "title" : "GPU/AI WebApps",
+    "catId": 0,
+    "dates": getDates( 6 ),         
+  },
+
+];
+
+var customRoles = [];
+customRoles["Mgr"] = "Proj Mgr";
+customRoles["Tech"] = "Tech Expert";
+
+function customCategories(){
+	var category = defaultCategories[0];
+	category["title"] = "WebApps Dev";
+	resetCatRoles(category);
+	addCatRole(category, customRoles["Tech"]);
+	addCatRole(category, customRoles["Mgr"]);
+	resetCatSkill(category);
+	addCatSkill(category, mgtSkills["Auto"]);
+	addCatSkill(category, techSkills["APP"]);
+	addCatSkill(category, techSkills["GAMIF"]);
+	addCatSkill(category, techSkills["AI"]);
+	addCatSkill(category, techSkills["3D"]);
+	addCatSkill(category, techSkills["GPU"]);
+  
+	category = defaultCategories[1];
+	category["title"] = "Game Dev";
+	addCatRole(category, customRoles["Mgr"]);
+	resetCatSkill(category);
+	addCatSkill(category, mgtSkills["Auto"]);
+	addCatSkill(category, mgtSkills["Agile"]);
+	addCatSkill(category, techSkills["GAMEDEV"]);
+	addCatSkill(category, techSkills["AI"]);
+	addCatSkill(category, techSkills["3D"]);
+	addCatSkill(category, techSkills["MW"]);
+	
+	category = defaultCategories[2];
+	category["title"] = "STB Dev (TV Box)";
+	resetCatSkill(category);
+	addCatSkill(category, mgtSkills["Auto"]);
+	addCatSkill(category, mgtSkills["Agile"]);
+	addCatSkill(category, mgtSkills["Code"]);
+	addCatSkill(category, mgtSkills["Prod"]);
+	addCatSkill(category, techSkills["MW"]);
+	
+	category = defaultCategories[3];
+	category["title"] = "Embedded Dev";
+	resetCatRoles(category);
+	resetCatSkill(category);
+	addCatSkill(category, mgtSkills["Code"]);
+	addCatSkill(category, mgtSkills["Prod"]);
+	addCatSkill(category, techSkills["EMBED"]);
+	
+	category = defaultCategories[4];
+	category["title"] = "Other";
+	resetCatRoles(category);
+	resetCatSkill(category);
+	addCatSkill(category, techSkills["MISC"]);
+}
+
+function resetCatRoles(cat){
+	cat["subDivs"][0]["roles"] = [];
+}
+function addCatRole(cat, role){
+	cat["subDivs"][0]["roles"].push( role );
+}
+
+function resetCatSkill(cat){
+	cat["subDivs"][0]["subSkills"] = [];
+}
+function addCatSkill(cat, skill){
+	cat["subDivs"][0]["subSkills"].push( skill );
+}
+
+
+var customProjs = [
+  
+  {
+    "title" : "AI (GPU, Machine-Learning, Pathing, Image Data)",
+    //"rating" : 50,
+    "hiddenSkills" : [
+		{
+			"title" : "Machine-Learning",
+			//"rating" : 50,
+			"hiddenSkills" : [
+			    /*
+				Test Multiple Strats per GPU frame
+				Testing All possible situations & Outcomes
+				*/
+				{
+				"title" : "GPU-Accelerated Machine Learning",
+				},	
+				{
+				"title" : "Game Strategies Optim",
+				},
+				{
+				"title" : "Coop AIs Sync Optim",
+				},
+				{
+				"title" : "Rating : Single Action -VS- Action Sequence",
+				},			
+			],
+		},
+		
+		{
+			"title" : "PathFinding / Traffic Simulation",
+			"hiddenSkills" : [
+				{
+				"title" : "Hi-Precision Time-Based PathFinding",
+				},	
+				{
+				"title" : "Dynamic PathFinding",
+				},	
+				{
+				"title" : "Intersection Congestion Simulation & Optim",
+				},
+			],
+		},
+		{
+			"title" : "Image Analysis ► Face Detection AI",
+			"hiddenSkills" : [
+				{
+				"title" : "Contiguous Pixels Luminance Distrib Analysis",
+				//"rating" : 50,
+				},
+				{
+				"title" : "Refine Pattern Search Config w/ User Prompt",
+				},
+			],
+		},
+    ],    
+  },
+  
+
+  {
+    "title" : "Team Mgt ► Advanced Self-Optim Techniques",
+    //"rating" : 50,
+    "hiddenSkills" : [
+      {
+        "title" : "Async Team Coop Tools <i>(Solo Dev Time Preservation)</i>",
+        //"rating" : 50,
+      },
+      {
+        "title" : "WorkForce ► Expansion/Split/Cohesion <small>(Needs & Methods)</small>",
+        //"rating" : 50,
+      },
+      {
+        "title" : "Metrics ► Advanced Productivity/Quality <small>(Methods/Results)</small>",
+      },
+
+      {
+        "title" : "HQ Tech Objectives <small>(AI, Global Brain, Energy, Gamification)</small>",
+      },
+      {
+        "title" : "HQ Soft Objectives <small>(Mentoring, Anticipation, Ecology, Social)</small>",
+      },
+      // BONUS : Tech Innovation (AI, Energy, Teaching/Learning, Global Brain), Ecology, Social...
+
+      /*
+       {
+        "title" : "Team-Based Targets <i>(Innovation, Tech, Larger Scope)</i>",
+      },
+      */
+    ],    
+  },
+  
+]
+
+var customStudies = [
+  {
+    "title" : "MAJOR : VR, HMI & Robotics Dev",
+    //"rating" : 95,
+  },
+  {
+    "title" : "Minor : Electronics / Networking",
+  },
+];
+
+var customOtherDegrees = [
+  {
+    "title" : "BAFA : Summer Camp Animator",   //Activity Camp Coach
+    //"rating" : 95,
+  },
+  {
+    "title" : "BIA : Airplane Pilot Basics (Theory & Practice)",  //Aeronautics
+  },
+];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function myLanguages()
+{
+	var languages = [];
+	
+  languages.push( {
+    "title" : "English / French",
+    "rating" : 95,
+    "hiddenSkills" : [ ],    
+  });
+  languages.push( {
+    "title" : "German",
+    "rating" : 85,
+    "hiddenSkills" : [ ],    
+  });
+  languages.push( {
+    "title" : "Spanish",
+    "rating" : 75,
+    "hiddenSkills" : [ ],    
+  });
+  languages.push( {
+    "title" : "Chinese",
+    "rating" : 50,
+    "hiddenSkills" : [ ],    
+  });
+  
+  return languages;
+}
+
+
+function myHobbiesTech()
+{
+	var hobbiesTech = [];
+	
+  hobbiesTech.push( {
+    "title" : "Tech Research",
+    "rating" : 95,
+    "hiddenSkills" : [ 
+      {
+        "title" : "A",
+        "rating" : 95,
+      },
+      {
+        "title" : "B",
+        "rating" : 95,
+      },
+    ],    
+  });  
+
+  hobbiesTech.push( {
+    "title" : "3D Game / WebApp / AI Script Prog",
+    "rating" : 95,
+    "hiddenSkills" : [  ],    
+  });  
+
+  hobbiesTech.push( {
+    "title" : "Versatile Gamer (Challenge & Innovation)",
+    "rating" : 90,
+    "hiddenSkills" : [ 
+      {
+        "title" : "Competitive / Challenging",
+        "rating" : 90,
+      },
+      {
+        "title" : "Innovative Story & Gameplay Mechanics",
+        "rating" : 90,
+      },
+    ],    
+  }); 
+
+  hobbiesTech.push( {
+    "title" : "Documentaries (Tech, Science, Mgt)",
+    "rating" : 90,
+    "hiddenSkills" : [ 
+      {
+        "title" : "A",
+        "rating" : 90,
+      },
+    ],    
+  }); 
+  
+  return hobbiesTech;
+}
+
+
+function myHobbiesOther()
+{
+	var hobbiesOther = [];
+	
+  hobbiesOther.push( {
+    "title" : "Music",
+    "rating" : 90,
+    "hiddenSkills" : [  ],    
+  });  
+
+  hobbiesOther.push( {
+    "title" : "Sports",
+    "rating" : 80,
+    "hiddenSkills" : [  ],    
+  }); 
+  
+  hobbiesOther.push( {
+    "title" : "Culture/Arts",
+    "rating" : 70,
+    "hiddenSkills" : [  ],    
+  }); 
+  
+  return hobbiesOther;
+}
+
+
+function myMiniJobs()
+{
+
+  var miniJobs = [];
+
+  miniJobs.push( {
+    "title" : "IT Internship ('Holomatix' <span class='dates'>LONDON</span>)",
+    "rating" : 95,
+    "hiddenSkills" : [  ],    
+  }); 
+  
+  miniJobs.push( {
+    "title" : "Teen Summer Camp Animator",
+    "rating" : 95,
+    "hiddenSkills" : [  ],    
+  }); 
+  
+  miniJobs.push( {
+    "title" : "Teaching (Maths, Prog)",
+    "rating" : 95,
+    "hiddenSkills" : [  ],    
+  });  
+
+  miniJobs.push( {
+    "title" : "Computer Install/Repair",
+    "rating" : 90,
+    "hiddenSkills" : [  ],    
+  }); 
+
+  miniJobs.push( {
+    "title" : "Event Organization (Waiter, Stage Setup...)",
+    "rating" : 80,
+    "hiddenSkills" : [  ],    
+  }); 
+
+  miniJobs.push( {
+    "title" : "Elder/Dependent People Helper",
+    "rating" : 80,
+    "hiddenSkills" : [  ],    
+  }); 
+
+  miniJobs.push( {
+    "title" : "Translator (ENG/FR)",
+    "rating" : 70,
+    "hiddenSkills" : [  ],    
+  }); 
+  
+  return miniJobs;
+  
+}
+
+
+function myTechSkills()
+{
+	var techSkills = [];
+	var n = -1;
+	var rating = 95;
+
+	n++;
+	techSkills.push(
+	   {
+		"title" : "Game Dev / Design",
+		"rating" : rating,
+		"hiddenSkills" : [
+		  {
+			"title" : "Game Dev A",
+			"rating" : rating,
+		  },
+		  {
+			"title" : "Game Dev B",
+			"rating" : rating,
+		  },
+		],    
+	  });
+	techSkills["GAMEDEV"] = techSkills[n];  
+	
+	n++;
+	techSkills.push(
+	   {
+		"title" : "Gamification",
+		"rating" : rating,
+		"hiddenSkills" : [
+		  {
+			"title" : "SubDev A",
+			"rating" : rating,
+		  },
+		  {
+			"title" : "SubDev B",
+			"rating" : rating,
+		  },
+		],    
+	  });
+	techSkills["GAMIF"] = techSkills[n]; 
+	
+	n++;
+	techSkills.push(
+	   {
+		"title" : "AI <i><small>(Game, Robot, Machine Learning...)</small></i>",
+		"rating" : rating,
+		"hiddenSkills" : [
+		  {
+			"title" : "SubDev A",
+			"rating" : rating,
+		  },
+		  {
+			"title" : "SubDev B",
+			"rating" : rating,
+		  },
+		],    
+	  });
+	techSkills["AI"] = techSkills[n]; 
+	
+	n++;
+	techSkills.push(
+	   {
+		"title" : "3D Dev <i><small>()</small></i>",
+		"rating" : rating,
+		"hiddenSkills" : [
+		  {
+			"title" : "SubDev A",
+			"rating" : rating,
+		  },
+		  {
+			"title" : "SubDev B",
+			"rating" : rating,
+		  },
+		],    
+	  });
+	techSkills["3D"] = techSkills[n]; 
+	
+	n++;
+	techSkills.push(
+	   {
+		"title" : "GPU-Accelerated Dev <i><small>()</small></i>",
+		"rating" : rating,
+		"hiddenSkills" : [
+		  {
+			"title" : "SubDev A",
+			"rating" : rating,
+		  },
+		  {
+			"title" : "SubDev B",
+			"rating" : rating,
+		  },
+		],    
+	  });
+	techSkills["GPU"] = techSkills[n]; 
+	
+	n++;	
+	techSkills.push(
+	   {
+		"title" : "MW Dev <i><small>(Drivers & WebApps)</small></i>",
+		"rating" : rating,
+		"hiddenSkills" : [
+		  {
+			"title" : "SubDev A",
+			"rating" : rating,
+		  },
+		  {
+			"title" : "SubDev B",
+			"rating" : rating,
+		  },
+		],    
+	  });
+	techSkills["MW"] = techSkills[n];  
+	
+	n++;	
+	techSkills.push(
+	   {
+		"title" : "WebApps Dev <i><small>(Embedded & Std)</small></i>",
+		"rating" : rating,
+		"hiddenSkills" : [
+		  {
+			"title" : "SubDev A",
+			"rating" : rating,
+		  },
+		  {
+			"title" : "SubDev B",
+			"rating" : rating,
+		  },
+		],    
+	  });
+	techSkills["APP"] = techSkills[n]; 
+	
+	n++;	
+	rating = 70;
+	techSkills.push(
+	   {
+		"title" : "Embedded Dev",
+		"rating" : rating,
+		"hiddenSkills" : [
+		  {
+			"title" : "SubDev A",
+			"rating" : rating,
+		  },
+		  {
+			"title" : "SubDev B",
+			"rating" : rating,
+		  },
+		],    
+	  });
+	techSkills["EMBED"] = techSkills[n]; 
+	
+	n++;	
+	rating = 50;
+	techSkills.push(
+	   {
+		"title" : "Lo-Lvl Dev <i><small>(Network, Elec, Encryption, .Net)</small></i>",
+		"rating" : rating,
+		"hiddenSkills" : [
+		  {
+			"title" : "SubDev A",
+			"rating" : rating,
+		  },
+		  {
+			"title" : "SubDev B",
+			"rating" : rating,
+		  },
+		],    
+	  });
+	techSkills["MISC"] = techSkills[n]; 
+  
+	return techSkills;
+}
+
+
+function myMgtSkills()
+{
+	var mgtSkills = [];
+	
+	mgtSkills.push(
+	   {
+		"title" : "Auto-Mgt",
+		// "style" : { "opacity" : "0.5", },
+		"bMgt" : true,
+		"rating" : 95,
+		"hiddenSkills" : [
+		  {
+			"title" : "Important-Urgent Tasks Quantization",
+			"rating" : 95,
+		  },
+		  {
+			"title" : "Modular Programming & Code/Lib Sharing",
+			"rating" : 95,
+		  },
+
+		  {
+			"title" : "Productivity-Driven Dev Scheduling",
+			"rating" : 90,
+		  },
+		],    
+	  });
+  mgtSkills["Auto"] = mgtSkills[0];
+  
+  mgtSkills.push(
+  {
+    "title" : "Agile Multi-Proj (SCRUM, X-Prog)",
+	"bMgt" : true,
+    "rating" : 95,
+    "hiddenSkills" : [
+      {
+        "title" : "Inter-Proj & Inter-Team Sync",
+        "rating" : 90,
+      },
+      {
+        "title" : "Sprint Analysis & Schedule/Priority Optim",
+        "rating" : 85,
+      },
+
+      {
+        "title" : "Test-Driven Dev / Unit Testing",
+        "rating" : 85,
+      },
+
+
+    ],    
+  });
+  mgtSkills["Agile"] = mgtSkills[1];
+  
+  mgtSkills.push(
+  {
+    "title" : "Code Quality/Perf",
+	"bMgt" : true,
+    "rating" : 90,
+    "hiddenSkills" : [
+      {
+        "title" : "Code Review & Pair Prog (Commits)",
+        "rating" : 95,
+      },
+      {
+        "title" : "API Documenting / Harmonization / Demo",
+        "rating" : 90,
+      },  
+      {
+        "title" : "Inter-Modules Refactoring",
+        "rating" : 90,
+      },
+
+    ],    
+  });
+  mgtSkills["Code"] = mgtSkills[2];
+  
+  mgtSkills.push(
+  {
+    "title" : "Productivity Enhancement",
+	"bMgt" : true,
+    "rating" : 80,
+    "hiddenSkills" : [
+      {
+        "title" : "Perf/Warning Monitoring Libs Creation",
+        "rating" : 90,
+      },
+      /*
+      {
+        "title" : "Dedicated Solo/Coop Schedule (Async Team Msg)",
+        "rating" : 80,
+      },
+      */
+      {
+        "title" : "Auto-Release & Regression Analytics",
+        "rating" : 80,
+      },
+
+    ],    
+  });
+  mgtSkills["Prod"] = mgtSkills[3];
+  
+  return mgtSkills;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function mySubJobs()
+{
+	var subJobs = [];
+	
+  subJobs.push( {"title" : "Tech Expert / Team Lead"} );
+  subJobs.push( {"title" : "Junior Teacher (Prog, Maths)"} );
+  
+  return subJobs;
+}
+
+var myPersData = {
+  name: "MY_NAME",
+  id: "FR",
+  dates: {
+    graduation: 1999,
+    age: Math.floor( getAge(2000 + 289/365) ),
+    xp:  Math.floor( getAge(2000 + 364/365) ),
+  },  
+  mail: "my.email@fai.com",
+  tel: "0123456789",
+  website: "my.website.com <i>(Web-CV, Tech Demos & Co)</i>",
+  
+  regions: 
+  {
+	  current: "XXX",
+	  fav: "YYY",
+	  other: "ZZZ",
+  },
+  
+  jobTitle: "Senior Versatile Programmer",
+};
+var myRegions = {
+	current: ["CAEN", "LAVAL", "LE MANS", "RENNES"],
+	fav: ["LYON", "NANTES", "BORDEAUX", "LILLE",  "▢",  "LONDON"],
+	other: ["EUROPE",  "▢",  "WORLD"],  //"NA", "SEA"],
+}
+
+myPersData.regions.current = initRegions(myRegions.current);
+myPersData.regions.fav = initRegions(myRegions.fav);
+myPersData.regions.other = initRegions(myRegions.other);
+function initRegions(regionList)
+{
+	var regionHtml = "";
+	for (i = 0; i < regionList.length; i++) {
+		regionHtml +=  "<span class='dates'>"+regionList[i]+"</span> "
+	}	
+	return regionHtml;	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function myTilesLeft(){
+	
+	var myTilesLeft = [
+	  {
+		"title": myPersData.name,
+		"style": {
+		  // "background-color" : "#"+config.skillBackColor.toString(16),
+		  // "color" : "rgba(100,100,100,0.9)",
+		  // "opacity" : "0.5",
+		},
+		"subDivs": [
+		  {
+			"title": "",
+			"subDivs": [
+			  {
+				"subSkills": [
+				  {
+					"title":"<i class='fa fa-address-card fa-fw'></i> About Me ► "+
+					  myPersData.id + separator+"<small>Age:</small><big>"+
+					  myPersData.dates.age+"</big>"+separator+"<small>XP:</small><big>"+
+					  myPersData.dates.xp+"</big>",
+					"hiddenSkills" : [
+						  {
+							"title" : "Entrepreneur <small>(Commitment, Challenge/Opportunities Seeker)</small>",  //Responsibility  //Opportunities
+						  },   					  
+						  {
+							"title" : "Perceiving Introvert <small>(Self-Critical, Curious & Passionate)</small>",
+						  },
+							{
+							"title" : "Hi-Focus/Workload Capacity <small>(Lo-Prio Messaging & Co)</small>",
+						  },  				  
+						
+						  /*
+						  {
+							"title" : "Challenge-Driven <small>(HQ Scope, Hi-Workload, Innovation)</small>",
+						  },
+						  {
+							"title" : "Agile-Driven <small>(Agility/Optim, Learning/Mentoring)</small>",
+						  },
+						  
+						  {
+							"title" : "Challenge"+greaterThan+"Mentorship"+greaterThan+"Commitment",  // /Responsibility   //+greaterThan+"<small><i> Salary </i></small>",
+						  },
+						  {
+							"title" : "Max Focus/WorkLoad ► 6h <small>(Uninterrupted)</small> / 70h <small>(All Included)</small>",
+						  },
+						  */
+						  // <i>(1-11pm)</i>
+										  
+						  /*
+						  {
+							"title" : "Motivation ► 'Team Empowerment & Challenge' Driven",
+						  },   
+						  {
+							"title" : "AAA <i>(BBB)</i>",
+						  },
+						  */
+					  
+					],   
+				  },
+				  
+				  {
+					"title":"<i class='fa fa-graduation-cap fa-fw'></i> "+myPersData.dates.graduation+" ► Final Degree (BAC+5: IT Engineer...)",  //Final Degree
+					"hiddenSkills" : [					
+						{
+							"title" : "BAC+5 ► ESIEA Engineer  <span class='dates'>LAVAL</span>",
+							"hiddenSkills" : studies,
+						},
+						{
+							"title" : "BAC+2 ► Maths Sup / Spé  <span class='dates'>CAEN</span>",
+							//"hiddenSkills" : studies,
+						},
+						{
+							"title": "Other Degrees",
+							"hiddenSkills" : otherDegrees,    
+						}, 
+					],
+				   },
+
+				  {
+					"title":" <i class='fa fa-internet-explorer fa-fw'></i>"+mailChar+" "+myPersData.website,
+					"hiddenSkills" : [ 
+						{
+							"title" : ""+mailChar + telChar+" Contacts ► "+myPersData.mail,
+							"hiddenSkills" : [ 
+								{
+								"title" : ""+telChar + myPersData.tel,
+								},
+							], 
+						},
+					],   
+				  },
+
+				],
+			  },
+			  
+			  
+			],
+		  },
+		  {
+			"title": "Availability",
+			"subDivs": [
+			  {
+				"subSkills": [
+				  {
+					"title":"<i class='fa fa-globe fa-fw'></i> Mobility ► Global <i>(Hi-Tech Cities)</i>",
+					"hiddenSkills" : [
+					  {
+						"title" : "Region 1XL ► "+myPersData.regions.current,
+						//"rating" : 95,
+					  },
+					  {
+						"title" : "Region 2XL ► "+
+						  myPersData.regions.fav,
+						//"rating" : 80,
+					  },
+					  {
+						"title" : "Region 3XL ► "+
+						  myPersData.regions.other,  //+" "+greaterThan,
+						//"rating" : 80,
+					  },
+					 
+					],   
+				  },
+				  
+				  {
+					"title":"<i class='fa fa-file-text fa-fw'></i> Contracts ► All Agile Contracts",
+					"checked" : true,
+					"expandMe": true,
+					"hiddenSkills" : [
+
+						{
+							"title" : "3+ Months Scope <small>(150% Load Capacity)</small>",  //(13w * 60h / Dev)   //Fulltime
+						},
+						
+						{
+							"title" : "Telework / FlexTime (50%)",  //Core Hours
+						},
+						{
+							"title" : "CoWorking In-Days/Offices (Proactive Team-Building, Pair Prog)",
+						},
+						{
+							"title" : "Lo-Interrupt <small>(Low Meetings, Breaks & Holidays Impact)</small>",  //No Forced Midday Breaks  //Stress Period (May, Summer, Christmas)  => Holiday Schedule
+						}, 
+						
+						{
+							"title" : "Agile/Startup Team <small>(Self-Mgt, Trust, 2W-Sprint Optim, Mentoring, Initiative)</small>",
+						},				  
+					  
+					  
+					  /*
+					  {
+						"title" : "Challenge / Competitivity / Innovation",
+					  },
+					  {
+						"title" : "Mentorship / Team Empowerment / Flat Mgt",
+					  },
+					  {
+						"title" : "Feedback Methods/Tools <i>(End-User & Team)</i>",
+					  },
+					  */                 
+
+					  /*
+					  {
+						"title" : "Autonomy <i>(Continuous Team Empowerment & Feedback)</i>",
+					  },
+					  {
+						"title" : "Specifics <i>(Competitive/Innovative Methods/Environment)</i>",
+					  },
+					  {
+						"title" : "Success Metrics <i>(User/Team Quality Feedback, Risk Mgt)</i>",
+					  },
+					   {
+						"title" : "Success Metrics <i>(Result/Method Quality, Risk Mgt)</i>",
+					  },
+					  */
+									   
+					],   
+				  },
+				  
+				  {
+					"title":"<i class='fa fa-file-text fa-fw'></i> Proj  ► Hi-Tech (Innov. & Added-Value)",  //
+					"checked" : true,
+					"expandMe": true,
+					"hiddenSkills" : [				
+						{
+							"title" : "Relevant Techs",
+						}, 
+						{
+							"title" : "Trending/Challenging Core Tasks",
+						}, 				
+						{
+							"title" : "Optional Tasks Creation <small>(Tech Experts)</small>",
+						},					
+						
+					]
+				  },
+				  
+				  {
+					"title":"<i class='fa fa-file-text fa-fw'></i> Prod ► HQ Schedule & Productivity",
+					"checked" : true,
+					"expandMe": true,
+					"hiddenSkills" : [				
+						{
+							"title" : "Public LT Schedule",
+						},	
+						{
+							"title" : "Productivity Monitoring",
+						},						
+						{
+							"title" : "HQ Change Orders <small>(Limit Sprint Scope Change, Direct Client Feedback)</small>",
+						},	
+					]
+				  },
+				  
+						   
+
+				  /*
+					   {
+						"title" : "Risk Limit <i>(Min Quality, Min Team WorkLoad & Stress Limit)</i>", 
+					  },  
+								   {
+						"title" : "Core/Extended Objectives & Macro-Schedule",
+					  },
+							 {
+						"title" : "Opportunities <i>(New Tech)</i>", 
+					  },
+
+					  */
+
+				  /** AUTONOMY/COOP,  AMBITION/PRODUCTIVITY,  EXPERTS/FEEDBACK **/
+
+				  /** 
+					  PROMOTE Team DEDICATION & ACCOUNTABILITY
+					  Continuous AMBITION/METHODS Optim/Adapt
+					  TEAM of Continuous Learning/Teaching Experts   
+
+					  BONUS : Tech Innovation (AI, Energy, Teaching/Learning, Global Brain), Ecology, Social...
+					  **/
+
+				  /** Personnality :
+					  Perceiving Introvert
+					  Type (Myers-Briggs)  =  I N/s T/f P/j (Introvert, INtuitive/sensing, Thinking/feeling, Perceiving/judging)
+					  Passionate Dreamer,  Continuous Self-Improvement (Self-Criticism,  Adventurous)
+
+					  Worker Type = Entrepreneur (High Sense of Commitment, Responsibility & Mentorship)
+					  ==> Innovator-Specialist
+
+					  Challenge-Driven Motivation (& Team Responsibility Strengthening)
+					  '6-day Week' Max WorkLoad  (Including Transports, Meal Breaks & Extra-Work Activities) = 70h
+					  Max Uninterrupted Task Focus Capability = 6h (afternoon, evening, night)
+					  **/
+
+
+				  /** OTHER Keywords: 
+					  Cohesion, Brainstorming, Paradigm shift, Anti-Obsolescence, Risk Absorption, Gamification 
+					  Core Objectives & Talent Emulation
+					  **/
+					  
+					{
+						"title":"<i class='fa fa-cogs fa-fw'></i> Other",  
+						"hiddenSkills" : [
+							{
+							"title" : "ROI",
+							"hiddenSkills" : [
+								{
+									"title" : "Mgt Cost",
+								},
+								{
+									"title" : "Team Struct",
+								},
+								{
+									"title" : "Release Time",
+								},							 
+							]
+							},
+							
+							{
+							"title" : "Risks",
+							"hiddenSkills" : [
+								{
+									"title" : "Regressions",
+								},
+								{
+									"title" : "Cost/Scope Creep",
+								},
+								{
+									"title" : "Schedule Delay",
+								},
+								{
+									"title" : "Quality Risks",
+								},
+								
+								{
+									"title" : "Ethics, Strat/Tech, Process, Market/Hazards",
+								},
+								 
+							]
+							},
+							
+							{
+							"title" : "Success Params",
+							"hiddenSkills" : [
+								{
+									"title" : "Productivity Optim",
+								},
+								{
+									"title" : "Satisfaction (Client & Dev Team)",
+								},
+								{
+									"title" : "ISO Work Env (ISO-2020)",
+								},
+								{
+									"title" : "Advanced Objectives (Social, Ecology, Energy...)",
+								},    
+							]
+							},
+							
+							{
+							"title" : "Multilateral Feedback",
+							"hiddenSkills" : [
+								{
+									"title" : "Client Feedback",
+								},
+								{
+									"title" : "End-User Feedback",
+								},
+								{
+									"title" : "Schedule Feedback",
+								}, 
+								{
+									"title" : "Team Feedback",
+								}, 							
+							]
+							},	
+							
+							{
+							"title" : "Code Guidelines / Libs Wiki / Task Automation",
+							"hiddenSkills" : []
+							},	
+
+
+	/*
+					  {
+						"title" : "Autonomous Structure <small>(HQ Env & Team, Flat Mgt)</small>",
+						"hiddenSkills" : [
+						  {
+							"title" : "Telework & ISO-Ready Coworking Offices",
+						  },
+						  {
+							"title" : "Quality & Productivity-Driven <i>(Flexi/Over-Time)</i>",
+						  },
+						  {
+							"title" : "Team Structure Relevance <i>(Current Techs/Experts & Evolution)</i>",   //Relevant Team Size/Mgt & Tech
+						  }, 
+						],
+					  },  
+					  */
+
+					  /*
+					  {
+						"title" : "Success Metrics <small>(HQ Feedback, Short & Long-Term)</small>",
+						"hiddenSkills" : [
+						  {
+							"title" : "Continuous Goals Broadcast <i>(Global Schedule & Core Scope)</i>",
+						  },
+
+						  {
+							"title" : "End-User Satisfaction <i>(Refine Change Orders & Quality Feedback)</i>",
+						  },
+
+						  {
+							"title" : "Team Satisfaction <i>(HQ Objectives/Tech/Commitment & Change Orders)</i>",
+						  },             
+						  
+						],
+					  },  
+					  */
+					  
+						   /*
+					  {
+						"title" : "Quality of Work (HQ Objectives/Tech, Limit Change Orders)",
+					  },
+					  {
+						"title" : "Team Satisfaction (Meaningful Tasks & Expected Commitment)",
+					  },
+
+					  {
+						"title" : "Budget/ROI",
+					  },
+					  */   
+					  
+						   /*
+						  {
+							"title" : "Limit Scope Change (Validate Priority w/ Mgt & Tech)",
+						  },
+						  {
+							"title" : "Limit Team Member Reassessment (Limit Time/Budget Cost)",
+						  },
+						 
+
+						  {
+							"title" : "Reactive Team Feedback <i>(Scope Assign/Alleviate, Work Rating)</i>",
+						  },
+						 
+						  {
+							"title" : "Daily Task Tracking (Pb Solving Reactivity)",
+						  },
+						  {
+							"title" : "Setting Team Member Responsibility",
+						  },
+						  */
+				 
+					  /*
+					  {
+						"title" : "Risk/ROI Optim",
+						"hiddenSkills" : [
+						  {
+							"title" : "Realistic Deadlines (Core & Fix/Quality Tasks)",
+						  },
+
+						  {
+							"title" : "Limit Scope & Assignment Changes <i>(Avoid Low Tech/Mgt ROI)</i>",
+						  },     
+					 
+
+						]
+					  }
+					  */						
+						]
+					},
+								  
+				   
+				],
+			  },
+			],
+		  },
+		  
+		  
+		],
+	  },
+
+	  {
+		"title": "Live Projects/Research",
+		// "modal": true,
+		"subDivs": [
+		  {
+			"title": "",
+			//"catId": 0,
+			"subDivs": [
+			  {
+				// "corps": getCorpsByCategory(0),
+				// "roles": [],
+				"subSkills": projs,
+			  },
+			],
+		  },
+
+		],
+	  },
+	  
+	  {
+		"title": "Past Experiences",
+		"modal": true,
+		"subDivs": defaultCategories,
+	  },
+	  
+	];
+
+	return myTilesLeft;
+};
