@@ -121,68 +121,50 @@ var customCorps = [
 var customRoles = [];
 customRoles["Mgr"] = "Proj Mgr";
 customRoles["Tech"] = "Tech Expert";
+customRoles["Lead"] = "Team Lead";
+customRoles["Scrum"] = "SCRUM Master";
 
 function customCategories(){
 	var category = defaultCategories[0];
 	category["title"] = "WebApps Dev";
-	resetCatRoles(category);
-	addCatRole(category, customRoles["Tech"]);
-	addCatRole(category, customRoles["Mgr"]);
-	resetCatSkill(category);
-	addCatSkill(category, mgtSkills["Auto"]);
-	addCatSkill(category, techSkills["APP"]);
-	addCatSkill(category, techSkills["GAMIF"]);
-	addCatSkill(category, techSkills["AI"]);
-	addCatSkill(category, techSkills["3D"]);
-	addCatSkill(category, techSkills["GPU"]);
+	setCatProperty(category, "roles", [ customRoles["Mgr"], customRoles["Tech"], ]);
+	setCatProperty(category, "mgtSkills", [ mgtSkills["SELF"] ]);
+	setCatProperty(category, "subSkills", [ techSkills["APP"], techSkills["GAMIF"], techSkills["AI"], techSkills["3D"], techSkills["GPU"] ]);
   
 	category = defaultCategories[1];
-	category["title"] = "Game Dev";
-	addCatRole(category, customRoles["Mgr"]);
-	resetCatSkill(category);
-	addCatSkill(category, mgtSkills["Auto"]);
-	addCatSkill(category, mgtSkills["Agile"]);
-	addCatSkill(category, techSkills["GAMEDEV"]);
-	addCatSkill(category, techSkills["AI"]);
-	addCatSkill(category, techSkills["3D"]);
-	addCatSkill(category, techSkills["MW"]);
+	category["title"] = "Game Dev";	
+	setCatProperty(category, "roles", [  customRoles["Mgr"], customRoles["Lead"], customRoles["Tech"], customRoles["Scrum"], ]);
+	setCatProperty(category, "mgtSkills", [ mgtSkills["SELF"],  mgtSkills["Agile"] ]);
+	setCatProperty(category, "subSkills", [ techSkills["GAMEDEV"], techSkills["AI"], techSkills["3D"], techSkills["MW"] ]);
 	
 	category = defaultCategories[2];
-	category["title"] = "STB Dev (TV Box)";
-	resetCatSkill(category);
-	addCatSkill(category, mgtSkills["Auto"]);
-	addCatSkill(category, mgtSkills["Agile"]);
-	addCatSkill(category, mgtSkills["Code"]);
-	addCatSkill(category, mgtSkills["Prod"]);
-	addCatSkill(category, techSkills["MW"]);
+	category["title"] = "STB Dev (TV Box)";	
+	setCatProperty(category, "roles", [ customRoles["Lead"], customRoles["Tech"], customRoles["Scrum"], ]);
+	setCatProperty(category, "mgtSkills", [ mgtSkills["SELF"],  mgtSkills["Agile"], mgtSkills["Code"] ]);
+	setCatProperty(category, "subSkills", [ techSkills["MW"] ]);
 	
 	category = defaultCategories[3];
-	category["title"] = "Embedded Dev";
-	resetCatRoles(category);
-	resetCatSkill(category);
-	addCatSkill(category, mgtSkills["Code"]);
-	addCatSkill(category, mgtSkills["Prod"]);
-	addCatSkill(category, techSkills["EMBED"]);
+	category["title"] = "Embedded Dev";	
+	setCatProperty(category, "roles", [ ]);
+	setCatProperty(category, "mgtSkills", [ mgtSkills["AutoCode"], ]);
+	setCatProperty(category, "subSkills", [ techSkills["EMBED"] ]);
 	
 	category = defaultCategories[4];
-	category["title"] = "Other";
-	resetCatRoles(category);
-	resetCatSkill(category);
-	addCatSkill(category, techSkills["MISC"]);
+	category["title"] = "Other";	
+	setCatProperty(category, "roles", [ ]);
+	setCatProperty(category, "mgtSkills", [ ]);
+	setCatProperty(category, "subSkills", [ techSkills["MISC"] ]);
 }
 
-function resetCatRoles(cat){
-	cat["subDivs"][0]["roles"] = [];
+function resetCatProperty(cat, key){
+	cat["subDivs"][0][key] = [];
 }
-function addCatRole(cat, role){
-	cat["subDivs"][0]["roles"].push( role );
+function addCatProperty(cat, key, value){
+	cat["subDivs"][0][key].push( value );
 }
-
-function resetCatSkill(cat){
-	cat["subDivs"][0]["subSkills"] = [];
-}
-function addCatSkill(cat, skill){
-	cat["subDivs"][0]["subSkills"].push( skill );
+function setCatProperty(cat, key, values){
+	cat["subDivs"][0][key] = [];
+	cat["subDivs"][0][key] = values;
 }
 
 
@@ -477,7 +459,87 @@ function myMiniJobs()
   
 }
 
+function myTechs()
+{
+	var techs = [];
+	var n = -1;
+	var rating = 95;
 
+	n++;
+	techs.push(
+	   {
+		"title" : "Prog Languages",
+		"rating" : rating,
+		"hiddenSkills" : [
+		  {
+			"title" : "JS",
+			"rating" : rating,
+			"hiddenSkills" : [
+			  {
+				"title" : "Three, Angular",
+				"rating" : rating,
+			  },
+			  {
+				"title" : "React, Node...",
+				"rating" : 60,
+			  },
+			],
+		  },
+		  {
+			"title" : "C, C++, C#",
+			"rating" : rating,
+			"hiddenSkills" : [
+			  {
+				"title" : "Qt",
+				"rating" : 75,
+			  },
+			],
+		  },
+		  {
+			"title" : "GLSL, WebGL, OpenGL, DX...",
+			"rating" : rating,
+		  },
+		  {
+			"title" : "Lua",
+			"rating" : 75,
+		  },
+		  {
+			"title" : "Python",
+			"rating" : 60,
+		  },
+		  
+		  {
+			"title" : "Java, SQL, PHP",
+			"rating" : 50,
+		  },
+		  		  
+		],    
+	  });
+	techs["PROG"] = techs[n];
+
+	n++;
+	techs.push(
+	   {
+		"title" : "Tools",
+		"rating" : rating,
+		"hiddenSkills" : [
+		  {
+			"title" : "A",
+			"rating" : rating,
+			"hiddenSkills" : [ ],
+		  },
+		  {
+			"title" : "B",
+			"rating" : rating,
+			"hiddenSkills" : [ ],
+		  },
+		  		  
+		],    
+	  });
+	techs["TOOLS"] = techs[n];  	
+	
+	return techs;
+}
 function myTechSkills()
 {
 	var techSkills = [];
@@ -577,7 +639,7 @@ function myTechSkills()
 	n++;	
 	techSkills.push(
 	   {
-		"title" : "MW Dev <i><small>(Drivers & WebApps)</small></i>",
+		"title" : "MW Dev <i><small>(Drivers, Libs & Embedded WebApps)</small></i>",
 		"rating" : rating,
 		"hiddenSkills" : [
 		  {
@@ -595,7 +657,7 @@ function myTechSkills()
 	n++;	
 	techSkills.push(
 	   {
-		"title" : "WebApps Dev <i><small>(Embedded & Std)</small></i>",
+		"title" : "WebApps Dev <i><small>()</small></i>",
 		"rating" : rating,
 		"hiddenSkills" : [
 		  {
@@ -609,7 +671,7 @@ function myTechSkills()
 		],    
 	  });
 	techSkills["APP"] = techSkills[n]; 
-	
+		
 	n++;	
 	rating = 70;
 	techSkills.push(
@@ -618,11 +680,11 @@ function myTechSkills()
 		"rating" : rating,
 		"hiddenSkills" : [
 		  {
-			"title" : "SubDev A",
+			"title" : "Custom Text UI",
 			"rating" : rating,
 		  },
 		  {
-			"title" : "SubDev B",
+			"title" : "Resource Mgt / Input Data Validation",
 			"rating" : rating,
 		  },
 		],    
@@ -633,7 +695,7 @@ function myTechSkills()
 	rating = 50;
 	techSkills.push(
 	   {
-		"title" : "Lo-Lvl Dev <i><small>(Network, Elec, Encryption, .Net)</small></i>",
+		"title" : "Misc Dev <i><small>(Network, Elec, Encryption, .Net)</small></i>",
 		"rating" : rating,
 		"hiddenSkills" : [
 		  {
@@ -655,103 +717,133 @@ function myTechSkills()
 function myMgtSkills()
 {
 	var mgtSkills = [];
+	var n = -1;
+	rating = 95;
 	
+	n++;
 	mgtSkills.push(
 	   {
-		"title" : "Auto-Mgt",
+		"title" : "Self-Mgt",
 		// "style" : { "opacity" : "0.5", },
 		"bMgt" : true,
-		"rating" : 95,
+		"rating" : rating,
 		"hiddenSkills" : [
 		  {
 			"title" : "Important-Urgent Tasks Quantization",
-			"rating" : 95,
+			"rating" : rating,
 		  },
 		  {
 			"title" : "Modular Programming & Code/Lib Sharing",
-			"rating" : 95,
+			"rating" : rating,
 		  },
 
 		  {
 			"title" : "Productivity-Driven Dev Scheduling",
-			"rating" : 90,
+			"rating" : rating,
 		  },
 		],    
 	  });
-  mgtSkills["Auto"] = mgtSkills[0];
+  mgtSkills["SELF"] = mgtSkills[n];
   
+  n++;
   mgtSkills.push(
   {
-    "title" : "Agile Multi-Proj (SCRUM, X-Prog)",
+    "title" : "AGILE",
 	"bMgt" : true,
-    "rating" : 95,
+    "rating" : rating,
     "hiddenSkills" : [
+	  {
+        "title" : "SCRUM, X-Prog",
+        "rating" : rating,
+      },
       {
         "title" : "Inter-Proj & Inter-Team Sync",
-        "rating" : 90,
+        "rating" : rating,
       },
       {
         "title" : "Sprint Analysis & Schedule/Priority Optim",
-        "rating" : 85,
+        "rating" : rating,
       },
 
       {
         "title" : "Test-Driven Dev / Unit Testing",
-        "rating" : 85,
+        "rating" : rating,
       },
 
 
     ],    
   });
-  mgtSkills["Agile"] = mgtSkills[1];
+  mgtSkills["Agile"] = mgtSkills[n];
   
+  n++;
   mgtSkills.push(
   {
-    "title" : "Code Quality/Perf",
+    "title" : "HQ-Code",
 	"bMgt" : true,
-    "rating" : 90,
+    "rating" : rating,
     "hiddenSkills" : [
       {
         "title" : "Code Review & Pair Prog (Commits)",
-        "rating" : 95,
+        "rating" : rating,
       },
       {
         "title" : "API Documenting / Harmonization / Demo",
-        "rating" : 90,
+        "rating" : rating,
       },  
       {
         "title" : "Inter-Modules Refactoring",
-        "rating" : 90,
+        "rating" : rating,
+      },
+	  
+	  {
+        "title" : "Perf/Warning Monitoring Libs Creation",
+        "rating" : rating,
+      },
+      {
+        "title" : "Quality/Regression Analytics",
+        "rating" : rating,
       },
 
     ],    
   });
-  mgtSkills["Code"] = mgtSkills[2];
+  mgtSkills["Code"] = mgtSkills[n];
   
+  // n++;
+  // rating = 80;
+  // mgtSkills.push(
+  // {
+    // "title" : "Productivity Enhancement",
+	// "bMgt" : true,
+    // "rating" : rating,
+    // "hiddenSkills" : [     
+    // ],    
+  // });
+  // mgtSkills["Prod"] = mgtSkills[n];
+  
+  n++;
+  rating = 75;
   mgtSkills.push(
   {
-    "title" : "Productivity Enhancement",
+    "title" : "Code Auto-Analysis",
 	"bMgt" : true,
-    "rating" : 80,
+    "rating" : rating,
     "hiddenSkills" : [
       {
-        "title" : "Perf/Warning Monitoring Libs Creation",
-        "rating" : 90,
+        "title" : "Code Quality Analysis",
+        "rating" : rating,
       },
-      /*
-      {
-        "title" : "Dedicated Solo/Coop Schedule (Async Team Msg)",
-        "rating" : 80,
+	  {
+        "title" : "Unit Testing (Main Modules)",
+        "rating" : rating,
       },
-      */
       {
-        "title" : "Auto-Release & Regression Analytics",
-        "rating" : 80,
+        "title" : "Auto-Release & Regression Alert (Commit Blame)",
+        "rating" : rating,
       },
 
     ],    
   });
-  mgtSkills["Prod"] = mgtSkills[3];
+  mgtSkills["AutoCode"] = mgtSkills[n];
   
   return mgtSkills;
 }

@@ -22,20 +22,21 @@
 
 
 
-
 <!-- HTML BODY: -->
 <div ng-app="myApp">
   <div ng-controller="mainCtrl" >
     
-    
-    
-    
-    
-    
+	<!-- <template #myTemplate>  -->
+		<!-- <span>TEMPLATE</span> <span>TEMPLATE2</span>  -->
+	<!-- </template> -->
+
+
+
+	
     
     <div ng-repeat="column in columns" class="testBorder colDiv" ng-style="column.style">
       
-<!--       
+	<!--       
       <button style="cursor:pointer;" ng-click="showHidden()"> 
         <b>+</b> 
       </button> -->
@@ -57,49 +58,45 @@
                 {{corp.dates.start.Y}}<span class="quarters">.Q{{corp.dates.start.Q}}</span>▸{{corp.dates.end.Y}}<span class="quarters">.Q{{corp.dates.end.Q}}</span></span>
               <span style="font-size: 140%; line-height: 90%;"><i>▫</i>{{corp.title}} </span>
             </div>
-            <span ng-repeat="role in ssubDiv.roles" class="dates" style="margin-right:10px; line-height: 1.8;">{{role}}</span>
             
-            <div ng-repeat="subSkill in ssubDiv.subSkills" class="">
+			<div>
+				<span ng-repeat="role in ssubDiv.roles" class="dates" 
+					style="margin-right:25px; line-height: 1.8;">{{role}}</span>			
+			</div>
+			<div>
+				<span ng-repeat="mgtSkill in ssubDiv.mgtSkills" class="" 
+					style="margin-right:25px; background-color: rgba(255,255,255,0.5);">{{mgtSkill.title}}</span>
+			</div>
+            
+            <div ng-repeat="subSkill in ssubDiv.subSkills" 
+				ng-init="ratingVal=subSkill.rating; ratingH=12; ratingStyle='background-color: rgba(255,0,0,0.99);' ">
 <!--               <span style="font-size: 100%;"> {{subSkill.title}} </span> -->
 			  
-			  <span ng-if="subSkill.bMgt && !ssubDiv.bSkillRating" style="margin-left:6px; font-size: 80%;">◇</span>
+			  <span ng-if="subSkill.bMgt && !ssubDiv.bSkillRating" 
+				style="margin-left:0px; font-size: 80%; background-color: rgba(128,128,128,0.9); color:white; font-weight: bold;">◇</span>
               <span style="font-size: 100%; font-weight: bold;" >				
 				<span ng-bind-html="subSkill.title"></span>
 			  </span>
               
-              <!-- BAR RATING -->
-              <span ng-if="ssubDiv.bSkillRating" style="float:right; display:inline;" class="tooltip" >
-                <!-- TOOLTIP -->
-                <!--            <div class="tooltiptext" style="left:100%; margin-left: -300px; bottom:100%;">    -->
-                <div class="tooltiptext" style="">   
-                  Rating:{{subSkill.rating}}%
-                </div>
-                <!-- BAR CANVAS -->
-                &nbsp
-                <canvas width="{{subSkill.rating * 2.0}}" height="10" style="background-color: #ff0000;"></canvas>
-              </span>              
+			  
+			  <!-- BAR RATING -->
+			  <span ng-if="ssubDiv.bSkillRating" ng-include="'BarRating.html'" style="float:right; display:inline;"></span>
+                         
               
               <!-- Collapse Panel -->
               <span ng-show="subSkill.hiddenSkills.length > 0" class="myCheckBox" style="">
                 <input ng-model=collapse ng-init="collapse = subSkill.checked" type=checkbox class="minCheckBox">
               </span>
               <div ng-show=collapse>
-                <div ng-repeat="hiddenSkill in subSkill.hiddenSkills" class="">
+                <div ng-repeat="hiddenSkill in subSkill.hiddenSkills" 
+					ng-init="ratingVal=hiddenSkill.rating;  ratingH=6; ratingStyle='background-color: rgba(255,80,0,0.99);' " >
                   <span style="font-size: 80%; font-weight: bold; margin-left:10px;" >
                     <small style="">◆</small> <span style="" ng-bind-html="hiddenSkill.title"> </span>
                   </span>
                   
 
                   <!-- BAR RATING -->
-                  <span ng-if="ssubDiv.bSkillRating" style="font-size: 80%; float:right; display:inline;" class="tooltip" >
-                    <!-- TOOLTIP -->
-                    <div class="tooltiptext" style="">   
-                      Rating:{{hiddenSkill.rating}}%
-                    </div>
-                    <!-- BAR CANVAS -->
-                    &nbsp
-                    <canvas width="{{hiddenSkill.rating * 2.0}}" height="4" style="background-color: #ff8800;"></canvas>
-                  </span>   
+                  <span ng-if="ssubDiv.bSkillRating" ng-include="'BarRating.html'" style="float:right; display:inline; font-size: 80%;"></span>  
                   
                   
                   <!-- Sub-Collapse Panel -->
@@ -107,10 +104,14 @@
                     <input ng-model=subCollapse ng-init="subCollapse=hiddenSkill.checked" type=checkbox class="minCheckBox">
                   </span>
                   <div ng-show=subCollapse>
-                    <div ng-repeat="hiddenSkill in hiddenSkill.hiddenSkills" class="">
+                    <div ng-repeat="hiddenSkill in hiddenSkill.hiddenSkills" 
+						ng-init="ratingVal=hiddenSkill.rating;  ratingH=3; ratingStyle='background-color: rgba(255,160,0,0.99);' " >
                       <span style="font-size: 70%; font-weight: bold; margin-left:20px;" >
                         <small style="">◇</small> <span style="" ng-bind-html="hiddenSkill.title"> </span>
                       </span>
+					  
+					    <!-- BAR RATING -->
+						<span ng-if="ssubDiv.bSkillRating" ng-include="'BarRating.html'" style="float:right; display:inline; font-size: 70%;"></span> 
                     </div>  
                   </div>  
                       

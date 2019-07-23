@@ -116,8 +116,10 @@ function initItems(nb, delta, prefix){
 	return skills;
 }
 
-var techSkills = initItems(3, 5, "T");
+var techSkills = initItems(3, 5, "TS");
 if (typeof myTechSkills !== 'undefined') techSkills = myTechSkills();
+var techs = initItems(3, 5, "T");
+if (typeof myTechs !== 'undefined') techs = myTechs();
 var mgtSkills = initItems(3, 10, "M");
 if (typeof myMgtSkills !== 'undefined') mgtSkills = myMgtSkills();
 var projs = initItems(1, 10, "P");
@@ -182,6 +184,10 @@ function initDefaultCategories(){
             "Team Lead",
             "Tech Expert",
             "SCRUM Master",
+          ],
+		  "mgtSkills": [
+            mgtSkills[0],
+			mgtSkills[1],
           ],
           "subSkills": [
             mgtSkills[0],  //mgtSkills["Auto"],
@@ -303,6 +309,23 @@ var tilesRight = [
             "titles": [ ],
             "bSkillRating": true,
             "subSkills": techSkills,
+          },
+        ],
+      },
+    ],
+  },
+  
+  {
+    "title": "Techs",
+    "subDivs": [
+      {
+        "title": "",
+        //"catId": 0,
+        "subDivs": [
+          {
+            "titles": [ ],
+            "bSkillRating": true,
+            "subSkills": techs,
           },
         ],
       },
