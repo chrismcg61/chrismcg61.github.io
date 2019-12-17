@@ -1,0 +1,95 @@
+<html>
+
+<head>
+<title>IFRAMES</title>
+</head>
+
+<body style="">
+		
+	<!-- https://blog.codepen.io/ -->
+	<!-- https://www.google.com/search?igu=1 -->
+	
+	<!-- http://www.youtube.com/embed/fTr89ENLZPc -->
+	
+	<!-- https://www.youtube.com/embed/n_Klu8YTub8 -->
+	<!-- https://www.youtube.com/embed/n_Klu8YTub8?start=120 -->
+	
+
+	<div id="iframeDiv"  >
+	  <div style="font-size:200%; border: 1px solid blue; background-color:grey;">
+		W:  
+		<input id="myRangeW" type="range" min="10" max="2000" value="1200" onchange="resizeFirstIframe()">
+		H:
+		<input id="myRangeH" type="range" min="10" max="2000" value="60" onchange="resizeFirstIframe()">
+
+		URL: <input id="myUrl" type="text" name="url" size=50 value="https://www.google.com/search?igu=1">
+		<button onclick="openFirstUrl()">GO</button>
+	  </div>
+	  <iframe id="myIframe" src="" width="800" height="400" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	</div>
+
+
+
+	<div id="cloneContainer">
+	</div>
+
+</body>
+
+
+
+<script>
+
+const iframeNb = 4;
+
+
+resizeFirstIframe();
+function resizeFirstIframe(){
+  myIframe.width = myRangeW.value;
+  myIframe.height = myRangeH.value;  
+  // myIframe2.width = myRangeW2.value;
+  // myIframe2.height = myRangeH2.value;
+}
+function resizeIframe( iframe, w, h ){
+  iframe.width = w;
+  iframe.height = h;
+}
+
+openFirstUrl();
+function openFirstUrl(){
+  myIframe.src = myUrl.value;  
+  // myIframe2.src = myUrl2.value;
+}
+function openUrlSingle(iframe, url){
+  iframe.src = url;
+}
+
+
+
+for (i = 0; i < iframeNb; i++) {
+  cloneIframe();
+}
+
+function cloneIframe(){
+
+  var cln = iframeDiv.cloneNode(true);
+  cloneContainer.appendChild(cln);
+  // cln.src =  myUrl.value;
+  var inputW = cln.getElementsByTagName("input")[0];
+  var inputH = cln.getElementsByTagName("input")[1];
+  var inputUrl = cln.getElementsByTagName("input")[2];
+  var iframe = cln.getElementsByTagName("iframe")[0];
+  var goBtn = cln.getElementsByTagName("button")[0];
+  goBtn.onclick = function() {
+    openUrlSingle(iframe, inputUrl.value);
+  };
+  inputW.onchange = function() {
+    resizeIframe( iframe, inputW.value, inputH.value );
+  };
+  inputH.onchange = inputW.onchange;
+  
+}
+  
+</script>
+
+
+</html>

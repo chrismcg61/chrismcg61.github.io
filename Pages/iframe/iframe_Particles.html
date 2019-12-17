@@ -1,0 +1,152 @@
+<html>
+
+
+<body style="color:white; background-color: rgba(0,0,0, 0.4);
+	font-family: Arial, sans-serif;">
+	
+	<canvas id="myCanvas" width="90" height="50" 
+		style="border:0px solid #ff0000;">
+	</canvas>
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+var w = window.innerWidth;
+var h = window.innerHeight;
+
+canvas.width = w;
+canvas.height = h;
+
+const fps = 15;
+const cosSpeed = 1/15;
+const partSize = 15;
+const partNb = 150;
+const moveSpeed = partSize/8;
+const bounce = 0;
+const vMove = 1;
+
+const minColor = 70;
+const colOffset = 255-minColor;
+
+//var dynPos = 0;
+//var moveDir = 1;
+var iFrame = 0;
+var particles=[];
+initParticles();
+
+
+refreshCanvas();
+function refreshCanvas(){
+  //dynPos += moveSpeed * moveDir;
+
+  //var posX = dynPos;  //(1+Math.sin(x*cosSpeed)) * (w/2)
+  //var posY = h/2-partSize/2;  
+
+  animParticles();
+  drawParticles();
+  
+  //requestAnimationFrame( refreshCanvas );
+  setTimeout(refreshCanvas , 1000/fps)
+}
+
+
+function initParticles(){
+  particles = [];
+  
+  for (i = 0; i < partNb; i++) {
+    var newParticle = 
+        {
+          x: Math.random()*(w-partSize),
+          y: Math.random()*(h-partSize),
+          dir: 1,
+          speed: (Math.random() + 0.5) * moveSpeed, 
+          color: {r:minColor+Math.random()*colOffset, g:minColor+Math.random()*colOffset, b:minColor+Math.random()*colOffset, a:0.7 },
+          alphaOffset : Math.random()*3.14,
+        };    
+    particles.push(newParticle);
+  }
+}
+
+function animParticles(){
+  iFrame++;
+  
+  for (i = 0; i < particles.length; i++) {
+    particles[i].color.a = 1 + Math.sin( particles[i].alphaOffset + iFrame*cosSpeed );
+    
+    var deltaMove = particles[i].speed * particles[i].dir;
+    if(vMove){    
+      particles[i].y += deltaMove;
+    }
+    else particles[i].x += deltaMove;
+
+    if(particles[i].x >= w  || particles[i].x < -partSize) 
+    {
+      if(bounce) particles[i].dir *= -1;
+      else particles[i].x = -partSize;
+    }
+    if(particles[i].y >= h  || particles[i].y < -partSize) 
+    {
+      if(bounce) particles[i].dir *= -1;
+      else particles[i].y = -partSize;
+    }
+  }
+  
+}
+
+function drawParticles(){
+  
+  ctx.fillStyle = "black";
+  ctx.fillRect(0,0, w,h);
+  
+  for (i = 0; i < particles.length; i++) {
+    ctx.fillStyle = "rgba(" 
+      +particles[i].color.r+"," 
+      +particles[i].color.g+"," 
+      +particles[i].color.b+","     
+      +particles[i].color.a
+      +")";      
+    ctx.fillRect( particles[i].x, particles[i].y, partSize,partSize);
+  }
+  
+}
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>	
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+</style>
+
+</html>

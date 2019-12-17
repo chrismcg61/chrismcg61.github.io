@@ -1,0 +1,278 @@
+/********************/
+/* BODY & MAIN DIVs */
+/********************/
+body{
+  font-family: "Inconsolata"; /*"Lucida Console", Monaco, monospace;*/
+  background-color: rgba(0,0,0,0.99);
+  color: black;
+  text-shadow: 
+    /*
+    1px 0px 0px grey,
+    -1px 0px 0px white,
+    0px 1px 0px grey,
+    */
+    0px -5px 10px #CCFFFF99,
+    0px 5px 10px #CCFFFF99,
+    
+    12px 0px 10px #CCFFFF99,
+    -5px 0px 10px #CCFFFF99;
+    /*     1px -1px 1px white, */
+/*     -1px 1px 0px black, */
+/*     -1px -1px 0px rgb(120,120,120); */
+  font-size:22px;
+}
+
+.borderDiv{
+  border:solid 6px;
+}
+
+.testBorder{
+  border:solid 0px;
+}
+
+.colDiv{
+  border-color:red;
+  
+  position:absolute; 
+  top: 0px;
+}
+
+
+.floatDiv{
+  border-color:green;
+  
+  float:right;
+}
+
+
+.subDivs{
+	font-size: 85%; 
+	margin-left:10px;
+}
+
+
+
+
+
+
+
+
+/*****************/
+/* DATES & ROLES */
+/*****************/
+.dates{
+  font-size: 100%; 
+  color:white; 
+  background-color:rgba(120,120,120,0.7);
+}
+.quarters{
+  font-size: 70%; 
+}
+
+
+
+
+
+
+
+
+
+
+
+/************/
+/* Checkbox */
+/************/
+.minCheckBox {
+  cursor:pointer; 
+  transform: scale(0.9);
+}
+
+.myCheckBox {
+  cursor: pointer;
+  color: white;
+  border-radius: 5px;
+  background-color: #44FFFF88;
+  /*box-shadow: 1px 1px 1px 1px #AAAAFFAA;*/  
+  /*opacity:0.5;*/
+}
+.myCheckBox:hover{
+  /*opacity:0.9;*/
+  background-color: #FF8844FF;
+}
+
+.myCheckBox2 {
+  cursor: pointer;
+  color: white;
+  border-radius: 4px;
+  
+  /*background-color: #FFAA0044;*/
+  box-shadow: 2px 2px #FF000099;
+  /*opacity:0.5;*/
+}
+.myCheckBox2:hover{
+  box-shadow: 2px 2px #00FFFF;
+}
+
+
+
+
+
+
+
+
+
+
+
+/************/
+/* TOOLTIP */
+/************/
+.tooltip {
+    position: relative;
+    display: inline-block;
+    //border-bottom: 1px dotted black;
+}
+
+.tooltip:hover{
+  cursor:pointer;  
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  /*     width: 350px; */
+  background-color: rgba(0, 0, 120, 0.7);
+  color: #fff;
+  text-align: center;
+  font-size: 90%;
+  border-radius: 6px;
+  padding: 10px 10px;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 0%;
+  left: 0%;
+  margin-left: 0px;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* The Modal (background) */
+.modal-fulldiv {
+    /*display: none;*/   /* Hidden by default */
+	visibility: hidden;
+	opacity: 0;
+	transition: opacity 1s, visibility 1s;
+	
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 0px; /*Box Location*/
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; 
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+
+
+/* Modal Content */
+.modal-fulldiv-content {
+  //padding: 20px;
+  //background-color: #fefefe;
+  //border: 1px solid #888;
+  margin: auto;
+  
+  height: 100%;  
+  width: 75%;
+}
+
+
+
+
+/*My FullDiv Btns : */
+.myFullDivBtn {
+  border: none;
+  display: inline-block;
+  float: left;
+  cursor: pointer;
+  
+  height: 100%;
+}
+
+.myFullDivBtn:hover {
+  //background-color: #3e8e41;
+  opacity : 0.7;
+}
+
+
+.myFullDivBtn_custom {
+  //background-color: rgba(0,0,99, 0.8);
+  width:33.3%;  
+  color:white;
+}
+
+
+
+
+.radialGrad {
+  background: radial-gradient(circle, 
+    red, yellow, black, black, white, black, black);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* TAB Style */
+div.tab {
+    overflow: hidden;
+    border: 1px solid #fff;
+    background-color: #ccc;
+}
+div.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.9s;
+    font-size: 17px;
+}
+div.tab button:hover {
+    background-color: #999;
+}
+div.tab button.active {
+    background-color: #888;
+}
+.tabcontent {
+    display: none;
+    padding: 12px 6px;
+/*     animation: fadeEffect 1s; */
+}

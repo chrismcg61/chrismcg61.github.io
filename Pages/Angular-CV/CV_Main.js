@@ -125,6 +125,9 @@ if (typeof myMgtSkills !== 'undefined') mgtSkills = myMgtSkills();
 var projs = initItems(1, 10, "P");
 if (typeof customProjs !== 'undefined') projs = customProjs;
 
+var jobTitle = "_Job_Title"
+if (typeof myPersData.jobTitle !== 'undefined') jobTitle = myPersData.jobTitle;
+
 var subJobs = initItems(1, 10, "J");
 if (typeof mySubJobs !== 'undefined') subJobs = mySubJobs();
 var languages = initItems(3, 10, "L");
@@ -280,7 +283,7 @@ if (typeof myTilesLeft !== 'undefined') tilesLeft = myTilesLeft();
 
 var tilesRight = [
   {
-    "title": "JOB TITLE",
+    "title": jobTitle,
     "style": {
       // "background-color" : "rgba(200,200,200,0.9)",
       // "opacity" : "0.5",
@@ -333,7 +336,7 @@ var tilesRight = [
   },
 
   {
-    "title": "Management Skills (Proj/Team)",
+    "title": "Mgt Skills (Proj/Team)",
     "subDivs": [
       {
         "title": "",

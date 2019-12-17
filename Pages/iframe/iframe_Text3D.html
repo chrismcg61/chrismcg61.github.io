@@ -1,0 +1,213 @@
+<html>
+
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/97/three.min.js"></script>
+-->
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/build/three.min.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/renderers/CanvasRenderer.js"></script>
+
+<script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
+<script src="https://threejs.org/examples/js/libs/dat.gui.min.js"></script>
+
+<script src="https://threejs.org/examples/js/renderers/Projector.js"></script>
+
+
+<!-- My Lib -->
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/0.9g/MyLibs/Three/MyThreeMin.js"></script>
+
+
+
+
+<body style="color:white; background-color: rgba(0,0,0, 0.4);
+	font-family: Arial, sans-serif;">
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+/////////////////////////////////////////////////////
+// User Vars :
+/////////////////////////////////////////////////////
+gpuMode = 1;
+staticParamFolders = {
+  Init:
+  {
+    Title:"ReInit Scene / Renderer",
+    Params:{
+      ReinitRender: initRenderer,
+      ReinitScene: function(){ initScene( myInitScene ); },
+    }
+  },
+  
+};
+dynParamFolders = {  }
+
+
+var canvas, ctx, texture;
+var light1, light2;
+var urlParams = (new URL(document.location)).searchParams;
+var customText = urlParams.get('text');
+var customCamDist = urlParams.get('camD');
+var text = "MMMMM_MMMMM";
+if(customText) text = customText;
+var camStartDist = 0.8;
+if(customCamDist) camStartDist = customCamDist/100;
+
+const lightIntensity = 0.3;
+const lightPos = {x:0,y:0.7,z:0.05};
+const lightColor1 = 0x0080ff;
+const lightColor2 = 0xff8000;
+
+const backAlpha = 0.0;
+const txtAlpha = 0.99;
+
+
+////////////////////////////////////////
+// DEMO :
+////////////////////////////////////////
+//initGUI( updateView );
+initDivs();
+initGeneric();
+initRenderer();
+initScene( myInitScene );
+render( animateScene );
+
+
+////////////////////////////////////////
+// Custom Funcs :
+////////////////////////////////////////
+function updateView(){
+  alert("updateView");
+}
+
+
+function myInitScene(){
+  
+  stats.dom.style.visibility = "hidden";
+  infoDiv.style.visibility = "hidden";
+  
+  //camera.position.y += 0.1; //set( 1.7, 0, 1.7 );
+  camera.position.set( 0, 2, 0 );
+  camera.lookAt( new THREE.Vector3() );  
+  
+  
+  //LIGHTS:
+  var sphere = new THREE.SphereBufferGeometry( 0.003, 8, 8 );
+  
+  
+  light1 = new THREE.PointLight( lightColor1, lightIntensity);  
+  light1.position.set( lightPos.x, lightPos.y, lightPos.z );
+  scene.add( light1 );
+  light1.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: lightColor1 } ) ) );
+  
+  light2 = new THREE.PointLight( lightColor2, lightIntensity);  
+  light2.position.set( lightPos.x, lightPos.y, lightPos.z );
+  scene.add( light2 );
+  light2.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: lightColor2 } ) ) );
+  
+  
+  // CANVAS & CTX INIT :
+  canvas = document.createElement( 'canvas' );
+  canvas.width = 2048;
+  canvas.height = 1024;  
+  ctx = canvas.getContext( '2d' );   
+  
+  texture = new THREE.Texture( canvas );
+  //var bumpMat = new THREE.MeshBasicMaterial( { map: texture } );
+  var bumpMat = new THREE.MeshPhongMaterial( {     
+    //color      :  new THREE.Color("rgb(0,0,0)"),
+    //emissive   :  new THREE.Color("rgb(50,0,50)"),
+    specular   :  new THREE.Color("rgb(255,255,255)"),
+    shininess  :  15,
+    bumpScale  :  0.02,
+    
+    transparent: true, 
+    alphaMap   :  texture,
+    
+    bumpMap    :  texture,
+    map        :  texture,    
+  } );
+  
+  refreshTexture();
+  
+  // MESH:
+  var mesh = new THREE.Mesh( new THREE.BoxGeometry(), bumpMat );
+  scene.add( mesh );
+  
+  // Extra Test MESH:
+  var meshBis = new THREE.Mesh( new THREE.BoxGeometry(), new THREE.MeshBasicMaterial(
+    {
+      //color : new THREE.Color("rgb(0,0,0)"), 
+     alphaMap   :  texture,
+     transparent: true, 
+     opacity:0.9}) );    
+  meshBis.position.set( 0.5, 0.1, 0 ); 
+  //scene.add( meshBis );
+
+}
+
+function animateScene() {
+  var time = Date.now();  
+  //
+  var lightSpeed = time/2000;
+
+  //light1.position.set( Math.cos(time/1000), 1, 0 );
+  light1.position.x = Math.cos(lightSpeed)/2;
+  light2.position.x = Math.cos(lightSpeed*2)/2;
+  
+  camera.position.set( 0, camStartDist + Math.cos(lightSpeed/2)*0.1, 0 );
+}
+
+
+
+
+
+
+
+
+
+
+function refreshTexture() {
+  //BG:
+  ctx.fillStyle = 'rgba(50, 50, 50, '+backAlpha+')';
+  ctx.fillRect( 0, 0, canvas.width, canvas.height );
+
+  //TEXT:
+  var textHue = 0;
+  //ctx.fillStyle = 'hsla('+ textHue +', 100%, 50%, 0.99)';
+  ctx.fillStyle = 'rgba(255,255,255, '+txtAlpha+')';
+  ctx.font = "bold "+ 2300/(text.length+1) +"px Verdana";
+  ctx.textAlign = "center";
+  ctx.fillText(text, canvas.width/2, canvas.height/2);
+
+  //UPDATE ASSOCIATED TEXTURE:
+  texture.needsUpdate = true;
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>	
+
+</style>
+
+</html>
