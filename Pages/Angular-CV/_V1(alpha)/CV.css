@@ -45,12 +45,6 @@ body{
 }
 
 
-.subDivs{
-	font-size: 85%; 
-	margin-left:10px;
-}
-
-
 
 
 
@@ -95,23 +89,12 @@ body{
   /*box-shadow: 1px 1px 1px 1px #AAAAFFAA;*/  
   /*opacity:0.5;*/
 }
+
 .myCheckBox:hover{
   /*opacity:0.9;*/
   background-color: #FF8844FF;
 }
 
-.myCheckBox2 {
-  cursor: pointer;
-  color: white;
-  border-radius: 4px;
-  
-  /*background-color: #FFAA0044;*/
-  box-shadow: 2px 2px #FF000099;
-  /*opacity:0.5;*/
-}
-.myCheckBox2:hover{
-  box-shadow: 2px 2px #00FFFF;
-}
 
 
 
@@ -173,11 +156,7 @@ body{
 
 /* The Modal (background) */
 .modal-fulldiv {
-    /*display: none;*/   /* Hidden by default */
-	visibility: hidden;
-	opacity: 0;
-	transition: opacity 1s, visibility 1s;
-	
+    display: none; /*Hidden by default*/
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     padding-top: 0px; /*Box Location*/
@@ -262,7 +241,7 @@ div.tab button {
     outline: none;
     cursor: pointer;
     padding: 14px 16px;
-    transition: 0.9s;
+    transition: 0.3s;
     font-size: 17px;
 }
 div.tab button:hover {

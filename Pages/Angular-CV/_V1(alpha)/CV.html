@@ -1,0 +1,257 @@
+<html>
+<body>
+
+<!-- GENERIC LIBS : -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-sanitize.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+
+<!-- CSS Libs : -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet'>
+
+
+<!-- MY JS/CSS : -->
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/0.9f/MyLibs/Resume/Modal.js"></script>
+<link rel="stylesheet" type="text/css" href="https://rawgit.com/chrismcg61/TechDemos/0.8e/MyLibs/Resume/Modal.css">
+
+
+
+
+
+
+
+<!-- HTML BODY: -->
+<div ng-app="myApp">
+  <div ng-controller="mainCtrl" >
+    
+	<!-- <template #myTemplate>  -->
+		<!-- <span>TEMPLATE</span> <span>TEMPLATE2</span>  -->
+	<!-- </template> -->
+
+
+
+	
+    
+    <div ng-repeat="column in columns" class="testBorder colDiv" ng-style="column.style">
+      
+	<!--       
+      <button style="cursor:pointer;" ng-click="showHidden()"> 
+        <b>+</b> 
+      </button> -->
+            
+      <div ng-repeat="bigTile in column.tiles" class="borderDiv" ng-style="bigTile.style" style="margin-top: 20px; box-shadow: 5px 5px 2px 2px #888888;">
+        <div style="font-size: 210%; border-bottom:solid 4px; background-color: rgba(255,255,255,0.3); box-shadow: -5px -10px 10px #888888 inset;"> 
+          {{bigTile.title}} 
+          <button ng-if="bigTile.modal" ng-click="openMyModal()" class="myCheckBox" style="font-size: 50%; "> More Info </button>
+        </div> 
+        
+        
+        <div ng-repeat="subDiv in bigTile.subDivs"  style="margin-bottom: 10px">
+          <div style="font-size: 200%; line-height: 90%;" ng-style="catStyles[subDiv.catId]"> {{subDiv.title}} </div> 
+          
+          <div ng-repeat="ssubDiv in subDiv.subDivs" ng-style="catStyles[subDiv.catId]">
+<!--            <b> {{ssubDiv.title}} </b>  -->
+            <div ng-repeat="corp in ssubDiv.corps" >    <!-- style="background-color: rgba(0,0,0, 0.4);" -->
+              <span class="dates" style="margin-right:0px;"> 
+                {{corp.dates.start.Y}}<span class="quarters">.Q{{corp.dates.start.Q}}</span>▸{{corp.dates.end.Y}}<span class="quarters">.Q{{corp.dates.end.Q}}</span></span>
+              <span style="font-size: 140%; line-height: 90%;"><i>▫</i>{{corp.title}} </span>
+            </div>
+            
+			<div>
+				<span ng-repeat="role in ssubDiv.roles" class="dates" 
+					style="margin-right:25px; line-height: 1.8;">{{role}}</span>			
+			</div>
+			<div>
+				<span ng-repeat="mgtSkill in ssubDiv.mgtSkills" class="" 
+					style="margin-right:25px; background-color: rgba(255,255,255,0.5);">{{mgtSkill.title}}</span>
+			</div>
+            
+            <div ng-repeat="subSkill in ssubDiv.subSkills" 
+				ng-init="ratingVal=subSkill.rating; ratingH=12; ratingStyle='background-color: rgba(255,0,0,0.99);' ">
+<!--               <span style="font-size: 100%;"> {{subSkill.title}} </span> -->
+			  
+			  <span ng-if="subSkill.bMgt && !ssubDiv.bSkillRating" 
+				style="margin-left:0px; font-size: 80%; background-color: rgba(128,128,128,0.9); color:white; font-weight: bold;">◇</span>
+              <span style="font-size: 100%; font-weight: bold;" >				
+				<span ng-bind-html="subSkill.title"></span>
+			  </span>
+              
+			  
+			  <!-- BAR RATING -->
+			  <span ng-if="ssubDiv.bSkillRating" ng-include="'BarRating.html'" style="float:right; display:inline;"></span>
+                         
+              
+              <!-- Collapse Panel -->
+              <span ng-show="subSkill.hiddenSkills.length > 0" class="myCheckBox" style="">
+                <input ng-model=collapse ng-init="collapse = subSkill.checked" type=checkbox class="minCheckBox">
+              </span>
+              <div ng-show=collapse>
+                <div ng-repeat="hiddenSkill in subSkill.hiddenSkills" 
+					ng-init="ratingVal=hiddenSkill.rating;  ratingH=6; ratingStyle='background-color: rgba(255,80,0,0.99);' " >
+                  <span style="font-size: 80%; font-weight: bold; margin-left:10px;" >
+                    <small style="">◆</small> <span style="" ng-bind-html="hiddenSkill.title"> </span>
+                  </span>
+                  
+
+                  <!-- BAR RATING -->
+                  <span ng-if="ssubDiv.bSkillRating" ng-include="'BarRating.html'" style="float:right; display:inline; font-size: 80%;"></span>  
+                  
+                  
+                  <!-- Sub-Collapse Panel -->
+                  <span ng-show="hiddenSkill.hiddenSkills.length > 0" class="myCheckBox" style="">
+                    <input ng-model=subCollapse ng-init="subCollapse=hiddenSkill.checked" type=checkbox class="minCheckBox">
+                  </span>
+                  <div ng-show=subCollapse>
+                    <div ng-repeat="hiddenSkill in hiddenSkill.hiddenSkills" 
+						ng-init="ratingVal=hiddenSkill.rating;  ratingH=3; ratingStyle='background-color: rgba(255,160,0,0.99);' " >
+                      <span style="font-size: 70%; font-weight: bold; margin-left:20px;" >
+                        <small style="">◇</small> <span style="" ng-bind-html="hiddenSkill.title"> </span>
+                      </span>
+					  
+					    <!-- BAR RATING -->
+						<span ng-if="ssubDiv.bSkillRating" ng-include="'BarRating.html'" style="float:right; display:inline; font-size: 70%;"></span> 
+                    </div>  
+                  </div>  
+                      
+                      
+                </div>  
+              </div>              
+  
+            </div>    
+          </div>            
+        </div>        
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     <!-- Detail MODAL -->   
+    <div id="myModal" class="modal" style="">
+      <!-- Modal content -->
+      <div class="modal-content" style="background-color: rgba(0,0,0,0.9);">
+        <span class="close" ng-click="closeModal( )">&times;</span> 
+        <h2 style=""> 
+          Details
+        </h2>
+        
+        <div class="tab">
+          <button id="firstTabBtn" class="tablinks" onclick="openTab(event, 'Tab1')">Timeline</button>
+          <button class="tablinks" onclick="openTab(event, 'Tab2')">Ratings</button>
+        </div>
+        
+        <div id="Tab1" class="tabcontent">
+          <div ng-repeat="corp in corps" ng-style="catStyles[corp.catId]" >
+            <span class="dates" style="font-size: 80%; margin-right:0px;"> 
+				{{corp.dates.start.Y}}<span class="quarters">.Q{{corp.dates.start.Q}}</span></span>
+			<span class="dates tooltip" style="font-size: 80%; ">
+				{{corp.type.title}}
+				<!-- TOOLTIP -->
+				<div class="tooltiptext" style="">   
+					{{corp.type.desc}}
+				</div>
+			</span>
+            <span style="font-size: 80%; font-weight: bold; "> {{corp.title}} </span>          
+            <div ng-repeat="i in corp.dates.duration" >
+              &nbsp
+            </div>
+          </div>
+        </div>
+        
+        <div id="Tab2" class="tabcontent">
+          <div ng-repeat="corp in corps" ng-style="catStyles[corp.catId]" style="border-bottom:solid 1px; ">
+            <span style="font-size: 80%; font-weight: bold; "> {{corp.title}} </span>   
+
+            <span ng-show="true" class="myCheckBox" style="">
+              <input ng-model=collapse ng-init="0" type=checkbox class="minCheckBox">
+            </span>
+            <div ng-show=collapse>
+              
+              <div ng-repeat="ratingObj in corp.ratings" >
+
+                <span style="font-size: 80%; font-weight: bold; margin-left:10px;" class="tooltip" >
+                  {{ratingObj.title}}
+				  <!-- TOOLTIP -->
+				  <div class="tooltiptext" style="">   
+					{{ratingObj.titleDesc}}
+				  </div>
+                </span>
+
+                <!-- BAR RATING -->
+                <span ng-if="1" style="display:inline;" class="tooltip" >   <!--  float:right; -->
+                  <!-- TOOLTIP -->
+                  <div class="tooltiptext" style="">   
+                    Rating:{{ratingObj.rating}}%
+                  </div>
+                  <!-- BAR CANVAS -->
+                  <canvas width="{{ratingObj.rating * 8.0}}" height="10" style="background-color: #ff0000;"></canvas>
+                </span>  
+                
+              </div>
+              
+               
+              
+            </div>
+                    
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+    <!-- Intro Modal -->
+    <div id="myModal1" class="modal-fulldiv">
+
+      <!-- Modal content -->
+      <div id="btnGroup" class="modal-fulldiv-content radialGrad">
+        <button id="myFullDivBtn1" 
+                class="myFullDivBtn myFullDivBtn_custom"> 
+          <h1>BTN 1</h1>      
+        </button>     
+        
+      </div>
+
+    </div>
+    
+    
+    
+  
+    
+    
+    
+<!--     END of NG-APP -->
+  </div>
+</div>
+
+
+
+</body>
+
+<!-- MAIN CSS/JS : -->
+<link rel="stylesheet" type="text/css" href="CV.css">
+
+<!-- <script src="CV.js"></script> -->
+<script src="CV_Func.js"></script>
+<script src="CV_Data.js"></script>
+<script src="CV_Main.js"></script>
+
+
+</html>
