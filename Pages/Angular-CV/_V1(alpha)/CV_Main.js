@@ -625,7 +625,7 @@ function changeConfig(){
 function openModal(modalId){
    modalId.style.display = "block";
 }
-openModal(myModal1);
+//openModal(myModal1);
 
 function closeModalId(modalId){
    modalId.style.display = "none";

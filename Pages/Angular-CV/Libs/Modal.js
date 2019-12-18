@@ -16,6 +16,7 @@ function closeModal() {
 
 var openedModal;
 function openModal(modalId){
+	//alert("Open Intro");
 	openedModal = modalId;
 	openedModal.style.visibility = "visible";  
 	openedModal.style.opacity = 1.0;

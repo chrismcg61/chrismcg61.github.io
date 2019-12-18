@@ -2,6 +2,7 @@
 var config = {
   // func: function(){ alert("Gui Button"); }
   lightOnOff: lightOnOff,  
+  modalIntro: function(){ openModal(introModal); },
   
   color: 0xFFFFFF,
   txtColor: 0xFFFFFF,
@@ -17,6 +18,7 @@ var gui = new dat.GUI();
   // guiFolder1.add(config, "Listener", 0, 10).listen();
   // guiFolder1.add(config, "select", {one: "Un", two: "Deux"}).onChange( changeConfig );
   guiFolder1.add(config, "lightOnOff"); 
+  guiFolder1.add(config, "modalIntro"); 
   
   guiFolder2 = gui.addFolder('Colors');
   guiFolder2.addColor(config, "color"); //.onChange( changeConfig );
@@ -26,22 +28,6 @@ var gui = new dat.GUI();
   
 }
 
-
-// changeConfig();
-function changeConfig(){  
-  // alert(config.skillBackColor.toString(16));
-  catStyles[0] = {
-    // "background-color" : "rgba(255, 0, 0, 0.7)",
-    "background-color" : "#"+config.skillBackColor.toString(16),
-    "color" : "#"+config.skillTextColor.toString(16),
-  };
-  
-  // dynamicStyle.color = "#"+config.skillBackColor.toString(16);
-  // dynamicVal++;
-  //alert(dynamicStyle.color);
-  
-  // config.Listener = config.float;
-}
 function applyColor(){
 	var backColor = config.color;
 	var txtColor = config.txtColor;

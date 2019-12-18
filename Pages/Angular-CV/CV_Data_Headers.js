@@ -101,7 +101,7 @@ function myTilesLeft_Header(){
 					+subTitle("Hi-Tech Cities"),
 				"hiddenSkills" : [
 					{"title": hlSpan("LYON") + hlSpan("LILLE") + hlSpan("BORDEAUX") + hlSpan("NICE") + hlSpan("TOULOUSE") + hlSpan("NANTES/RENNES"), },
-					{"title": "Extended ► " + hlSpan("LONDON") + hlSpan("▢") + hlSpan("EUROPE") + hlSpan("▢") + hlSpan("WORLD"), },
+					{"title": "Extended ► " + hlSpan("LONDON") + " ● " + hlSpan("EUROPE") + " ● " + hlSpan("WORLD"), },
 				],
 			  },
 			 ],

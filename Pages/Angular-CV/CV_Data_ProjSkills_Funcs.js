@@ -49,11 +49,11 @@ var catStyles = [
     },
 	{
       "background-color" : "#00bbff",
-      "color" : "#ff4400",
+      "color" : "#ff0000",
     },
 	{
       "background-color" : "#00ffff",
-      "color" : "#ff8800",
+      "color" : "#ff0000",
     },
 	
 	

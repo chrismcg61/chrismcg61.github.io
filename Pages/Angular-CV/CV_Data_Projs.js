@@ -2,7 +2,7 @@ dynamicDate = 2004 + 2/4;
 
 var roles = [];
 roles["PROJ_MGR"] = "Proj Mgr";
-roles["LEAD"] = "Team-Lead (Scrum-Master)";
+roles["LEAD"] = "Team-Lead";  //(Scrum-Master)
 roles["EXPERT"] = "Tech Expert";
 
 var altenType = {

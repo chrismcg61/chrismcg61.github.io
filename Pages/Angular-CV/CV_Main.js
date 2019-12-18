@@ -8,7 +8,12 @@ var headerMode = urlParams.get('header');
 var softMode = urlParams.get('soft');
 var techMode = urlParams.get('tech');
 var techOnlyMode = urlParams.get('techOnly');
+var introModalMode = urlParams.get('modal');
 // alert(mode);
+
+if (introModalMode==1){
+	openModal(introModal);
+}
 
 //if (expandMode)
 rePopulateTiles();
@@ -36,6 +41,7 @@ function rePopulateTiles(){
 		if (typeof myTilesRight_Header !== 'undefined')  tilesLeft = tilesLeft.concat( myTilesRight_Header() );
 		if (typeof myTilesRight_ProjSkills !== 'undefined')  tilesLeft = tilesLeft.concat( myTilesRight_ProjSkills() );
 	}
+	
 	
 }	
 
