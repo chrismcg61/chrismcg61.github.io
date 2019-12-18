@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<style>
+select {
+  width: 200px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #cccccc;  
+  font-size:18px;
+}
+</style>
+
+<script>
+function selectSrc(){
+  myAudio.src = mySelect.value
+}
+function onAudioEnd() {
+  //alert("The audio has ended");
+  var selectedIndex = parseInt(mySelect.selectedIndex);
+  selectedIndex++;
+  if(selectedIndex >= mySelect.length) selectedIndex = -1;  // 0 -> Loop Playlist
+  
+  mySelect.selectedIndex = selectedIndex.toString();
+  selectSrc();
+}
+</script>
+</head>
+
+
+
+
+
+
+
+<body>
+
+
+
+<div style="">
+
+  <span>
+    <audio id="myAudio" controls autoplay onended="onAudioEnd()" 
+		style="position: relative; top:10px; transform: scaleY(1.2);">
+      <source src="https://rawgit.com/chrismcg61/TechDemos/master/Media/PianoMin_C7.wav"/>
+    </audio>
+  </span>
+  
+  
+  <span style="font-size:30px;">
+    <select id="mySelect" onchange="selectSrc()">
+      <option value="https://rawgit.com/chrismcg61/TechDemos/master/Media/OST_BSG.mp4">Track1</option>
+      <option value="https://rawgit.com/chrismcg61/TechDemos/master/Media/OST_SGU.mp4">Track2</option>
+    </select>
+  </span>
+
+
+</div>
+
+
+
+</body>
+</html>
