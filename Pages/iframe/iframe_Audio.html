@@ -4,8 +4,8 @@
 <head>
 <style>
 select {
-  width: 200px;
-  padding: 12px;
+  width: 120px;
+  padding: 6px;
   border: none;
   border-radius: 8px;
   background-color: #cccccc;  
@@ -39,11 +39,11 @@ function onAudioEnd() {
 
 
 
-<div style="">
+<div style=" ">
 
   <span>
     <audio id="myAudio" controls autoplay onended="onAudioEnd()" 
-		style="position: relative; top:10px; transform: scaleY(1.2);">
+		style="position: relative; top:10px; transform: scaleY(1.0);">
       <!-- <source src="https://rawgit.com/chrismcg61/TechDemos/master/Media/PianoMin_C7.wav"/> -->
       <source src="https://rawgit.com/chrismcg61/TechDemos/master/Media/OST_BSG.mp4"/>
     </audio>
@@ -52,8 +52,8 @@ function onAudioEnd() {
   
   <span style="font-size:30px;">
     <select id="mySelect" onchange="selectSrc()">
-      <option value="https://rawgit.com/chrismcg61/TechDemos/master/Media/OST_BSG.mp4">Track1</option>
-      <option value="https://rawgit.com/chrismcg61/TechDemos/master/Media/OST_SGU.mp4">Track2</option>
+      <option value="https://rawgit.com/chrismcg61/TechDemos/master/Media/OST_BSG.mp4">Track 1</option>
+      <option value="https://rawgit.com/chrismcg61/TechDemos/master/Media/OST_SGU.mp4">Track 2</option>
     </select>
   </span>
 
