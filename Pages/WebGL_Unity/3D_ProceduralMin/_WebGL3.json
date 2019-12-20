@@ -1,0 +1,13 @@
+{
+"companyName": "MacCorp",
+"productName": "3D SciFi Procedural",
+"dataUrl": "_WebGL3.data.unityweb",
+"asmCodeUrl": "_WebGL3.asm.code.unityweb",
+"asmMemoryUrl": "_WebGL3.asm.memory.unityweb",
+"asmFrameworkUrl": "_WebGL3.asm.framework.unityweb",
+"TOTAL_MEMORY": 268435456,
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20"
+}
