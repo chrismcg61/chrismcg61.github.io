@@ -1,4 +1,5 @@
-var rating = 95;
+var rating = 85;
+var ratingMin = rating-15;
 
 var languages = [
 	{"title" : "English / French",
@@ -22,6 +23,7 @@ var languages = [
 var hobbiesTech = [
 	{"title" : "Tech Research",
 		"rating" : rating,
+		"expandMode": 0,
 		"hiddenSkills" : [
 		  {"title" : "Advanced Coding"
 			+ subTitle("AI, GPU, Gam°"),
@@ -68,18 +70,16 @@ var hobbiesTech = [
 
 var hobbies = [
 	{"title" : "Music"
-		+ subTitle("Piano, Guitar & Co"),
+		+ subTitle("Piano, Guitar, Singing"),
 		"rating" : rating,
 		"hiddenSkills" : [ 
 			{"title" : "Piano",
 				"rating" : rating,
 			},
-			{"title" : "Guitar",
-				"rating" : rating,
+			{"title" : "Guitar, Singing, Show Org°",
+				"rating" : rating-10,
 			},
-			{"title" : "Singing",
-				"rating" : rating,
-			},
+			
 		],    
 	},
 	{"title" : "Sports"
@@ -89,28 +89,28 @@ var hobbies = [
 			{"title" : "Running",
 				"rating" : rating,
 			},
-			{"title" : "Tennis/Foot",
+			{"title" : "Tennis/Football",
 				"rating" : rating,
 			},
-			{"title" : "Ski",
+			{"title" : "Ski/Snowboarding",
 				"rating" : rating,
 			},
 		],    
 	},
 	{"title" : "Culture/Arts"
-		+ subTitle("Series, Books, Events"),
+		+ subTitle("Series, Books, Evts"),
 		"rating" : rating,
 		"hiddenSkills" : [ 
 			{"title" : "TV Series / Books"
 				+ subTitle("SF, Fantasy, Thriller"),
-				"rating" : rating,
+				"rating" : rating-10,
 			},
 			{"title" : "Concerts",
-				"rating" : rating,
+				"rating" : rating-10,
 			},
 			{"title" : "Misc"
-				+ subTitle("FishTank, Garden"),
-				"rating" : rating,
+				+ subTitle("FishTank, Gardening"),
+				"rating" : rating-10,
 			},
 			
 		],    
@@ -120,6 +120,7 @@ var hobbies = [
 var miniJobs = [
 	{"title" : "MiniJobs",
 		"rating" : rating,
+		"expandMode": 0,
 		"hiddenSkills" : [
 		  {"title" : "Teen Summer Camp Animator",
 			"rating" : rating,
@@ -128,22 +129,24 @@ var miniJobs = [
 			"rating" : rating,
 		  },
 		  {"title" : "Teaching (Maths, Prog)",
-			"rating" : rating,
+			"rating" : ratingMin,
 		  },
 		  
 		],    
 	},
 	{"title" : "Volunteer",
-		"rating" : rating,
+		"rating" : ratingMin,
+		"expandMode": 0,
 		"hiddenSkills" : [
-		  {"title" : "Event Org° (Stage/Tables/Buffet Setup)",
-			"rating" : rating,
+		  {"title" : "Event Org°"
+			+ subTitle("Stage/Tables/Buffet Setup"),
+			"rating" : ratingMin,
 		  },
 		  {"title" : "Elder/Dependent People Assist",
-			"rating" : rating,
+			"rating" : ratingMin,
 		  },
 		  {"title" : "Translator (ENG/FR)",
-			"rating" : rating,
+			"rating" : ratingMin,
 		  },		  
 		  
 		],    

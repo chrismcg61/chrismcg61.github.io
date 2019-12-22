@@ -57,6 +57,8 @@ addSkill( "AUTO", mgtSkills,
 	],    
   }
 );
+
+rating = rating - 10;
 addSkill( "AGILE", mgtSkills,
    {"title" : "AGILE",
 	"rating" : rating,
@@ -131,6 +133,7 @@ addSkill( "AGILE", mgtSkills,
   }
 );
 
+rating = rating - 10;
 addSkill( "AUTO_CODE", mgtSkills,
    {"title" : "Code Auto-Analysis",
 	"rating" : rating,

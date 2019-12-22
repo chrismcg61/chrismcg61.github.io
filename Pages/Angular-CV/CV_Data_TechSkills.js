@@ -3,7 +3,8 @@ function addSkill( id, skillList, skill ){
 	skillList[id] = skill;
 };
 
-var rating = 95;
+var rating = 85;
+var ratingMin = 50;
 var aiSkills = [];
 addSkill( "AI_GAME", aiSkills,
    {"title" : "AI [Game]",
@@ -107,6 +108,10 @@ addSkill( "MW", mwToolSkills,
 	"rating" : rating,
 	"hiddenSkills" : [
 	  {
+		"title" : "Game Engine / Video Engine",
+		"rating" : rating,
+	  },
+	  {
 		"title" : "Embedded Modular App [BackEnd]",
 		"rating" : rating,
 	  },
@@ -156,7 +161,7 @@ addSkill( "WEBAPP", techSkills,
 	"rating" : rating,
 	"checked" : expandMode>0,
 	"expandMe": true,
-	"expandMode": 0,
+	// "expandMode": 0,
 	"hiddenSkills" : appSkills,    
 	}
 );
@@ -165,15 +170,9 @@ addSkill( "GAME", techSkills,
 	"rating" : rating,
 	"hiddenSkills" : [	
 		{
-			"title" : "App Dev",
+			"title" : "3D Editor App Extension",
 			"rating" : rating,
-			"hiddenSkills" : [	
-				{
-					"title" : "3D Editor App Extension",
-					"rating" : rating,
-				},
-				
-			],
+			"hiddenSkills" : [  ],
 		},
 		
 		{
@@ -303,6 +302,11 @@ addSkill( "3D", techSkills,
 		"title" : "Physics (CPU/GPU)",
 		"rating" : rating,
 	  },
+	  {
+		"title" : "GPU Parallel Prog"
+			+ subTitle("GPU-Accelerated Hi-Recursion Scripts"),
+		"rating" : rating,
+	  },
 	  	  
 	],    
 	}
@@ -316,7 +320,7 @@ addSkill( "AI", techSkills,
 
 
 
-rating = 80;
+rating = rating-10;
 addSkill( "EMBED", techSkills,
 	{"title" : "Embedded",
 	"rating" : rating,
@@ -332,19 +336,13 @@ addSkill( "EMBED", techSkills,
 	],    
 	}
 );
+rating = ratingMin;
 addSkill( "OTHER", techSkills,
 	{"title" : "Misc"
-			+ subTitle("Network, Elec, Secu, .Net"),
+			+ subTitle("Network, Elec, Secu, .Net, DataMgt"),
 		"rating" : rating,
 		"hiddenSkills" : [
-		  {
-			"title" : "OTHER A",
-			"rating" : rating,
-		  },
-		  {
-			"title" : "OTHER B",
-			"rating" : rating,
-		  },
+		  
 		],    
 	}
 );
