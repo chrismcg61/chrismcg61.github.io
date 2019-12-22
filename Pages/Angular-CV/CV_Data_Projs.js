@@ -15,7 +15,7 @@ altenType_Rennes["title"] = altenType["title"]+"(+RENNES)";
 
 defaultCorps = [
 	{
-	  "title" : "Holomatix",
+	  "title" : "Holomatix (Data Mgt)",
 	  "catId": 4,
 	  "dates": getDates(1),
 	  "type":	{
@@ -29,7 +29,7 @@ defaultCorps = [
 	  "dates": getDates(7),        
 	},
 	{
-		"title" : "Dassault",
+		"title" : "Dassault (Elec TestBench)",
 		"type":	{
 			"title":"ISTRES",
 			"desc":"Final Internship (South-FR AF-Base)"
@@ -40,7 +40,7 @@ defaultCorps = [
 	},	
 	
 	{
-		"title" : "ELB",
+		"title" : "Etranges Libellules (Ubi)",
 		"type":	{
 			"title":"LYON",
 			"desc":"Project-Contract"
@@ -50,7 +50,7 @@ defaultCorps = [
 		"ratings": getRatingList( getRating(3), getRating(4), getRating(4),),	    
 	},
 	{
-		"title" : "Phoenix",
+		"title" : "Phoenix (Ubi)",
 		"type":	{
 			"title":"LYON",
 			"desc":"CDD ► CDI"
@@ -62,7 +62,7 @@ defaultCorps = [
 	
 	
   {
-    "title" : "Sword",
+    "title" : "Sword (WebPortal)",
 	"type":	{
 		"title":"LYON-SSII",
 		"desc":"Lyon SSII Mission"
@@ -73,7 +73,7 @@ defaultCorps = [
   },  
 
   {
-    "title" : "NeoPost",
+    "title" : "NeoPost (Stamping Machines/AI)",
 	"type":	altenType,
     "catId": 3,
     "dates": getDates( 2 ),  
@@ -81,7 +81,7 @@ defaultCorps = [
   },  
   
   {
-    "title" : "Nagra",
+    "title" : "Nagra (TV Secu)",
 	"type":	altenType,
     "catId": 4,
     "dates": getDates( 1 ),    
@@ -89,7 +89,7 @@ defaultCorps = [
   }, 
 
   {
-    "title" : "SAH",
+    "title" : "SAH (Orange)",
 	"type":	altenType_Rennes,
     "catId": 2,
     "dates": getDates( 5 ),   
@@ -97,41 +97,41 @@ defaultCorps = [
   },  
 
   {
-    "title" : "Technicolor",
+    "title" : "Technicolor (Net Optim)",
 	"type":	altenType,
     "catId": 4,
     "dates": getDates( 1 ),   
   }, 
   {
-    "title" : "SagemCom",
+    "title" : "SagemCom (Network)",
 	"type":	altenType,
     "catId": 4,
     "dates": getDates( 1 ),         
   }, 
 
   {
-    "title" : "Bouygues",
+    "title" : "Bouygues Tel",
 	"type":	altenType,
     "catId": 2,
     "dates": getDates( 4 ),     
   },  
     
   {
-    "title" : "Parrot",
+    "title" : "Parrot (Drone TestBench)",
 	"type":	altenType,
     "catId": 4,
     "dates": getDates( 1 ),    
   }, 
 
   {
-    "title" : "Cisco",
+    "title" : "Cisco (3D-TV)",
 	"type":	altenType,
     "catId": 2,
     "dates": getDates( 5 ),         
   },
 
   {
-    "title" : "MyProj [Unity3D Game]",
+    "title" : "MyProj [Unity3D Rogue-ARPG]",
     "catId": 1,
     "dates": getDates( 6 ),  
   },
