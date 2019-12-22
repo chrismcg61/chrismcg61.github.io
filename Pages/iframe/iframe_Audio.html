@@ -13,20 +13,6 @@ select {
 }
 </style>
 
-<script>
-function selectSrc(){
-  myAudio.src = mySelect.value
-}
-function onAudioEnd() {
-  //alert("The audio has ended");
-  var selectedIndex = parseInt(mySelect.selectedIndex);
-  selectedIndex++;
-  if(selectedIndex >= mySelect.length) selectedIndex = 0;  // 0/-1 -> Loop Playlist Mode
-  
-  mySelect.selectedIndex = selectedIndex.toString();
-  selectSrc();
-}
-</script>
 </head>
 
 
@@ -43,6 +29,7 @@ function onAudioEnd() {
 
   <span>
     <audio id="myAudio" controls autoplay onended="onAudioEnd()" 
+		onloadstart="loadStatus()" oncanplay=""
 		style="position: relative; top:10px; width:340px; transform: scaleY(1.0);">
       <!-- <source src="https://rawgit.com/chrismcg61/TechDemos/master/Media/PianoMin_C7.wav"/> -->
       <source src="https://rawgit.com/chrismcg61/TechDemos/master/Media/OST_BSG.mp4"/>
@@ -67,4 +54,28 @@ function onAudioEnd() {
 
 
 </body>
+
+
+<script>
+//selectSrc();
+myAudio.volume = 0.25; 
+function loadStatus(){
+	//alert('onloadstart');
+}
+
+function selectSrc(){
+  myAudio.src = mySelect.value;  
+}
+function onAudioEnd() {
+  //alert("The audio has ended");
+  var selectedIndex = parseInt(mySelect.selectedIndex);
+  selectedIndex++;
+  if(selectedIndex >= mySelect.length) selectedIndex = 0;  // 0/-1 -> Loop Playlist Mode
+  
+  mySelect.selectedIndex = selectedIndex.toString();
+  selectSrc();
+}
+</script>
+
+
 </html>
