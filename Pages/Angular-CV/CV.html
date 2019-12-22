@@ -87,7 +87,7 @@ OFFLINE LIBS :
             <div ng-repeat="corp in ssubDiv.corps" >    <!-- style="background-color: rgba(0,0,0, 0.4);" -->
               <span class="dates" style="margin-right:0px;"> 
                 {{corp.dates.start.Y}}<span class="quarters">.Q{{corp.dates.start.Q}}</span>▸{{corp.dates.end.Y}}<span class="quarters">.Q{{corp.dates.end.Q}}</span></span>
-              <span style="font-size: 120%; line-height: 90%;"><i>▫</i>{{corp.title}} </span>
+              <span style="font-size: 100%; line-height: 90%;"><i>▫</i>{{corp.title}} </span>
             </div>
             
 			<div>
@@ -100,7 +100,7 @@ OFFLINE LIBS :
 			</div>
             
             <div ng-repeat="subSkill in ssubDiv.subSkills" 
-				ng-init="ratingVal=subSkill.rating; ratingH=8; ratingStyle='background-color: rgba(255,0,0,0.99);' ">
+				ng-init="ratingVal=subSkill.rating; ratingH=10; ratingStyle='background-color: rgba(255,0,0,0.99);' ">
 <!--               <span style="font-size: 100%;"> {{subSkill.title}} </span> -->
 			  
 			  <span ng-if="subSkill.bMgt && !ssubDiv.bSkillRating" 
@@ -271,7 +271,7 @@ OFFLINE LIBS :
 			<div ng-if="corp.ratings">
 				<span style="font-size: 80%; font-weight: bold; "> {{corp.title}} </span>   
 
-				<span ng-show="true" class="myCheckBox" style="">
+				<span ng-show="true" class="myCheckBox2" style="">
 				  <input ng-model=collapse ng-init="0" type=checkbox class="minCheckBox">
 				</span>
 				<div ng-show=collapse>
