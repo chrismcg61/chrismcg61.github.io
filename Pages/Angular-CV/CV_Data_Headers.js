@@ -144,7 +144,7 @@ function myTilesRight_Header(){
 			  },
 			  {
 				"title": "Junior Teacher"
-					+subTitle("Prog, Maths, FR/ENG"),
+					+subTitle("Prog, Maths/Physics, FR/ENG"),
 				"hiddenSkills" : [],
 			  },
 			  
