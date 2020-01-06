@@ -1,0 +1,13 @@
+{
+"companyName": "DefaultCompany",
+"productName": "Character Test",
+"dataUrl": "CorridorChar.data.unityweb",
+"asmCodeUrl": "CorridorChar.asm.code.unityweb",
+"asmMemoryUrl": "CorridorChar.asm.memory.unityweb",
+"asmFrameworkUrl": "CorridorChar.asm.framework.unityweb",
+"TOTAL_MEMORY": 268435456,
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20"
+}
