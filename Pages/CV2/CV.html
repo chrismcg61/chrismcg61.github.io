@@ -28,6 +28,7 @@ body{
 
 .divCol1{
 /*   font-size: 180%; */
+  width:650px;
   background-color : rgba(10,10,20, 0.8);
 }
 .divCol2{
@@ -69,7 +70,8 @@ body{
   opacity: 0.5;
 } */
 
-.centered {
+.centered {  
+  //overflow: hidden;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -88,7 +90,7 @@ body{
 
 
 
-<input id="showDetails" type="checkbox"  onchange="initDisplayData()">  
+<!-- <input id="showDetails" type="checkbox"  onchange="initDisplayData()"> -->
 
 <div id="containerDiv" 
   style="font-size: 24px; 
@@ -106,12 +108,14 @@ body{
 <script>
 //
 var skills = [];
+/*
 addTableTag( skills, "SKILLA", {
     tagDiv:{title:"SSS", tags:[ ]},
   });
 addTableTag( skills, "SKILLB",  {
   tagDiv:{title:"SSSS", tags:[ ]},
 });
+*/
 var skillData = {  
   subDivs:[
     {
@@ -128,7 +132,8 @@ var skillData = {
 
 var missionsByDate = {
   subDivs:[
-    {
+    /*
+	{
       type:"CAT1",
       dates:getDate(5),
       tagDiv:{title:"AAA AAA", tags:[ ]},
@@ -143,10 +148,12 @@ var missionsByDate = {
       dates:getDate(1),
       tagDiv:{title:"CCC CCC", tags:[ ]},
     },
+	*/
   ],  
 }
 var missionsByType = {
   subDivs:[
+  /*
     {
       title:{txt:"Missions", classes:["maintTitle"]},
       // classes:["maintTitle"],
@@ -175,7 +182,7 @@ var missionsByType = {
         },        
       ],
     },
-    
+    */
   ],
 };
 //
@@ -247,13 +254,16 @@ function initDisplayData(){
   myData.subDivs[1].subDivs = [];
   myData.subDivs[2].subDivs = [];
   //
+  /*
   if(showDetails.checked) {
     addDivs(baseDivsL, 1);
     addDivs(extraDivsL, 1);
     addDivs(baseDivsR, 2);
     addDivs(extraDivsR, 2);
   }
-  else{
+  else
+  */
+  {
     addDivs(baseDivsL, 0);
     addDivs(baseDivsR, 0);    
   }
