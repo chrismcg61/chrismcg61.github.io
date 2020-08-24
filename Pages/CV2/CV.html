@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>CV</title>
+
+<style>
+body{
+  background-color:rgba(0,0,0, 0.99);
+}
+
+
+.column{
+  width:650px;  
+  display:inline-block;
+}
+.columnR{
+  float:right;
+}
+
+.maintTitle{
+  font-size: 250%;
+/*   text-align:center; */
+}
+.title{
+  font-size: 150%;
+}
+
+.divCol1{
+/*   font-size: 180%; */
+  background-color : rgba(10,10,20, 0.8);
+}
+.divCol2{
+/*   font-size: 180%; */
+  background-color : rgba(0,0,0, 0.5);
+}
+
+.separateDiv{
+/*   margin:30px 0 0 0; */
+}
+
+.spanBtn{
+  cursor:pointer;
+  background-color : rgba(255,0,0, 0.5);
+  padding: 0 4px 0 4px;
+  border: 4px outset white;
+  border-radius: 6px; 
+  box-shadow: 4px 2px #000044;
+  margin-left: 8px;
+}
+.spanBtn:hover{
+  background-color : rgba(0,255,255, 0.5);
+}
+
+.tooltip {
+/*   display: none; */
+  visibility: hidden;
+  font-size: 180%;
+}
+.tooltipBtn:hover + .tooltip {
+/*   display: block; */
+  visibility: visible;
+}
+.tooltip:hover {
+/*   display: block; */
+  visibility: visible;
+}
+/* .tooltipContainer:hover {
+  opacity: 0.5;
+} */
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>
+
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.36/MyLibs/DataMgt.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.36/MyLibs/DataCV.js"></script>
+</head>
+
+
+<body>
+
+
+
+
+<input id="showDetails" type="checkbox"  onchange="initDisplayData()">  
+
+<div id="containerDiv" 
+  style="font-size: 24px; 
+         color:white; 
+         font-family: Arial, Helvetica, sans-serif; 
+         text-shadow: 1px 1px 8px #44FFFF, -1px -1px 8px #FF44FF;">
+</div>
+
+
+
+
+
+</body>
+
+<script>
+//
+var skills = [];
+addTableTag( skills, "SKILLA", {
+    tagDiv:{title:"SSS", tags:[ ]},
+  });
+addTableTag( skills, "SKILLB",  {
+  tagDiv:{title:"SSSS", tags:[ ]},
+});
+var skillData = {  
+  subDivs:[
+    {
+      subDivs:[
+        {
+          title:{txt:"Skills", classes:["title"]},
+          // subDivs:[ skills["SKILLA"] ],
+          subDivs:skills,
+        },
+      ],
+    }
+  ]
+}
+
+var missionsByDate = {
+  subDivs:[
+    {
+      type:"CAT1",
+      dates:getDate(5),
+      tagDiv:{title:"AAA AAA", tags:[ ]},
+    },
+    { 
+      type:"CAT0",
+      dates:getDate(8),
+      tagDiv:{title:"BBB BBB", tags:[ ]},
+    },
+    { 
+      type:"CAT1",
+      dates:getDate(1),
+      tagDiv:{title:"CCC CCC", tags:[ ]},
+    },
+  ],  
+}
+var missionsByType = {
+  subDivs:[
+    {
+      title:{txt:"Missions", classes:["maintTitle"]},
+      // classes:["maintTitle"],
+    },
+    
+    {
+      title:{txt:"CAT0", classes:["title"]},
+      subDivs:[
+        {
+          subDivs:getMissionsByType("CAT0", missionsByDate.subDivs),
+        },
+        {
+          subDivs:[ skills["SKILLB"], ],
+        },        
+      ],
+    },
+    {
+      title:{txt:"CAT1", classes:["title"]},
+      // subDivs:getMissionsByType("CAT1", missionsByDate.subDivs),
+      subDivs:[
+        {
+          subDivs:getMissionsByType("CAT1", missionsByDate.subDivs),
+        },
+        {
+          subDivs:[ skills["SKILLA"], skills["SKILLB"], ],
+        },        
+      ],
+    },
+    
+  ],
+};
+//
+//        
+var myData = {
+  // maintTitle:"MY_BIG_TITLE",
+  // subTitle:"SubTitle",  
+  subDivs:[
+    {
+      classes:["divCol1", "centered"],
+      // classes:["divCol1", "column"],
+      subDivs:[ ],
+    },
+    {
+      classes:["divCol1", "column"],
+      subDivs:[ ],
+    },
+    {
+      classes:["divCol1", "column", "columnR"],
+      subDivs:[ ],
+    },
+  ],
+};
+var baseDivsL = [
+  {
+    subDivs:rootData_Pers.subDivs,
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["title","divCol2"],
+  },
+];
+var baseDivsR = [  
+  {
+    subDivs:rootData_JobTitles.subDivs,
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["title","divCol2"],
+  },
+];
+var extraDivsL = [
+  {
+    subDivs:missionsByType.subDivs,
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["title","divCol2"],
+  },
+];
+var extraDivsR = [  
+  {
+    subDivs:skillData.subDivs,
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["title","divCol2"],
+  },
+];
+//
+function addDivs(_subDivs, _id){
+  for ( var i=0; i<_subDivs.length; i++ ) {
+    myData.subDivs[_id].subDivs.push( _subDivs[i] );
+  }
+}
+function initDisplayData(){
+  containerDiv.innerHTML = "";
+  myData.subDivs[0].subDivs = [];
+  myData.subDivs[1].subDivs = [];
+  myData.subDivs[2].subDivs = [];
+  //
+  if(showDetails.checked) {
+    addDivs(baseDivsL, 1);
+    addDivs(extraDivsL, 1);
+    addDivs(baseDivsR, 2);
+    addDivs(extraDivsR, 2);
+  }
+  else{
+    addDivs(baseDivsL, 0);
+    addDivs(baseDivsR, 0);    
+  }
+  displayData(myData, containerDiv, 0);  
+}
+initDisplayData();
+
+
+
+</script>
+
+</html>
