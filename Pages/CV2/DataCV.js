@@ -52,7 +52,7 @@ var rootData_Pers = {
       ],
     },    
     {
-      tagDiv:{title:"WebCV "+small("(Portfolio/Contacts)")+" : ", tags:[
+      tagDiv:{title:"WebCV-Contacts : ", tags:[
         "chrismcg61.wixsite.com/home"
       ]},
       subDivs:[
@@ -82,12 +82,12 @@ var rootData_Pers = {
       tagDiv:{title:"", tags:[
         "3-Months+",
         "FullTime", "Flex-HalfTime",
-        "Mobility", "TeleWork",
+        "Mobility", 
       ]},   
     },
     {
       tagDiv:{title:"", tags:[
-         "Agile", "Flex-Time", "Prod-Focus", "Overtime Mgt",
+         "Agile", "Flex-Time", "TeleWork", "Prod-Focus", 
       ]},
       subDivs:[
         {
