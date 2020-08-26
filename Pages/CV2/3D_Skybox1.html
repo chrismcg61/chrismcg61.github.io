@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Skybox 1</title>
+
+
+
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/libs/stats.min.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/libs/dat.gui.min.js"></script>
+<!-- - -->
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/build/three.min.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/renderers/CanvasRenderer.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/renderers/Projector.js"></script>
+<!-- - -->
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.37/MyLibs/Three/MyThreeMin.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.37/MyLibs/GUI.js"></script>
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.37/MyLibs/Three/CanvasTextures.js"></script>
+
+</head>
+
+<body style="">
+	
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// gpuMode = 1;
+statsMode = 0;
+//fogDist = 240;
+// ambLightIntensity = 0.1;
+//shadowMode = 1;
+// aliasingMode = true;
+// camParams = {fov:70, near:0.01, far:50};
+// backColor = 0x030322;
+const SIZE = 9000;
+/************************* GUI *******************************/
+var gVars = { ReinitRender:initRenderer, ReinitScene:function(){initScene( myInitScene )}, };
+var vars = { 
+  speed: 0.001, 
+  sunAngle:0.35,
+  sunDist:0.81,
+  testColor:{rgb:0xaaaaff,a:0},
+  lightPos:{x:0,y:0.05*SIZE,z:-0.85*SIZE},
+};
+//initGUI();
+/************************* 3D Scene Init *******************************/
+setTimeout( function(){ initDefault( myInitScene, myAnimScene, gpuMode,statsMode ) } ,  1);
+/*** ***/
+
+
+var pointLight;
+var skySphere;
+var skySphere2;
+//
+const TEX_SIZE = 1024;
+function myInitScene(){
+  //container.removeChild( stats.domElement );
+  scene.background = new THREE.Color( 0x004444 );  
+  camera.position.set(0,30,0);  
+
+
+  var light = new THREE.AmbientLight( 0xffffff, 0.1 );  //0xaaaaff
+  scene.add( light );
+  //
+  var lightCol = 0xdd0000; //0xffaa00;
+  pointLight = new THREE.PointLight( lightCol, 3, SIZE*1.1, 1.4 );
+  //pointLight.position.set( 0,2,-SIZE+3 );  
+  scene.add( pointLight );
+  var sunGeo = new THREE.SphereGeometry(SIZE*0.03, 16, 16);
+  var sunMat = new THREE.MeshPhongMaterial( {
+    side:THREE.BackSide,
+    transparent:true,
+    opacity:0.8,
+    // alphaTest:0.01,
+    shininess:50,
+    specular:0x222222,
+  } );
+  var lightMesh = new THREE.Mesh( sunGeo, sunMat);  //new THREE.MeshBasicMaterial( {color:lightCol} ) );
+  pointLight.add(lightMesh);
+  //
+  var lightCol = 0x004444; //0xffaa00;
+  var pointLight2 = new THREE.PointLight( lightCol, 3, SIZE*0.9, 1.4 );
+  scene.add( pointLight2 );
+  var sunGeo2 = new THREE.SphereGeometry(SIZE*0.02, 16, 16);
+  var sunMat = new THREE.MeshPhongMaterial( {
+    side:THREE.BackSide,
+    transparent:true,
+    opacity:0.8,
+    // alphaTest:0.01,
+    shininess:50,
+    specular:0x222222,
+  } );
+  var lightMesh = new THREE.Mesh( sunGeo2, sunMat);  //new THREE.MeshBasicMaterial( {color:lightCol} ) );
+  pointLight2.add(lightMesh);
+  pointLight2.position.set( 0,SIZE*0.05,-SIZE*0.4 );  
+  
+
+  /*** SKY ***/
+  var texObj = addTexture(TEX_SIZE, TEX_SIZE,  16);
+  refreshTexture(0);
+  texObj.texture.wrapS = texObj.texture.wrapT = THREE.RepeatWrapping;
+  texObj.texture.repeat.set( 1, 4 );
+  // var geo = new THREE.BoxGeometry(SIZE, SIZE, SIZE);
+  var skyGeo = new THREE.SphereGeometry(SIZE, 32);
+  var skyMat = new THREE.MeshPhongMaterial( {
+    //side:THREE.BackSide,
+    side:THREE.DoubleSide,
+    map:texObj.texture,
+    //alphamap:texObj.texture,
+    transparent:true,
+    opacity:0.9,
+    alphaTest:0.05,
+    shininess:10,
+    // specular:0x222222,
+  } );
+  skySphere = new THREE.Mesh( skyGeo, skyMat);
+  scene.add( skySphere );
+  //
+  var skyGeo2 = new THREE.SphereGeometry(SIZE*0.8, 32);
+  skySphere2 = new THREE.Mesh( skyGeo2, skyMat);
+  skySphere2.rotation.x = 0.2;
+  scene.add( skySphere2 );
+  
+  
+  
+  /*** CLOUDS ***/
+ 
+
+
+  /*** FLOOR ***/
+  var floorGeometry = new THREE.PlaneBufferGeometry( 9000, 9000, 100, 100 );
+  floorGeometry.rotateX( - Math.PI / 2 );
+  var floor = new THREE.Mesh( floorGeometry, new THREE.MeshPhongMaterial({color:0x222222,shininess:60, })  );
+  scene.add( floor ); 
+  if(vars.shadows) floor.receiveShadow = true;
+}
+function myAnimScene(){
+  var now = Date.now(); 
+  // mesh.position.x = Math.cos(now*vars.speed);
+  // uniforms[ "time" ].value += 0.05;
+  
+  vars.sunAngle += 0.01;
+  var a = 3.4;
+  //a = 4.75;
+  a += vars.sunAngle;
+  //
+  // pointLight.position.set(vars.lightPos.x, vars.lightPos.y, vars.lightPos.z);
+  pointLight.position.set(0, vars.sunDist*SIZE*Math.cos(a), vars.sunDist*SIZE*Math.sin(a));
+  
+  skySphere.rotation.y += 0.0005;
+  skySphere2.rotation.y += 0.0007;
+}
+
+
+
+
+
+
+
+
+
+function refreshTexture(id) {   
+  var texture = texObjs[id].texture;  
+  var texCanvas = texObjs[id].canvas; 
+  var ctx = texCanvas.getContext( '2d' );  
+  const WW = texCanvas.width;  
+  ctx.clearRect( 0, 0, WW, WW ); 
+
+  for(var i=0; i<6000; i++) {
+    ctx.fillStyle = "rgba(255,255,255, 0.5)";
+    //var randX = WW*Math.random();
+    ctx.fillRect( Math.random()*WW,Math.random()*WW,  16,4 );    
+  }
+  
+  
+
+  //UPDATE ASSOCIATED TEXTURE:
+  texture.needsUpdate = true;
+}
+
+
+
+</script>
+</html>
