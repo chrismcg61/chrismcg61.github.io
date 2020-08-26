@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>IFRAME CV</title>
+
+<style>
+body{
+  margin: 0 0 0 0;
+}
+</style>
+</head>
+
+<body style="background-image: linear-gradient(to right,  white, black, white);">
+
+  URLs:
+  <input type="text" id="input1">
+  <button onclick="setIframeSrc1()">GO</button>
+  <input type="text" id="input2">
+  <button onclick="setIframeSrc2()">GO</button>
+	
+	<!-- <iframe src="iframe.html" height="600" width="800"></iframe>	 -->
+	<!-- <iframe src="iframe_BasicLinks.html" height="600" width="800"></iframe>	 -->
+	<!-- <iframe src="iframe_Particles.html" height="600" width="200"></iframe> -->
+	
+	<!-- height="1940" -->
+	<iframe id="iframe1" width="1356" height="666" src="https://chrismcg61.github.io/Pages/CV2/CV.html" 
+	  style="position:absolute; left:0px; top:20px; z-index:1;" 
+	></iframe>
+	<iframe id="iframe2" width="1356" height="666" src="https://chrismcg61.github.io/Pages/CV2/3D1.html"   
+	  style="position:absolute; left:0px; top:20px; z-index:-1;"
+	></iframe>
+	
+	<!-- <iframe src="file:///C:/Users/chris/Downloads/_MyGitRepos/chrismcg61.github.io/Pages/iframe/iframe_Text3D.html?text=Christopher_McGARRY&camD=99" height="500" width="900"></iframe> -->
+	<!-- <iframe src="file:///C:/Users/chris/Downloads/_MyGitRepos/chrismcg61.github.io/Pages/iframe/iframe_Text3D.html?text=Christopher_McGARRY&camD=80" height="200" width="900"></iframe> -->
+
+</body>
+
+
+<script>
+function setIframeSrc1(){
+  iframe1.src = input1.value;
+}
+function setIframeSrc2(){
+  iframe2.src = input2.value;
+}
+</script>
+</html>
