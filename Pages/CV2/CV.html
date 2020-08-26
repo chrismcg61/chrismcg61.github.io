@@ -4,14 +4,20 @@
 <head>
 <title>CV</title>
 
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.37/MyLibs/DataMgt.js"></script>
+<script src="https://chrismcg61.github.io/Pages/CV2/DataCV.js"></script>
+
 <style>
 body{
-  background-color:rgba(0,0,0, 0.99);
+  background-color: rgba(0,0,0, 0.5);
+  color:white; 
+  margin: 0 0 0 0;
 }
 
 
+
 .column{
-  width:650px;  
+  width:660px;  
   display:inline-block;
 }
 .columnR{
@@ -19,21 +25,36 @@ body{
 }
 
 .maintTitle{
-  font-size: 250%;
+  font-size: 200%;
+  box-shadow: 8px -8px 8px #888888 inset;
 /*   text-align:center; */
 }
 .title{
-  font-size: 150%;
+  font-size: 170%;
 }
 
 .divCol1{
 /*   font-size: 180%; */
-  width:650px;
-  background-color : rgba(10,10,20, 0.8);
+  //background-color : rgba(10,10,20, 0.8);
+  border: 6px solid black;
+  box-shadow: 1px 1px 16px #888888;
+  //box-shadow: 5px 10px 20px red inset:
 }
-.divCol2{
-/*   font-size: 180%; */
-  background-color : rgba(0,0,0, 0.5);
+.interDiv{
+  font-size: 80%; 
+  //background-color : rgba(0,0,0, 0.5);
+}
+
+.hilightHi{
+  box-shadow: 8px 16px 16px #008888 inset;
+}
+.hilightLo{
+  //opacity: 0.5;
+  //visibility: hidden;
+  //font-size: 80%; 
+  
+  //color:rgb(40,40,40);
+  box-shadow: 8px 16px 16px #888888 inset;
 }
 
 .separateDiv{
@@ -41,22 +62,27 @@ body{
 }
 
 .spanBtn{
+  font-size: 90%; 
   cursor:pointer;
-  background-color : rgba(255,0,0, 0.5);
+  background-color : rgba(255,0,0, 0.8);
   padding: 0 4px 0 4px;
   border: 4px outset white;
   border-radius: 6px; 
-  box-shadow: 4px 2px #000044;
+  box-shadow: 2px 2px #000044;
   margin-left: 8px;
 }
 .spanBtn:hover{
-  background-color : rgba(0,255,255, 0.5);
+  background-color : rgba(0,255,255, 0.8);
 }
 
 .tooltip {
 /*   display: none; */
   visibility: hidden;
   font-size: 180%;
+  cursor:pointer;
+}
+.tooltipBtn{
+  cursor:pointer;
 }
 .tooltipBtn:hover + .tooltip {
 /*   display: block; */
@@ -70,8 +96,7 @@ body{
   opacity: 0.5;
 } */
 
-.centered {  
-  //overflow: hidden;
+.centered {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -80,109 +105,700 @@ body{
 </style>
 
 
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.36/MyLibs/DataMgt.js"></script>
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.36/MyLibs/DataCV.js"></script>
 </head>
 
 
 <body>
-
-
-
-
-<!-- <input id="showDetails" type="checkbox"  onchange="initDisplayData()"> -->
-
-<div id="containerDiv" 
-  style="font-size: 24px; 
-         color:white; 
-         font-family: Arial, Helvetica, sans-serif; 
-         text-shadow: 1px 1px 8px #44FFFF, -1px -1px 8px #FF44FF;">
+<div style="color:grey;" >
+Details:<input id="showDetails" type="checkbox"  onchange="initDisplayData()">
+Expand:<input id="" type="checkbox"  onchange="expandAll()">
+Modal:<input id="" type="checkbox"  onchange="createModal()">
+Light:<input id="" type="checkbox"  onchange="lightOn()">
 </div>
 
-
-
-
-
+<div id="containerDiv" 
+  style="font-size: 24px;          
+         font-family: Lucida Console, Monaco, monospace;
+         text-shadow: 1px 1px 8px #AAFFFF;">
+</div>
 </body>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
+HIDDEN_DIV_BORDER_L = "2px dotted blue";
+BAR_TXT = "░"; // "▌";
+
+rootData_Pers = {
+  subDivs:[
+    {
+      title:{txt:"Chris McGARRY", classes:["maintTitle"]},
+      // classes:["maintTitle"],
+    },
+    {
+      tagDiv:{title:"", tags:[
+        "FR",
+        small("Age: ")+getAge(1983+310/365),
+        small("XP: ")+getAge(2008+1/365),
+        small("Visionary-Mediator-Entrepreneur"),
+      ]},
+    },
+    {
+      tagDiv:{title:"Degrees : ", tags:[
+        "IT-Engineer",        
+        small("Elec-Robotics"),
+        small("Maths"),
+      ]},
+      subDivs:[
+        {
+          hidden:true,
+          subDivs:[                        
+            {  
+              tagDiv:{title:"BAFA "+small("(Summer Camp Animator)"), tags:[]},
+            },
+            {  
+              tagDiv:{title:"BIA "+small("(Aircraft Pilot)"), tags:[]},
+            },
+            {  
+              tagDiv:{title:"Security Accreditations "+small("(Secret & Elec)"), tags:[]},
+            },
+          ],
+        },
+      ],
+    },
+    {
+      tagDiv:{title:"Mobility : ", tags:[
+        "Global "+small("(HiTech-Cities)"),
+      ]},
+      subDivs:[
+        {
+          hidden:true,
+          subDivs:[                        
+            {  
+              tagDiv:{title:"", tags:["FRANCE", "EU-West", "NA"]},
+            },
+          ],
+        },
+      ],
+    },    
+    {
+      tagDiv:{title:"WebCV-Contacts : ", tags:[
+        "chrismcg61.wixsite.com/home"
+      ]},
+      subDivs:[
+        {
+          hidden:true,
+          subDivs:[                        
+            {  
+              tagDiv:{title:"Mail : mail@fai.com", tags:[]},
+              subDivs:[
+                {
+                  hidden:true,
+                  subDivs:[                        
+                    {  
+                      tagDiv:{title:"Tel : 0123456789", tags:[]},
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },    
+    {
+      // title:{txt:"Contracts : ", classes:["title"]},
+      // classes:["title"],
+      tagDiv:{title:"Contracts : ", tags:[
+        "3-Months+",
+        "FullTime", "Flex-HalfTime",         
+      ]},   
+    },
+    {
+      tagDiv:{title:"", tags:[
+         "Mobility", "Agile", "Flex-Time", "TeleWork", 
+      ]},
+      subDivs:[
+        {
+          hidden:true,
+          subDivs:[ 
+            {
+              tagDiv:{title:"", tags:[
+                "Overtime "+small("(80-140h./2W)"), 
+                "HiTech",  "Prod-Focus",
+              ]},
+            },
+            {
+              tagDiv:{title:"Team : ", tags:[
+                "Pair-Prog", "Team Training", "Mentoring",
+              ]},
+            },
+            {
+              tagDiv:{title:"Sprint : ", tags:[
+                "Review", "Proj Metrics",
+              ]},
+            },
+            {
+              tagDiv:{title:"MGT : ", tags:[
+                "Product Owner", "SCRUM Master",
+              ]},
+            },
+          ],
+        },
+      ],    
+    },   
+  ],
+};
+rootData_JobTitles = {
+  subDivs:[
+    {
+      // classes:["separateDiv"],
+      subDivs:[
+        {
+          title:{txt:"Senior Versatile Programmer", classes:["maintTitle"]},
+        },
+        {
+          tagDiv:{title:"", tags:[
+            "Tech Expert",
+            "Team Lead",
+            small("Scrum Master"),
+          ]},
+        },
+        {
+          tagDiv:{title:"", tags:[
+            "Junior Proj Manager",
+            small("Product Owner"),
+          ]},
+        },
+        {
+          tagDiv:{title:"Junior Teacher : ", tags:[            
+            "Prog",
+            "Maths/Physics",
+            "FR./ENG"
+          ]},
+        },  
+      ],
+    },    
+  ],
+};
+// rootData_JobTitles.subDivs[0].subDivs[0].title.classes[0] = "maintTitle";
+
+
+
+
+var langData = {
+  subDivs:[
+    // {
+      // subDivs:[
+        {
+          title:{txt:"Languages", classes:["maintTitle"]},
+        },
+        {
+          rating:95,    
+          tagDiv:{title:"English / French", tags:[ ]},
+        },
+        {
+          rating:80,    
+          tagDiv:{title:"German", tags:[ ]},
+        },
+        {
+          rating:70,    
+          tagDiv:{title:"Spanish", tags:[ ]},
+        },
+        {
+          rating:50,    
+          tagDiv:{title:"Chinese", tags:[ ]},
+        },        
+      // ],
+    // },    
+  ]
+};
+var hobbiesTechData = {
+  subDivs:[
+    // {
+      // subDivs:[
+        {
+          title:{txt:"Hobbies [Tech]", classes:["maintTitle"]},
+        },
+        {
+          //rating:95,    
+          tagDiv:{title:"Tech Research "+small("(Next-Gen Prog/Mgt)"), tags:[ ]},
+        },
+        {
+          tagDiv:{title:"Gaming & Dev/Test Community", tags:[ ]},
+        },
+        {
+          tagDiv:{title:"Documentaries", tags:[ ]},
+        },
+        
+        
+        {
+          title:{txt:"Hobbies [Other]", classes:["maintTitle"]},
+        },
+        {
+          tagDiv:{title:"Music", tags:[ ]},
+        },
+        {
+          tagDiv:{title:"Sports", tags:[ ]},
+        },
+        {
+          tagDiv:{title:"Culture/Arts", tags:[ ]},
+        },
+        
+        
+      // ],
+    // },    
+  ],
+};
+var miniJobsData = {
+  subDivs:[
+    // {
+      // subDivs:[
+        {
+          title:{txt:"MiniJobs & Volunteer", classes:["maintTitle"]},
+        },
+        
+        {
+          tagDiv:{title:"Tech "+small("(Computer-ER, Teaching, Translate)"), tags:[]},
+          subDivs:[
+            {
+              hidden:true,
+              subDivs:[                        
+                {  
+                  tagDiv:{title:"Computer Install/Repair", tags:[]},
+                },
+                {  
+                  tagDiv:{title:"Teaching (Maths, Prog)", tags:[]},
+                },                
+                {  
+                  tagDiv:{title:"Translator (ENG/FR)", tags:[]},
+                },
+                
+              ],
+            },
+          ],
+        },
+        
+        {
+          tagDiv:{title:"Other "+small("(Animator, Elder-ER, Event-Org)"), tags:[]},
+          subDivs:[
+            {
+              hidden:true,
+              subDivs:[                        
+                {  
+                  tagDiv:{title:"Teen Summer Camp Animator", tags:[]},
+                },
+                {  
+                  tagDiv:{title:"Elder/Dependent People Assist", tags:[]},
+                },                
+                {  
+                  tagDiv:{title:"Event Org°", tags:[]},
+                },
+                
+              ],
+            },
+          ],
+        },
+        
+      // ],
+    // },    
+  ],
+};
 //
-var skills = [];
-/*
-addTableTag( skills, "SKILLA", {
-    tagDiv:{title:"SSS", tags:[ ]},
-  });
-addTableTag( skills, "SKILLB",  {
-  tagDiv:{title:"SSSS", tags:[ ]},
+var liveProjsData = {
+	subDivs:[
+    // {
+      // subDivs:[
+        {
+          title:{txt:"Projects[Live]", classes:["maintTitle"]},
+        },
+        {
+          tagDiv:{title:"AI++", tags:[ ]},
+        },
+        {
+          tagDiv:{title:"Mgt++", tags:[ ]},
+        },                
+      // ],
+    // },    
+  ]
+}
+var favProjsData = {
+	subDivs:[
+		{
+		  title:{txt:"Projects of Interest", classes:["maintTitle"]},
+		},
+		{
+		  tagDiv:{title:"Contract/Agile++", tags:[ ]},
+		},
+		{
+		  tagDiv:{title:"HiTech", tags:[ ]},
+		}, 
+  ]
+}
+
+
+
+
+var techList = [];
+addTableTag( techList, "TOOLS", {
+    rating:95,
+    tagDiv:{title:"Tools", tags:[ ]},
 });
-*/
+addTableTag( techList, "LANG", {
+    rating:85,
+    tagDiv:{title:"Prog-Lang.", tags:[ ]},
+});
+addTableTag( techList, "LIBS", {
+    rating:85,
+    tagDiv:{title:"Libs", tags:[ ]},
+});
+//
+var aiSkills = [];
+addTableTag( aiSkills, "GAME", {
+    rating:85,
+    tagDiv:{title:"AI-Game", tags:[ ]},
+  });
+addTableTag( aiSkills, "FLEX", {
+    rating:85,
+    tagDiv:{title:"AI-Flex", tags:[ ]},  
+  });
+//
+var webAppSkills = [];
+addTableTag( webAppSkills, "STB", {
+    rating:85,
+    tagDiv:{title:"WebApp-STB", tags:[ ]},
+  });
+addTableTag( webAppSkills, "Std", {
+    rating:85,
+    tagDiv:{title:"WebApp-Std", tags:[ ]},  
+  });
+//
+var techSkills = [];
+addTableTag( techSkills, "WebAPP",  {
+  rating:85,
+  tagDiv:{title:"WebApp", tags:[ ]},
+  subDivs:[
+    {
+      hidden:true,
+      subDivs:webAppSkills,
+    },
+  ],
+  
+});
+addTableTag( techSkills, "GameDev", {
+    rating:85,
+    tagDiv:{title:"GameDev/Design", tags:[ ]},
+  });
+addTableTag( techSkills, "MW", {
+    rating:85,
+    tagDiv:{title:"MW/Tools", tags:[ ]},
+  });
+addTableTag( techSkills, "3D", {
+    rating:85,
+    tagDiv:{title:"3D/GPU", tags:[ ]},
+  });
+addTableTag( techSkills, "AI",  {
+  rating:85,
+  tagDiv:{title:"AI", tags:[ ]},
+  subDivs:[
+    {
+      hidden:true,
+      subDivs:aiSkills,
+    },
+  ],
+  
+});
+addTableTag( techSkills, "Embed", {
+	rating:75,
+	tagDiv:{title:"Embed", tags:[ ]},
+});
+addTableTag( techSkills, "Misc", {
+	rating:50,
+	tagDiv:{title:"Misc", tags:[ ]},
+});
+//
+var mgtSkills = [];
+addTableTag( mgtSkills, "AUTO", {
+    rating:90,
+    tagDiv:{title:"Auto-Mgt", tags:[ ]},
+  });
+addTableTag( mgtSkills, "AGILE", {
+    rating:85,
+    tagDiv:{title:"AGILE", tags:[ ]},
+  });
+addTableTag( mgtSkills, "CodeQual", {
+    rating:75,
+    tagDiv:{title:"CodeQual", tags:[ ]},
+  });
+//
 var skillData = {  
   subDivs:[
     {
       subDivs:[
         {
-          title:{txt:"Skills", classes:["title"]},
-          // subDivs:[ skills["SKILLA"] ],
-          subDivs:skills,
+          title:{txt:"Skills[Tech]", classes:["maintTitle"]},
+          subDivs:techSkills,
+        },
+		{
+          title:{txt:"Skills[Mgt]", classes:["maintTitle"]},
+          subDivs:mgtSkills,
+        },
+		{
+          title:{txt:"Techs", classes:["maintTitle"]},
+          subDivs:techList,
         },
       ],
     }
   ]
 }
 
+START_DATE = 2004.5;
+//
 var missionsByDate = {
   subDivs:[
-    /*
+    {
+      type:"OTHER",
+      dates:getDate(2),
+      tagDiv:{title:"Holomatix", tags:[ ]},
+    },
 	{
-      type:"CAT1",
-      dates:getDate(5),
-      tagDiv:{title:"AAA AAA", tags:[ ]},
+      dates:getDate(7),
+    },
+	
+    { 
+      type:"Embed",
+      dates:getDate(3),
+      tagDiv:{title:"Dassault", tags:[ ]},
     },
     { 
-      type:"CAT0",
+      type:"GameDev",
+      dates:getDate(4),
+      tagDiv:{title:"ELB", tags:[ ]},
+    },
+	{ 
+      type:"GameDev",
       dates:getDate(8),
-      tagDiv:{title:"BBB BBB", tags:[ ]},
+      tagDiv:{title:"Phoenix", tags:[ ]},
     },
-    { 
-      type:"CAT1",
+	{
+      type:"OTHER",
       dates:getDate(1),
-      tagDiv:{title:"CCC CCC", tags:[ ]},
+      tagDiv:{title:"Sword", tags:[ ]},
     },
-	*/
+	{
+      type:"Embed",
+      dates:getDate(2),
+      tagDiv:{title:"NeoPost", tags:[ ]},
+    },
+	{
+      type:"Embed",
+      dates:getDate(2),
+      tagDiv:{title:"Nagra", tags:[ ]},
+    },
+	{
+      type:"STB",
+      dates:getDate(5),
+      tagDiv:{title:"SAH", tags:[ ]},
+    },
+	{
+      type:"OTHER",
+      dates:getDate(1),
+      tagDiv:{title:"Technicolor", tags:[ ]},
+    },
+	{
+      type:"OTHER",
+      dates:getDate(1),
+      tagDiv:{title:"SagemCom", tags:[ ]},
+    },
+	{
+      type:"STB",
+      dates:getDate(4),
+      tagDiv:{title:"BouyguesTel", tags:[ ]},
+    },
+	{
+      type:"OTHER",
+      dates:getDate(1),
+      tagDiv:{title:"Parrot", tags:[ ]},
+    },
+	{
+      type:"STB",
+      dates:getDate(5),
+      tagDiv:{title:"Cisco", tags:[ ]},
+    },
+	
+	{
+      type:"GameDev",
+      dates:getDate(6),
+      tagDiv:{title:"MyProj[GameDev]", tags:[ ]},
+    },
+	{
+      dates:getDate(6),
+    },
+	{
+      type:"WebApp2",
+      dates:getDate(5),
+      tagDiv:{title:"MyProj[WebApp2]", tags:[ ]},
+    },
+	
   ],  
 }
+//
+var roleTags = [];
+roleTags["LEAD"] = "Team-Lead";
+roleTags["MGR"] = "Proj-Mgr";
+roleTags["EXPERT"] = "Tech-Expert";
+var processTags = [];
+processTags["AGILE"] = "AGILE";
+processTags["AUTO"] = "Auto-Mgt";
+processTags["CodeQual"] = "CodeQual";
 var missionsByType = {
   subDivs:[
-  /*
     {
-      title:{txt:"Missions", classes:["maintTitle"]},
+      title:{txt:"Projects[Experiences]", classes:["maintTitle"]},
       // classes:["maintTitle"],
     },
     
     {
-      title:{txt:"CAT0", classes:["title"]},
+      classes:["hilightHi"],
+	  title:{txt:"WebApp2", classes:["title"]},
       subDivs:[
         {
-          subDivs:getMissionsByType("CAT0", missionsByDate.subDivs),
+          subDivs:getMissionsByType("WebApp2", missionsByDate.subDivs),
         },
         {
-          subDivs:[ skills["SKILLB"], ],
+          tagDiv:{title:"", tags:[ roleTags["MGR"], roleTags["EXPERT"],   processTags["AUTO"], ]},
+        },
+        {
+          subDivs:[
+            {
+              subDivs:[ webAppSkills["Std"], techSkills["3D"], aiSkills["FLEX"], ],
+            },
+          ],          
         },        
       ],
     },
     {
-      title:{txt:"CAT1", classes:["title"]},
-      // subDivs:getMissionsByType("CAT1", missionsByDate.subDivs),
+      classes:["hilightHi"],
+	  title:{txt:"GameDev", classes:["title"]},
       subDivs:[
         {
-          subDivs:getMissionsByType("CAT1", missionsByDate.subDivs),
+          subDivs:getMissionsByType("GameDev", missionsByDate.subDivs),
         },
         {
-          subDivs:[ skills["SKILLA"], skills["SKILLB"], ],
+          tagDiv:{title:"", tags:[ roleTags["MGR"], roleTags["LEAD"], roleTags["EXPERT"],   
+		    processTags["AUTO"], processTags["AGILE"],
+		  ]},
+        },
+        {
+          subDivs:[
+            {
+              subDivs:[  techSkills["GameDev"], techSkills["MW"], techSkills["3D"],  aiSkills["GAME"],   ],
+            },
+          ],          
+        },
+      ],
+    },
+	{
+      classes:["hilightHi"],
+	  title:{txt:"STB", classes:["title"]},
+      subDivs:[
+        {
+          subDivs:getMissionsByType("STB", missionsByDate.subDivs),
+        },
+        {
+          tagDiv:{title:"", tags:[ roleTags["LEAD"], roleTags["EXPERT"],   
+		  processTags["AUTO"], processTags["AGILE"],
+		  ]},
+        },
+        {
+          subDivs:[
+            {
+              subDivs:[ webAppSkills["STB"], techSkills["MW"],   ],
+            },
+          ],          
         },        
       ],
     },
-    */
+	
+	{
+	  classes:["hilightLo"],
+      title:{txt:"Embed", classes:["title"]},
+      subDivs:[
+        {
+          subDivs:getMissionsByType("Embed", missionsByDate.subDivs),
+        },
+        {
+          tagDiv:{title:"", tags:[ roleTags["LEAD"], roleTags["EXPERT"],
+		    processTags["CodeQual"]
+		  ]},
+        },
+        {
+          subDivs:[
+            {
+              subDivs:[ techSkills["Embed"],   ],
+            },
+          ],          
+        },        
+      ],
+    },
+	{
+	  classes:["hilightLo"],
+      subDivs:[
+	  {
+		  subDivs:[
+		  {
+			
+		  title:{txt:"OTHER", classes:["title", ]},
+		  // classes:["hilightLo"],
+		  subDivs:[
+			{
+			  subDivs:getMissionsByType("OTHER", missionsByDate.subDivs),
+			},
+			{
+			  tagDiv:{title:"", tags:[ "AGILE" ]},
+			},
+			{
+			  subDivs:[
+				{
+				  subDivs:[ techSkills["Misc"],   ],
+				},
+			  ],          
+			},
+		  ],
+		  }
+		  ]
+		},
+	]
+	}
+    
+    
+    
   ],
 };
 //
@@ -192,16 +808,16 @@ var myData = {
   // subTitle:"SubTitle",  
   subDivs:[
     {
-      classes:["divCol1", "centered"],
+      classes:["centered"],
       // classes:["divCol1", "column"],
       subDivs:[ ],
     },
     {
-      classes:["divCol1", "column"],
+      classes:["column"],
       subDivs:[ ],
     },
     {
-      classes:["divCol1", "column", "columnR"],
+      classes:["column", "columnR"],
       subDivs:[ ],
     },
   ],
@@ -209,38 +825,91 @@ var myData = {
 var baseDivsL = [
   {
     subDivs:rootData_Pers.subDivs,
+	classes:["divCol1"],
   },
   {
     title:{txt:"&nbsp", classes:[]},
-    classes:["title","divCol2"],
+    // classes:["title","interDiv"],
+    classes:["interDiv"],
   },
 ];
 var baseDivsR = [  
   {
     subDivs:rootData_JobTitles.subDivs,
+	classes:["divCol1"],
   },
   {
     title:{txt:"&nbsp", classes:[]},
-    classes:["title","divCol2"],
+    classes:["interDiv"],
   },
 ];
 var extraDivsL = [
-  {
-    subDivs:missionsByType.subDivs,
+	{
+    subDivs:favProjsData.subDivs,
+	classes:["divCol1"],
   },
   {
     title:{txt:"&nbsp", classes:[]},
-    classes:["title","divCol2"],
+    classes:["interDiv"],
+  },
+
+  {
+    subDivs:liveProjsData.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },
+  
+  {
+    subDivs:missionsByType.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
   },
 ];
 var extraDivsR = [  
   {
     subDivs:skillData.subDivs,
+	classes:["divCol1"],
   },
   {
     title:{txt:"&nbsp", classes:[]},
-    classes:["title","divCol2"],
+    classes:["interDiv"],
+  },  
+  
+  {
+    subDivs:langData.subDivs,
+	classes:["divCol1"],
   },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    // classes:["title","interDiv"],
+    classes:["interDiv"],
+  },  
+  
+  {
+    subDivs:hobbiesTechData.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },
+  
+  {
+    subDivs:miniJobsData.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },
+  
+  
 ];
 //
 function addDivs(_subDivs, _id){
@@ -254,16 +923,13 @@ function initDisplayData(){
   myData.subDivs[1].subDivs = [];
   myData.subDivs[2].subDivs = [];
   //
-  /*
   if(showDetails.checked) {
     addDivs(baseDivsL, 1);
     addDivs(extraDivsL, 1);
     addDivs(baseDivsR, 2);
     addDivs(extraDivsR, 2);
   }
-  else
-  */
-  {
+  else{
     addDivs(baseDivsL, 0);
     addDivs(baseDivsR, 0);    
   }
@@ -272,6 +938,52 @@ function initDisplayData(){
 initDisplayData();
 
 
+
+var missionColors = ["rgba(0,0,0, 0.5)"];
+missionColors["OTHER"] = "rgba(90,90,90, 0.5)";
+missionColors["Embed"] = "rgba(180,180,180, 0.5)";
+//
+missionColors["GameDev"] = "rgba(0,0,255, 0.5)";
+missionColors["STB"] = "rgba(0,150,255, 0.5)";
+missionColors["WebApp2"] = "rgba(0,255,255, 0.5)";
+//
+//createModal();
+function createModal(){
+	var modalDiv = addElt("DIV", containerDiv, "== MODAL ==");
+	modalDiv.classList.add( "centered" ); 	
+	modalDiv.classList.add( "column" ); 	
+	modalDiv.classList.add( "divCol1" ); 
+	
+	var subDivs = missionsByDate.subDivs;
+	for ( var i=0; i<subDivs.length; i++ ) {
+		var subDiv = subDivs[i];
+		for ( var j=0; j<subDiv.dates.duration; j++ ) {
+			var dateDiv = addElt("DIV", modalDiv, "&nbsp");
+			dateDiv.style.backgroundColor = missionColors[ 0 ];
+			if(subDiv.type) dateDiv.style.backgroundColor = missionColors[ subDiv.type ];
+			if(j==0 && subDiv.tagDiv) dateDiv.innerHTML = subDiv.tagDiv.title;
+		}
+	}
+}
+//
+//expandAll();
+function expandAll(){
+	var expandBtns = document.getElementsByClassName("spanBtn");
+	for ( var i=0; i<expandBtns.length; i++ ) {
+		expandBtns[i].click();
+	}
+}
+//
+function lightOn(){	
+	if(document.body.style.color=="white"){
+		document.body.style.color = "black";
+		document.body.style.backgroundColor = "rgba(255,255,255, 0.5)";	 //"white";
+	}
+	else{
+		document.body.style.color = "white";
+		document.body.style.backgroundColor = "rgba(0,0,0, 0.5)";		
+	}
+}
 
 </script>
 
