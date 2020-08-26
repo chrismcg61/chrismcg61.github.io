@@ -2,19 +2,146 @@
 <html>
 
 <head>
-<title>TITLE</title>
-
-<style>
-</style>
+<title>3D Terrain & Light Blocks</title>
 
 
-<body>
-HELLO
+
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/libs/stats.min.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/libs/dat.gui.min.js"></script>
+<!-- - -->
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/build/three.min.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/renderers/CanvasRenderer.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/renderers/Projector.js"></script>
+<!-- - -->
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.37/MyLibs/Three/MyThreeMin.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.37/MyLibs/GUI.js"></script>
+
+
+
+</head>
+
+<body style="">
+	
 </body>
 
 
 
-<script>
-</script>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+// gpuMode = 1;
+statsMode = 0;
+fogDist = 240;
+// ambLightIntensity = 0.1;
+//shadowMode = 1;
+// aliasingMode = true;
+// camParams = {fov:70, near:0.01, far:50};
+// backColor = 0x030322;
+/************************* GUI *******************************/
+var gVars = { ReinitRender:initRenderer, ReinitScene:function(){initScene( myInitScene )}, };
+var vars = { 
+  speed: 0.001, 
+  testColor:{rgb:0xaaaaff,a:0},
+  // testObj:{p1:0,p2:0},
+};
+//initGUI();
+/************************* 3D Scene Init *******************************/
+setTimeout( function(){ initDefault( myInitScene, myAnimScene, gpuMode,statsMode ) } ,  1);
+/*** ***/
+
+
+// var mesh;
+var pointLight0;
+function myInitScene(){
+  //container.removeChild( stats.domElement );
+  camera.position.z = 2.1;  //set(0, 0.5, 2.5);  
+
+  // renderer.shadowMap.autoUpdate = false;
+
+  pointLight0 = new THREE.PointLight( 0x00ffff, 0.7, 3, 1.2 );
+  pointLight0.position.set(0,0,1);
+  scene.add( pointLight0 ); 
+  //
+  var lightMesh = new THREE.Mesh(  
+    new THREE.TorusGeometry( 0.03, 0.007, 12,16 ) ,
+    new THREE.MeshPhysicalMaterial(
+      {transparent:true,opacity:0.8,shininess:80,
+       // transmission:0.4,roughness:0.3,metalness:0
+      }) );  
+  pointLight0.add( lightMesh ); 
+  
+   
+  var mesh0 = new THREE.Mesh( new THREE.BoxGeometry(0.02,0.02,0.02), new THREE.MeshPhongMaterial( {color:vars.testColor.rgb} ) );
+  scene.add( mesh0 );    
+  //
+  for ( var x=-3; x<3; x++ ) {
+    for ( var y=0; y<6; y++ ) {
+      for ( var z=0; z<10; z++ ) {
+        var mesh = new THREE.Mesh( new THREE.BoxGeometry(), new THREE.MeshPhongMaterial( {color:vars.testColor.rgb, shininess:60,} ) );
+        mesh.position.set(2+x*4, y*1.9, -1-z*4);
+        // scene.add( mesh ); 
+        mesh0.geometry.mergeMesh(mesh);                
+      }
+    }
+  }
+  for ( var x=-1; x<=1; x++ ) {
+    for ( var y=0; y<3; y++ ) {
+      for ( var z=0; z<4; z++ ) {
+        var pointLight = new THREE.PointLight( 0x00ffff, 0.7, 3, 1.2 );
+        pointLight.position.set(x*4, y*3, -3-z*7);
+        scene.add( pointLight ); 
+        //
+        var lightMesh = new THREE.Mesh(  new THREE.TorusGeometry( 0.03, 0.007, 12,16 ) ,
+          new THREE.MeshPhysicalMaterial({transparent:true,opacity:0.8,shininess:80,
+          // transmission:0.4,roughness:0.3,metalness:0
+          }) );  
+        pointLight.add( lightMesh ); 
+      }
+    }
+  }
+  
+  
+
+  var floorGeometry = new THREE.PlaneBufferGeometry( 15,20, 40,60 );
+  floorGeometry.rotateX( - Math.PI / 2 );
+  var floor = new THREE.Mesh( floorGeometry, new THREE.MeshPhongMaterial()  );
+  scene.add( floor ); 
+  floor.position.set(0,-0.5,-5);
+  //  
+  var vertices = floorGeometry.attributes.position.array;
+  for ( var i = 0; i < vertices.length; i += 3) {
+    var xDist = Math.abs(vertices[i+0]);
+    //if(xDist < 2) continue;
+    // if(Math.random()<0.5) vertices[i+1] = 0;
+    // else vertices[i+1] = -0.1;
+    vertices[i+1] = Math.random()*0.1 + xDist*0.15;
+    //console.log( vertices[i+1] );
+  }
+ 
+}
+function myAnimScene(){
+  var now = Date.now();  
+  //mesh.position.x = Math.cos(now*vars.speed);
+  pointLight0.position.x = Math.cos(now*vars.speed);
+}
+
+
+</script>
 </html>
