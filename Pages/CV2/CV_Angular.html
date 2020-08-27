@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>AngularJS CV</title>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-sanitize.min.js"></script>
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.38/MyLibs/DataMgt.js"></script>
+<script src="https://chrismcg61.github.io/Pages/CV2/DataCV.js"></script>
+
+
+<style>
+</style>
+</head>
+
+
+<body>
+<div ng-app="myApp" ng-controller="myCtrl" >
+
+  <div ng-repeat="x in subDivs" >
+    {{ x.title.txt }}
+    {{ x.tagDiv.title }}
+    <span ng-repeat="t in x.tagDiv.tags" ng-bind-html="t" style="margin-right:8px; background-color:rgba(100,100,100,0.5);">  
+    </span>
+  </div>
+
+</div>  
+</body>
+
+
+
+<script>
+var app = angular.module("myApp", ['ngSanitize']);
+app.controller("myCtrl", function($scope, $timeout, $sanitize) {
+    
+  $scope.subDivs = rootData_Pers.subDivs;  
+
+});
+</script>
+</html>
