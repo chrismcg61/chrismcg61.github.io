@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>ReactJS CV</title>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/react.min.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.38/MyLibs/DataMgt.js"></script>
+<script src="https://chrismcg61.github.io/Pages/CV2/DataCV.js"></script>
+
+
+<style>
+</style>
+</head>
+
+
+<body>
+<div id="root"></div>
+</body>
+
+
+
+<script type="text/babel">
+//class Table extends React.Component {
+var Table = React.createClass({
+  getInitialState: function () {
+    return {count: 0};    
+  },
+
+  componentDidMount: function () {
+    // setInterval(
+    //   () => this.setState({ count: this.state.count+1 }), 
+    //   1000
+    // );
+  },
+  
+  render() {
+    let subDivs = rootData_Pers.subDivs;
+    
+    return <div>
+      {
+        subDivs.map((obj, i) =>{
+          if(obj.title)
+            return <div>{obj.title.txt}</div>  
+
+            if(obj.tagDiv){
+              // if(obj.tagDiv.title)
+              //   return <div>{obj.tagDiv.title}</div>
+
+              var style = {
+                backgroundColor: 'rgba(100,100,100, 0.5)',
+                marginRight: '8px',
+              };
+              let tags = obj.tagDiv.tags;
+              if(tags){
+                return <div>
+                  {
+                    tags.map((tag, j) =>{
+                      return <span dangerouslySetInnerHTML={{__html: tag}} style={style}></span>
+                    })
+                  }
+                </div>
+              }
+            }                       
+                                             
+        })
+      }
+    </div>;
+  }
+});
+
+React.render(
+  <div>        
+    <Table/>
+  </div>,
+  document.getElementById('root')
+);
+</script>
+</html>
