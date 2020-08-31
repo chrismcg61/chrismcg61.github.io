@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>3D-Fps CV</title>
+
+
+
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/build/three.min.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/renderers/CanvasRenderer.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/renderers/Projector.js"></script>
+<!-- - -->
+<script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
+<!-- - -->
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.39/MyLibs/Three/MyThreeMin.js"></script>
+
+<!-- GUI -->
+<script src="https://threejs.org/examples/js/libs/dat.gui.min.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.39/MyLibs/GUI.js"></script>
+
+
+<!-- PostFX -->
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<!-- - -->
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.39/MyLibs/Three/PostFX.js"></script>
+
+
+<!-- Mirror & Water -->
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/objects/Reflector.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r101/examples/js/objects/Water.js"></script>
+
+
+
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.39/MyLibs/Three/MousePick.js"></script>
+
+
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.39/MyLibs/Three/CanvasTextures.js"></script>
+
+
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/controls/PointerLockControls.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.39/MyLibs/Three/FpsControl.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/chrismcg61/TechDemos/1.22/MyLibs/Three/FpsUI.css">
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.39/MyLibs/Three/FpsUi.js"></script>
+
+
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.43/MyLibs/DataMgt.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.43/MyLibs/DataCV.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/chrismcg61/TechDemos/1.43/MyLibs/Three/Table.css">
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.43/MyLibs/Three/Table.js"></script>
+
+
+
+
+
+</head>
+
+<body style="">
+	
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+
+// gpuMode = 1;
+// statsMode = 1;
+//fogDist = 120;
+// ambLightIntensity = 0.1;
+//shadowMode = 1;
+// aliasingMode = true;
+// camParams = {fov:70, near:0.01, far:50};
+// backColor = 0x030322;
+//
+fpsVars.jumpForce *= 0.8;
+////////////////////////////////////////////////////////////////////////////////
+var gVars = { ReinitRender:initRenderer, ReinitScene:function(){initScene( myInitScene )}, };
+var vars = { 
+  size:5, floorHeight:0, camHeight:9,  
+};
+initFpsUi();
+initGUI();
+////////////////////////////////////////////////////////////////////////////////
+setTimeout( function(){ initDefault( myInitScene, myAnimScene, gpuMode,statsMode ) } ,  1);
+
+////////////////////////////////////////////////////////////////////////////////
+var colors = {mirrorColor:0x223333};
+gui.addColor(colors, 'mirrorColor');
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+const TEX_SIZE = 256;
+const TEX_NB = 2;
+
+//
+// initPostFX_Gui();
+// setTimeout( initPostFX_Gui ,  200);
+////////////////////////////////////////////////////////////////////////////////
+// var mesh;
+function myInitScene(){
+  colObjs = [];
+  texObjs = [];
+  
+  
+  //container.removeChild( stats.domElement );
+  scene.background = new THREE.Color( 0x000000 );  
+  // camera.position.set(25, vars.camHeight, 30);  
+  camera.position.set(0, 0, 0); 
+
+  /*** CONTROLS ***/
+  initFpsCtrl();
+  // controls.getObject().position.y = 0;
+  
+  
+  
+  
+  // Meshes
+  var size = MESH_SIZE;  //vars.size;
+  var i = 0;
+  for (i=0; i<TEX_NB; i++) {       
+    var texObj = addTexture(TEX_SIZE, TEX_SIZE,  8);
+    //texObjs.push(texObj);
+    refreshTexture(i);
+    var mesh = new THREE.Mesh( new THREE.BoxGeometry(size, size, size*1), new THREE.MeshBasicMaterial( {map:texObjs[i].texture,} ) );
+    //
+    // var mesh = new THREE.Mesh( new THREE.BoxGeometry(size, 1*(size), size*0.1), new THREE.MeshBasicMaterial( {}  ) );
+    mesh.position.set(i*3*size, size*0.5, -size*1.5);
+    // mesh.clickable = true;
+    mesh.onclick = getClickFunc(i);
+    scene.add( mesh );
+    //
+    colObjs.push(mesh);
+    mesh.name = "MESH"+i;  
+    addMenuContent(mesh, i);   
+    if(i==1) initMeshTable(mesh);
+    // mesh.content = contentDiv;
+    //   
+    
+  }     
+  
+  // PostFX :
+  initPostFX();
+  
+  // Mirror :
+  initMirror();  
+  
+  // Mouse Pick :
+  //initMousePicking();       
+}
+//
+function addMenuContent(mesh, _id){
+  var newDiv = document.createElement("DIV");
+  // parent.appendChild( newElt );  
+  var subDivs;
+  if(_id == 0) subDivs = rootData_Pers.subDivs;
+  if(_id == 1) subDivs = rootData_JobTitles.subDivs[0].subDivs;
+  for(var i=0; i<subDivs.length; i++){
+    var subDiv = subDivs[i];
+    if(subDiv.title) addEltUI(newDiv, "DIV", "", subDiv.title.txt);
+    if(subDiv.tagDiv){
+      //if(subDiv.tagDiv.title) 
+      var newSubDiv = addEltUI(newDiv, "DIV", "", subDiv.tagDiv.title);
+      var tags = subDiv.tagDiv.tags;
+      if(tags){
+        for(var j=0; j<tags.length; j++){
+          addEltUI(newSubDiv, "SPAN", "", tags[j] );
+        }     
+      }
+    }
+  }
+  //
+  mesh.content = newDiv; 
+}
+//
+var contentDiv = document.createElement("DIV");
+function myTableInit(){
+  var newTable = createMyTable(favProjsData.subDivs, "subRatings", favProjsData.subDivs[1].subRatings);
+  displayTable(newTable, contentDiv);
+}
+function initMeshTable(_mesh){  
+  var myTable = addEltUI(contentDiv, "TABLE", "", "");
+  var newTr = myTable.insertRow(0);  
+  //
+  // var PREFIX_SUBITEM = "﹍﹍►";
+  createTableCallback = myTableInit;
+  initTableMgr(myTable, 200);
+  //
+  myTableInit();
+ 
+  _mesh.content = contentDiv;
+}
+
+//
+function myAnimScene(){
+  var now = Date.now();  
+  //mesh.position.x = 3*Math.cos(now*vars.speed);
+  
+  //updateMousePicking(myLeaveObj, myHoverObj);   
+  fpsCamAnim();
+  camTriggers();
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+function initMirror(){
+  var geometry = new THREE.PlaneBufferGeometry( 500, 500 );
+  var mirror = new THREE.Reflector( 
+    geometry, 
+    {
+    clipBias: 0.003,
+    textureWidth: window.innerWidth * window.devicePixelRatio,
+    textureHeight: window.innerHeight * window.devicePixelRatio,
+    color: colors.mirrorColor,
+    recursion: 1
+  } );
+  mirror.position.set(0,vars.floorHeight,0);
+  mirror.rotateX( -Math.PI / 2 );
+  scene.add( mirror );
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+function refreshTexture(id) {   
+  var texture = texObjs[id].texture;  
+  var texCanvas = texObjs[id].canvas; 
+  var ctx = texCanvas.getContext( '2d' );
+  
+  ctx.clearRect( 0, 0, texCanvas.width, texCanvas.height ); 
+  
+  ctx.fillStyle = 'rgb(50,255,255)';
+  ctx.fillRect( 0, 0, texCanvas.width, texCanvas.height );  
+  
+  var tt = 0.5 + 0.5*Math.cos(Date.now()*0.001);
+  ctx.fillStyle = 'rgb(255,50,0)';
+  // ctx.fillRect( tt*texCanvas.width, texCanvas.height*0.6,  texCanvas.width, texCanvas.height );
+  
+  //Text:
+  var fontSize = texCanvas.width*tVars.textScale * 0.8;
+  ctx.font = "bold "+ (fontSize) +"px Verdana";
+  ctx.textAlign = "center";
+  ctx.fillText("MENU"+(id), texCanvas.width/2, texCanvas.height/2);
+  
+  // var lineId = 1;
+  // var subDivs = rootData_Pers.subDivs;
+  // for(var i=0; i<subDivs.length; i++){
+  //   var subDiv = subDivs[i];
+  //   if(subDiv.title) {
+  //     ctx.fillText(subDiv.title.txt, texCanvas.width/2, fontSize*(lineId) );
+  //     lineId++;
+  //   }
+  //   if(subDiv.tagDiv){
+  //     if(subDiv.tagDiv.title) {
+  //       ctx.fillText(subDiv.tagDiv.title, texCanvas.width/2, fontSize*(lineId) );
+  //       lineId++;
+  //     }
+  //     // if(subDiv.tagDiv.tags){
+  //   }
+  // }  
+
+  //UPDATE ASSOCIATED TEXTURE:
+  texture.needsUpdate = true;
+}
+
+
+</script>
+</html>
