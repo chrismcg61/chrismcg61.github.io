@@ -8,8 +8,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/react.min.js"></script>
 <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.42/MyLibs/DataMgt.js"></script>
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.42/MyLibs/DataCV.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/DataMgt.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/DataCV.js"></script>
 
 
 <style>
@@ -35,13 +35,23 @@ var Table = React.createClass({
     //   () => this.setState({ count: this.state.count+1 }), 
     //   1000
     // );
+	document.addEventListener("mousemove", 
+		(event) => this.setState({ count: event.clientX })	
+	);
   },
   
   render() {
     let subDivs = rootData_Pers.subDivs;
     
     return <div>
+		<div>
+			MouseX={this.state.count}
+		</div>
+		<div>
+			_
+		</div>
       {
+		  
         subDivs.map((obj, i) =>{
           if(obj.title)
             return <div>{obj.title.txt}</div>  
