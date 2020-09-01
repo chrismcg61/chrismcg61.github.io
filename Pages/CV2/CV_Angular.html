@@ -26,6 +26,11 @@
     <span ng-repeat="t in x.tagDiv.tags" ng-bind-html="t" style="margin-right:8px; background-color:rgba(100,100,100,0.5);">  
     </span>
   </div>
+  
+  <br>
+  <button onclick="modifyHtmlDiv()">Modify SubDiv.html</button>
+  <div ng-include="'subDiv.html'"></div>
+  
 
 </div>  
 </body>
@@ -39,5 +44,12 @@ app.controller("myCtrl", function($scope, $timeout, $sanitize) {
   $scope.subDivs = rootData_Pers.subDivs;  
 
 });
+
+
+
+function modifyHtmlDiv(){
+	htmlDiv.style.backgroundColor = "blue";
+}
+
 </script>
 </html>
