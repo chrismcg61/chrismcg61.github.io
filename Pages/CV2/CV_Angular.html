@@ -27,8 +27,11 @@
     </span>
   </div>
   
+  
   <br>
-  <button onclick="modifyHtmlDiv()">Modify SubDiv.html</button>
+  <br>
+  <button ng-click="modifyHtmlDiv()">Modify SubDiv.html</button>
+  <div id="testDiv"></div>
   <div ng-include="'subDiv.html'"></div>
   
 
@@ -42,14 +45,16 @@ var app = angular.module("myApp", ['ngSanitize']);
 app.controller("myCtrl", function($scope, $timeout, $sanitize) {
     
   $scope.subDivs = rootData_Pers.subDivs;  
+  
+  
+  $scope.modifyHtmlDiv = function(){
+    testDiv.innerHTML = "AAA";
+    htmlDiv.style.backgroundColor = "blue";
+  }
 
 });
 
 
-
-function modifyHtmlDiv(){
-	htmlDiv.style.backgroundColor = "blue";
-}
 
 </script>
 </html>
