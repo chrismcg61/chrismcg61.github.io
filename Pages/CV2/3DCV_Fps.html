@@ -12,11 +12,16 @@
 <!-- - -->
 <script src="https://threejs.org/examples/js/libs/stats.min.js"></script>
 <!-- - -->
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.39/MyLibs/Three/MyThreeMin.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/Three/MyThreeMin.js"></script>
 
 <!-- GUI -->
 <script src="https://threejs.org/examples/js/libs/dat.gui.min.js"></script>
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.39/MyLibs/GUI.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/GUI.js"></script>
+
+
+<!-- Controls -->
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/controls/PointerLockControls.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/Three/FpsControl.js"></script>
 
 
 <!-- PostFX -->
@@ -27,7 +32,7 @@
 <script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/shaders/LuminosityHighPassShader.js"></script>
 <script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/postprocessing/UnrealBloomPass.js"></script>
 <!-- - -->
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.39/MyLibs/Three/PostFX.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/Three/PostFX.js"></script>
 
 
 <!-- Mirror & Water -->
@@ -37,27 +42,18 @@
 
 
 
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.39/MyLibs/Three/MousePick.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/Three/MousePick.js"></script>
 
-
-
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.39/MyLibs/Three/CanvasTextures.js"></script>
-
-
-<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/controls/PointerLockControls.js"></script>
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.39/MyLibs/Three/FpsControl.js"></script>
-
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/Three/CanvasTextures.js"></script>
 
 <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/chrismcg61/TechDemos/1.22/MyLibs/Three/FpsUI.css">
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.39/MyLibs/Three/FpsUi.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/Three/FpsUi.js"></script>
 
-
-
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.43/MyLibs/DataMgt.js"></script>
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.43/MyLibs/DataCV.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/DataMgt.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/DataCV.js"></script>
 
 <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/chrismcg61/TechDemos/1.43/MyLibs/Three/Table.css">
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.43/MyLibs/Three/Table.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/Three/Table.js"></script>
 
 
 
@@ -106,15 +102,18 @@ fpsVars.jumpForce *= 0.8;
 var gVars = { ReinitRender:initRenderer, ReinitScene:function(){initScene( myInitScene )}, };
 var vars = { 
   size:5, floorHeight:0, camHeight:9,  
+  mirrorColor:{rgb:0x223333,a:0},
 };
 initFpsUi();
 initGUI();
+folder1.close();
+folder2.close();
 ////////////////////////////////////////////////////////////////////////////////
 setTimeout( function(){ initDefault( myInitScene, myAnimScene, gpuMode,statsMode ) } ,  1);
 
 ////////////////////////////////////////////////////////////////////////////////
-var colors = {mirrorColor:0x223333};
-gui.addColor(colors, 'mirrorColor');
+// var colors = {mirrorColor:0x223333};
+// gui.addColor(colors, 'mirrorColor');
 ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -124,21 +123,21 @@ gui.addColor(colors, 'mirrorColor');
 
 
 ////////////////////////////////////////////////////////////////////////////////
-const TEX_SIZE = 256;
+const TEX_SIZE = 512;
 const TEX_NB = 2;
 
 //
 // initPostFX_Gui();
 // setTimeout( initPostFX_Gui ,  200);
 ////////////////////////////////////////////////////////////////////////////////
-// var mesh;
+var meshes = [];
 function myInitScene(){
   colObjs = [];
   texObjs = [];
   
   
   //container.removeChild( stats.domElement );
-  scene.background = new THREE.Color( 0x000000 );  
+  scene.background = new THREE.Color( 0x000007 );  
   // camera.position.set(25, vars.camHeight, 30);  
   camera.position.set(0, 0, 0); 
 
@@ -159,10 +158,11 @@ function myInitScene(){
     var mesh = new THREE.Mesh( new THREE.BoxGeometry(size, size, size*1), new THREE.MeshBasicMaterial( {map:texObjs[i].texture,} ) );
     //
     // var mesh = new THREE.Mesh( new THREE.BoxGeometry(size, 1*(size), size*0.1), new THREE.MeshBasicMaterial( {}  ) );
-    mesh.position.set(i*3*size, size*0.5, -size*1.5);
+    mesh.position.set(i*3*size, size*0.6, -size*1.5);
     // mesh.clickable = true;
     mesh.onclick = getClickFunc(i);
     scene.add( mesh );
+	meshes.push(mesh);
     //
     colObjs.push(mesh);
     mesh.name = "MESH"+i;  
@@ -189,6 +189,8 @@ function addMenuContent(mesh, _id){
   var subDivs;
   if(_id == 0) subDivs = rootData_Pers.subDivs;
   if(_id == 1) subDivs = rootData_JobTitles.subDivs[0].subDivs;
+  //
+  addEltUI(newDiv, "DIV", "", "_");
   for(var i=0; i<subDivs.length; i++){
     var subDiv = subDivs[i];
     if(subDiv.title) addEltUI(newDiv, "DIV", "", subDiv.title.txt);
@@ -229,6 +231,9 @@ function initMeshTable(_mesh){
 function myAnimScene(){
   var now = Date.now();  
   //mesh.position.x = 3*Math.cos(now*vars.speed);
+  for (var i=0; i<meshes.length; i++) {   
+	meshes[i].position.y = 0.6*MESH_SIZE + 0.1*MESH_SIZE*Math.cos(now*0.001);
+  }
   
   //updateMousePicking(myLeaveObj, myHoverObj);   
   fpsCamAnim();
@@ -248,7 +253,7 @@ function initMirror(){
     clipBias: 0.003,
     textureWidth: window.innerWidth * window.devicePixelRatio,
     textureHeight: window.innerHeight * window.devicePixelRatio,
-    color: colors.mirrorColor,
+    color: vars.mirrorColor.rgb,
     recursion: 1
   } );
   mirror.position.set(0,vars.floorHeight,0);
@@ -280,27 +285,30 @@ function refreshTexture(id) {
   // ctx.fillRect( tt*texCanvas.width, texCanvas.height*0.6,  texCanvas.width, texCanvas.height );
   
   //Text:
-  var fontSize = texCanvas.width*tVars.textScale * 0.8;
+  var lineId = 1;
+  var fontSize = texCanvas.width*tVars.textScale * 0.7;
+  //
   ctx.font = "bold "+ (fontSize) +"px Verdana";
   ctx.textAlign = "center";
-  ctx.fillText("MENU"+(id), texCanvas.width/2, texCanvas.height/2);
-  
-  // var lineId = 1;
-  // var subDivs = rootData_Pers.subDivs;
-  // for(var i=0; i<subDivs.length; i++){
-  //   var subDiv = subDivs[i];
-  //   if(subDiv.title) {
-  //     ctx.fillText(subDiv.title.txt, texCanvas.width/2, fontSize*(lineId) );
-  //     lineId++;
-  //   }
-  //   if(subDiv.tagDiv){
-  //     if(subDiv.tagDiv.title) {
-  //       ctx.fillText(subDiv.tagDiv.title, texCanvas.width/2, fontSize*(lineId) );
-  //       lineId++;
-  //     }
-  //     // if(subDiv.tagDiv.tags){
-  //   }
-  // }  
+  ctx.fillText("MENU"+(id), texCanvas.width/2, fontSize*(lineId) );
+  //  
+  lineId = 3;
+  var subDivs;
+  if(id==0) subDivs = rootData_Pers.subDivs;
+  if(id==1) subDivs = favProjsData.subDivs
+  for(var i=0; i<subDivs.length; i++){
+    var subDiv = subDivs[i];
+    if(subDiv.title) {
+      ctx.fillText(subDiv.title.txt, texCanvas.width/2, fontSize*(lineId) );
+      lineId++;
+    }
+    // if(subDiv.tagDiv){
+      // if(subDiv.tagDiv.title) {
+        // ctx.fillText(subDiv.tagDiv.title, texCanvas.width/2, fontSize*(lineId) );
+        // lineId++;
+      // }
+    // }
+  }  
 
   //UPDATE ASSOCIATED TEXTURE:
   texture.needsUpdate = true;
