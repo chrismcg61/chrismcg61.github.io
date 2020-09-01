@@ -4,8 +4,8 @@
 <head>
 <title>CV</title>
 
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.41/MyLibs/DataMgt.js"></script>
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.41/MyLibs/DataCV.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/DataMgt.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/DataCV.js"></script>
 
 <style>
 body{
@@ -67,7 +67,7 @@ body{
 .spanBtn{
   font-size: 90%; 
   cursor:pointer;
-  background-color : rgba(255,0,0, 0.8);
+  background-color : rgba(255,80,80, 0.8);
   padding: 0 4px 0 4px;
   border: 4px outset white;
   border-radius: 6px; 
@@ -151,6 +151,37 @@ Light:<input id="" type="checkbox"  onchange="lightOn()">
 
 
 <script>
+/*** DataMgt Vars ***/
+var TAG_SEPARATOR = small("&nbsp●&nbsp");  //"•";  //
+var BAR_FACTOR = 2.1;
+var BAR_FONTSIZE = "60%";
+/**/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //        
 var myData = {
@@ -223,6 +254,15 @@ var extraDivsL = [
 ];
 var extraDivsR = [  
   {
+    subDivs:skillMgtData.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },
+  
+  {
     subDivs:skillData.subDivs,
 	classes:["divCol1"],
   },
@@ -267,6 +307,12 @@ function addDivs(_subDivs, _id){
     myData.subDivs[_id].subDivs.push( _subDivs[i] );
   }
 }
+//
+var urlParams = (new URL(document.location)).searchParams;
+var urlParam_detail = urlParams.get('d');
+if(urlParam_detail==1) showDetails.checked = true;
+else showDetails.checked = false;
+//
 function initDisplayData(){
   containerDiv.innerHTML = "";
   myData.subDivs[0].subDivs = [];
