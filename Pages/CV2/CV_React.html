@@ -8,11 +8,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/react.min.js"></script>
 <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/DataMgt.js"></script>
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/DataCV.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.58/MyLibs/DataMgt.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.58/MyLibs/DataCV.js"></script>
 
 
 <style>
+body{
+  background-color: rgba(0,0,0, 0.9);
+  margin: 0 0 0 0;
+  font-size: 24px;
+  text-align: center; color:white; 
+  font-family: Arial, Helvetica, sans-serif;
+}
 </style>
 </head>
 
@@ -27,7 +34,13 @@
 //class Table extends React.Component {
 var Table = React.createClass({
   getInitialState: function () {
-    return {count: 0};    
+    return {
+		mouseX: 0, 
+		mouseY: 0, 
+		subDivs:rootData_Pers.subDivs,
+		prevDiv:() => this.setState({ subDivs:rootData_Pers.subDivs }),
+		nextDiv:() => this.setState({ subDivs:rootData_JobTitles.subDivs[0].subDivs })
+	  };    
   },
 
   componentDidMount: function () {
@@ -36,45 +49,57 @@ var Table = React.createClass({
     //   1000
     // );
 	document.addEventListener("mousemove", 
-		(event) => this.setState({ count: event.clientX })	
+		(event) => this.setState({ mouseX: event.clientX,  mouseY: event.clientY, })	
 	);
   },
   
+  //handleClick: () => setState({ count: 0 }) ,
+  
   render() {
-    let subDivs = rootData_Pers.subDivs;
+    //let subDivs = {this.state.subDivs};
+	var styleDivMouse = {
+		backgroundColor: 'rgba(180,180,180, 0.8)',
+		fontSize: '60%',
+	};
     
     return <div>
-		<div>
-			MouseX={this.state.count}
+		<div style={styleDivMouse}>
+			Mouse : X={this.state.mouseX} Y={this.state.mouseY}
 		</div>
 		<div>
 			_
 		</div>
+		<button onClick={this.state.prevDiv}>◄</button>
+		<button onClick={this.state.nextDiv}>►</button>
       {
 		  
-        subDivs.map((obj, i) =>{
-          if(obj.title)
-            return <div>{obj.title.txt}</div>  
-
-            if(obj.tagDiv){
-              // if(obj.tagDiv.title)
-              //   return <div>{obj.tagDiv.title}</div>
-
-              var style = {
+        this.state.subDivs.map((obj, i) =>{
+			var tagDiv = obj.tagDiv;
+			var styleSpan = {
                 backgroundColor: 'rgba(100,100,100, 0.5)',
                 marginRight: '8px',
+				//fontSize: '24px',
               };
-              let tags = obj.tagDiv.tags;
-              if(tags){
-                return <div>
-                  {
-                    tags.map((tag, j) =>{
-                      return <span dangerouslySetInnerHTML={{__html: tag}} style={style}></span>
-                    })
-                  }
-                </div>
-              }
-            }                       
+			
+			let title = <span></span>;
+			let tagTitle = <span></span>;
+			let tagSpans = <span></span>;
+			
+			if(obj.title)
+				title = <span>{obj.title.txt}</span>;
+			if(tagDiv && tagDiv.title)
+				tagTitle = <span>{obj.tagDiv.title}</span>
+			if(tagDiv && tagDiv.tags)
+				tagSpans = tagDiv.tags.map((tag, j) =>{
+						return <span dangerouslySetInnerHTML={{__html: tag}} style={styleSpan}></span>
+					})
+					
+			  
+			return <div>
+				{title}				
+				{tagTitle}				
+				{tagSpans}
+			</div>                     
                                              
         })
       }
