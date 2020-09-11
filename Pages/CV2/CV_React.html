@@ -16,17 +16,46 @@
 body{
   background-color: rgba(0,0,0, 0.9);
   margin: 0 0 0 0;
-  font-size: 24px;
-  text-align: center; color:white; 
-  font-family: Arial, Helvetica, sans-serif;
 }
 </style>
 </head>
 
 
+
 <body>
 <div id="root"></div>
 </body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -37,6 +66,8 @@ var Table = React.createClass({
     return {
 		mouseX: 0, 
 		mouseY: 0, 
+		lastT: 0,
+		maxFps: 0,
 		subDivs:rootData_Pers.subDivs,
 		prevDiv:() => this.setState({ subDivs:rootData_Pers.subDivs }),
 		nextDiv:() => this.setState({ subDivs:rootData_JobTitles.subDivs[0].subDivs })
@@ -57,13 +88,33 @@ var Table = React.createClass({
   
   render() {
     //let subDivs = {this.state.subDivs};
+	var now = Date.now();
+	var deltaT = now - this.state.lastT;
+	var fps = Math.floor(1000/deltaT);
+	this.state.maxFps = Math.floor( 0.99 * this.state.maxFps );
+	if(fps > this.state.maxFps) this.state.maxFps = fps;
+	this.state.lastT = now;
+	//
+	var styleMain = {
+		fontSize: '24px',
+		color:"white",
+		textAlign: "center", 
+		fontFamily: "Arial, Helvetica, sans-serif",
+	};
 	var styleDivMouse = {
 		backgroundColor: 'rgba(180,180,180, 0.8)',
 		fontSize: '60%',
 	};
+	var styleSpan = {
+		backgroundColor: 'rgba(100,100,100, 0.5)',
+		marginRight: '8px',
+		//fontSize: '24px',
+	};
+	
     
-    return <div>
+    return <div style={styleMain}>
 		<div style={styleDivMouse}>
+			FPSmax={this.state.maxFps} ●
 			Mouse : X={this.state.mouseX} Y={this.state.mouseY}
 		</div>
 		<div>
@@ -71,15 +122,10 @@ var Table = React.createClass({
 		</div>
 		<button onClick={this.state.prevDiv}>◄</button>
 		<button onClick={this.state.nextDiv}>►</button>
-      {
-		  
+		
+      {		  
         this.state.subDivs.map((obj, i) =>{
 			var tagDiv = obj.tagDiv;
-			var styleSpan = {
-                backgroundColor: 'rgba(100,100,100, 0.5)',
-                marginRight: '8px',
-				//fontSize: '24px',
-              };
 			
 			let title = <span></span>;
 			let tagTitle = <span></span>;
