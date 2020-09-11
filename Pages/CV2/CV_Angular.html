@@ -21,6 +21,26 @@ body{
 </head>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <body>
 <div ng-app="myApp" ng-controller="myCtrl" 
   style="text-align: center; color:white; 
@@ -49,10 +69,32 @@ body{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
 var app = angular.module("myApp", ['ngSanitize']);
-app.controller("myCtrl", function($scope, $timeout, $sanitize) {
-    
+app.controller("myCtrl", function($scope, $timeout, $sanitize) {    
   $scope.subDivs = rootData_Pers.subDivs;  
   
   $scope.nextDiv = function(){ $scope.subDivs = rootData_JobTitles.subDivs[0].subDivs; }
@@ -62,10 +104,6 @@ app.controller("myCtrl", function($scope, $timeout, $sanitize) {
     //testDiv.innerHTML = "AAA";
     htmlDiv.style.backgroundColor = "blue";
   }
-
 });
-
-
-
 </script>
 </html>
