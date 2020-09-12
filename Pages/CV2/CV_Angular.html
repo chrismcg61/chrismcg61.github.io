@@ -2,7 +2,7 @@
 <html>
 
 <head>
-<title>AngularJS CV</title>
+<title>AngularJS-CV v2</title>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
@@ -102,7 +102,7 @@ app.controller("myCtrl", function($scope, $timeout, $sanitize) {
   
   $scope.modifyHtmlDiv = function(){
     //testDiv.innerHTML = "AAA";
-    htmlDiv.style.backgroundColor = "blue";
+	htmlDiv.style.backgroundColor = "rgba("+(Math.random()*255)+","+(Math.random()*255)+","+(Math.random()*255)+", 0.5)";
   }
 });
 </script>
