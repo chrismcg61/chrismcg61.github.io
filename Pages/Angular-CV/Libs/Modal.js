@@ -103,7 +103,7 @@ var modalBtnHTML = "<h1>SIMPLE RESUME</h1>"
         + "<br/> <span>No Panels Expanded</span>";
 cloneModalBtn(0, modalBtnHTML);
 		
-modalBtnHTML = "<h1>INTERMEDIATE RESUME</h1>"
+modalBtnHTML = "<h1>DEFAULT RESUME</h1>"
 			+ "<br/> <span>Important Tech Panels Expanded</span>";
 cloneModalBtn(1, modalBtnHTML);
 

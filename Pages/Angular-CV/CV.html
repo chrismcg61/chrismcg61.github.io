@@ -88,15 +88,16 @@ OFFLINE LIBS :
               <span class="dates" style="margin-right:0px;"> 
                 {{corp.dates.start.Y}}<span class="quarters">.Q{{corp.dates.start.Q}}</span>▸{{corp.dates.end.Y}}<span class="quarters">.Q{{corp.dates.end.Q}}</span></span>
               <span style="font-size: 100%; line-height: 90%;"><i>▫</i>{{corp.title}} </span>
+              <span ng-if="corp.branch" style="font-size: 70%;"><i>({{corp.branch}})</i></span>
             </div>
             
 			<div>
 				<span ng-repeat="role in ssubDiv.roles" class="dates" 
-					style="margin-right:25px; line-height: 1.8; font-size: 70%;">{{role}}</span>			
+					style="margin-right:25px; line-height: 1.4; font-size: 80%;">{{role}}</span>			
 			</div>
-			<div>
+			<div style="">
 				<span ng-repeat="mgtSkill in ssubDiv.mgtSkills" class="" 
-					style="margin-right:25px; background-color: rgba(255,255,255,0.5);">{{mgtSkill.title}}</span>
+					style="margin-right:25px; line-height: 1.6; font-size: 90%; background-color: rgba(255,255,255,0.5);">{{mgtSkill.title}}</span>
 			</div>
             
             <div ng-repeat="subSkill in ssubDiv.subSkills" 

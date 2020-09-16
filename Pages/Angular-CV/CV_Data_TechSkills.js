@@ -5,6 +5,30 @@ function addSkill( id, skillList, skill ){
 
 var rating = 85;
 var ratingMin = 50;
+
+var gpuSkills = [];
+addSkill( "GPU_3D", gpuSkills,
+   {"title" : "3D/GPU",
+	"rating" : rating,
+	"hiddenSkills" : [	
+		{"title" : "Dynamic 3D-Mesh Mgt (CPU/GPU)",
+			"rating" : rating,
+		},
+		{"title" : "Physics (CPU/GPU)",
+			"rating" : rating,
+		},
+		{"title" : "2D/3D GPU Shaders",
+			"rating" : rating,
+		},
+		{"title" : "GPU Parallel Prog"
+			+ subTitle("GPU-Accelerated Hi-Recursion Scripts"),
+			"rating" : rating,
+		},
+		
+	],    
+  }
+);
+
 var aiSkills = [];
 addSkill( "AI_GAME", aiSkills,
    {"title" : "AI [Game]",
@@ -43,7 +67,7 @@ addSkill( "AI_OTHER", aiSkills,
 		},
 		{
 			"title" : "Machine Learning"
-				+ subTitle("Auto-Optim, GPU"),
+				+ subTitle("Auto-Optim, GPU-Accelerated"),
 			"rating" : rating,
 			"hiddenSkills" : [	],    
 		},
@@ -157,7 +181,8 @@ addSkill( "TOOLS", mwToolSkills,
 
 var techSkills = [];
 addSkill( "WEBAPP", techSkills,
-	{"title" : "WebApp",
+	{"title" : "WebApp"
+		+ subTitle("Modular, 3D/GPU, MultiThreads"),
 	"rating" : rating,
 	"checked" : expandMode>0,
 	"expandMe": true,
@@ -291,28 +316,15 @@ addSkill( "TOOLS", techSkills,
 );
 */
 addSkill( "3D", techSkills,
-	{"title" : "3D/GPU",
-	"rating" : rating,
-	"hiddenSkills" : [
-	  {
-		"title" : "Dynamic 3D-Mesh Mgt (CPU/GPU)",
+	{"title" : "3D/GPU"
+			+ subTitle("Meshes/Shaders, Parallel-Prog"),
 		"rating" : rating,
-	  },
-	  {
-		"title" : "Physics (CPU/GPU)",
-		"rating" : rating,
-	  },
-	  {
-		"title" : "GPU Parallel Prog"
-			+ subTitle("GPU-Accelerated Hi-Recursion Scripts"),
-		"rating" : rating,
-	  },
-	  	  
-	],    
+		"hiddenSkills" : gpuSkills,    
 	}
 );
 addSkill( "AI", techSkills,
-	{"title" : "AI",
+	{"title" : "AI"
+		+ subTitle("Game, Robots, Network, M-Learning"),
 	"rating" : rating,
 	"hiddenSkills" : aiSkills,    
 	}
@@ -322,7 +334,7 @@ addSkill( "AI", techSkills,
 
 rating = rating-10;
 addSkill( "EMBED", techSkills,
-	{"title" : "Embedded",
+	{"title" : "Embedded Dev",
 	"rating" : rating,
 	"hiddenSkills" : [
 		{
@@ -338,7 +350,7 @@ addSkill( "EMBED", techSkills,
 );
 rating = ratingMin;
 addSkill( "OTHER", techSkills,
-	{"title" : "Misc"
+	{"title" : "Misc Dev"
 			+ subTitle("Network, Elec, Secu, .Net, DataMgt"),
 		"rating" : rating,
 		"hiddenSkills" : [

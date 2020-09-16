@@ -32,28 +32,7 @@ addSkill( "AUTO", mgtSkills,
 		],
 	  },
 	  
-	  {
-		"title" : "CODE Mgt",
-		"rating" : rating,
-		"hiddenSkills" : [
-			{
-				"title" : "Test-Driven Dev"
-					+ subTitle("User Feedback, Lib-API UTs"),  //Client-User
-				"rating" : rating,
-			},
-			{"title" : "Inter-Modules Refactoring"
-				+ subTitle("Eval & Exec"),
-				"rating" : rating,
-				"hiddenSkills" : [ ],    
-			},
-			{"title" : "Code Guidelines"
-				+ subTitle("Understanding, Exec & Optim"),
-				"rating" : rating,
-				"hiddenSkills" : [ ],    
-			},
-		
-		],
-	  },
+	  
 	],    
   }
 );
@@ -73,7 +52,7 @@ addSkill( "AGILE", mgtSkills,
 		"rating" : rating,
 		"hiddenSkills" : [
 			{
-				"title" : "Scrum Master Mobility"
+				"title" : "Flex Scrum Master"
 					+ subTitle("Tools/Resources Distrib."),
 				"rating" : rating,
 			},		  
@@ -86,6 +65,10 @@ addSkill( "AGILE", mgtSkills,
 				"title" : "Inter-Team Sync", //Inter-Proj
 				"rating" : rating,
 			},
+			{
+				"title" : "Knowledge Sharing / Mentoring",
+				"rating" : rating,
+			},
 		
 		],
 	  },
@@ -96,33 +79,20 @@ addSkill( "AGILE", mgtSkills,
 		"title" : "CODE Mgt",
 		"rating" : rating,
 		"hiddenSkills" : [
-			{"title" : "Retro-Engineering",
-				"rating" : rating,
-			},
+			
 			{"title" : "API Learning"
 					+ subTitle("Complex App Deciphering"),
 				"rating" : rating,
-			},	
-			{"title" : "API Sharing"
-				+ subTitle("Documenting, Harmonization, Demo"),
-				"rating" : rating,
-				"hiddenSkills" : [ ],    
-			},
+			},				
 			{
 				"title" : "Code Review"
 					+ subTitle("Critical API Team Review"),
 				"rating" : rating,
-			},	
-			{
-				"title" : "Perf Monitoring Libs"
-					+ subTitle("CPU/GPU Data, Hi-Load Warnings"),
-				"rating" : rating,
-			},
+			},				
 			{
 				"title" : "Quality/Regression Analytics",
 				"rating" : rating,
-			},
-			
+			},			
 			
 					
 		],
@@ -132,6 +102,45 @@ addSkill( "AGILE", mgtSkills,
 	],    
   }
 );
+
+
+addSkill( "HQ_CODE", mgtSkills,
+   {"title" : "HQ-Code/Perf",
+	"rating" : rating,
+	"hiddenSkills" : [
+		{"title" : "Code Guidelines"
+				+ subTitle("Understanding, Exec & Optim"),
+			"rating" : rating,
+			"hiddenSkills" : [ ],    
+		},
+		{"title" : "Retro-Engineering"
+				+ subTitle("Innov-Inspiring"),
+			"rating" : rating,
+		},
+		{"title" : "API Sharing"
+				+ subTitle("Documenting, Harmonization, Demo"),
+			"rating" : rating,
+			"hiddenSkills" : [ ],    
+		},
+		{"title" : "Perf Monitoring Libs"
+				+ subTitle("CPU/GPU Data, Hi-Load Warnings"),
+			"rating" : rating,
+		},		
+		{"title" : "Test-Driven Dev"
+				+ subTitle("User Feedback, Lib-API UTs"),  //Client-User
+			"rating" : rating,
+		},
+		{"title" : "Inter-Modules Refactoring"
+			+ subTitle("Eval & Exec"),
+			"rating" : rating,
+			"hiddenSkills" : [ ],    
+		},		
+		
+		
+	],    
+  }
+);
+
 
 rating = rating - 10;
 addSkill( "AUTO_CODE", mgtSkills,

@@ -63,8 +63,8 @@ var catStyles = [
     },
 	
 	{
-      "background-color" : "#dddddd",
-      "color" : "#bbbbbb",
+      "background-color" : "#ccccee",
+      "color" : "#aaaaaa",
     },
 	
 ];
@@ -88,12 +88,12 @@ function getRatingList(p0, p1, p2, p3, p4, p5){
   var ratingList = [
 	{
       "title": "AUTO",
-	  "titleDesc": "Auto-Mgt",
+	  "titleDesc": "Dev Autonomy",
       "rating": defaultRating,      
     },
 	{
       "title": "TECH",
-	  "titleDesc": "Hi-Tech Tasks",
+	  "titleDesc": "HiTech Tasks",
       "rating": defaultRating,     
     },
 	

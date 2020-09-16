@@ -21,9 +21,10 @@ var languages = [
 ];
 
 var hobbiesTech = [
-	{"title" : "Tech Research",
+	{"title" : "Tech Research"
+			+ subTitle("Coding/Mgt Innov"),
 		"rating" : rating,
-		"expandMode": 0,
+		// "expandMode": 0,
 		"hiddenSkills" : [
 		  {"title" : "Advanced Coding"
 			+ subTitle("AI, GPU, Gam°"),
@@ -83,10 +84,10 @@ var hobbies = [
 		],    
 	},
 	{"title" : "Sports"
-		+ subTitle("Running, Foot/Tennis, Ski..."),
+		+ subTitle("Running, Football/Tennis, Ski…"),
 		"rating" : rating,
 		"hiddenSkills" : [ 
-			{"title" : "Running",
+			{"title" : "Running/Bike",
 				"rating" : rating,
 			},
 			{"title" : "Tennis/Football",

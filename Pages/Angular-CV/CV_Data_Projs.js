@@ -15,13 +15,15 @@ altenType_Rennes["title"] = altenType["title"]+"(+RENNES)";
 
 defaultCorps = [
 	{
-	  "title" : "Holomatix (Data Mgt)",
+	  "title" : "Holomatix",
+	  "branch" : "Data Mgt",
 	  "catId": 4,
 	  "dates": getDates(1),
 	  "type":	{
 		"title":"LONDON",
 		"desc":"Foreign Internship [Pre-Master]"
 	  },  
+	  "ratings": getRatingList( getRating(0), getRating(1), getRating(1), ),	 
 	},
 	{
 	  "title" : "_",
@@ -29,7 +31,8 @@ defaultCorps = [
 	  "dates": getDates(7),        
 	},
 	{
-		"title" : "Dassault (Elec TestBench)",
+		"title" : "Dassault",
+		"branch" : "Elec TestBench",
 		"type":	{
 			"title":"ISTRES",
 			"desc":"Final Internship (South-FR AF-Base)"
@@ -40,7 +43,8 @@ defaultCorps = [
 	},	
 	
 	{
-		"title" : "Etranges Libellules (Ubi)",
+		"title" : "Etranges Libellules",
+		"branch" : "Ubisoft",
 		"type":	{
 			"title":"LYON",
 			"desc":"Project-Contract"
@@ -50,7 +54,8 @@ defaultCorps = [
 		"ratings": getRatingList( getRating(3), getRating(4), getRating(4),),	    
 	},
 	{
-		"title" : "Phoenix (Ubi)",
+		"title" : "Phoenix Interactive",
+		"branch" : "Ubisoft",
 		"type":	{
 			"title":"LYON",
 			"desc":"CDD ► CDI"
@@ -62,7 +67,8 @@ defaultCorps = [
 	
 	
   {
-    "title" : "Sword (WebPortal)",
+    "title" : "Sword",
+	"branch" : "WebPortal Service",
 	"type":	{
 		"title":"LYON-SSII",
 		"desc":"Lyon SSII Mission"
@@ -73,15 +79,17 @@ defaultCorps = [
   },  
 
   {
-    "title" : "NeoPost (Stamping Machines/AI)",
+    "title" : "NeoPost",
+	"branch" : "Stamp-Machines/AI",
 	"type":	altenType,
     "catId": 3,
     "dates": getDates( 2 ),  
-	"ratings": getRatingList( getRating(3), getRating(3), getRating(3),),	
+	"ratings": getRatingList( getRating(3), getRating(3), getRating(4),),	
   },  
   
   {
-    "title" : "Nagra (TV Secu)",
+    "title" : "Nagra[Canal+]",
+	"branch" : "STB/Stream Secu",
 	"type":	altenType,
     "catId": 4,
     "dates": getDates( 1 ),    
@@ -89,7 +97,8 @@ defaultCorps = [
   }, 
 
   {
-    "title" : "SAH (Orange)",
+    "title" : "SAH",
+	"branch" : "Orange",
 	"type":	altenType_Rennes,
     "catId": 2,
     "dates": getDates( 5 ),   
@@ -97,43 +106,55 @@ defaultCorps = [
   },  
 
   {
-    "title" : "Technicolor (Net Optim)",
+    "title" : "Technicolor",
+	"branch" : "STB Network Optim",
 	"type":	altenType,
     "catId": 4,
     "dates": getDates( 1 ),   
+	"ratings": getRatingList( getRating(1), getRating(1), getRating(2),),
   }, 
   {
-    "title" : "SagemCom (Network)",
+    "title" : "SagemCom",
+	"branch" : "STB Network Optim",
 	"type":	altenType,
     "catId": 4,
-    "dates": getDates( 1 ),         
+    "dates": getDates( 1 ),      
+	"ratings": getRatingList( getRating(-1), getRating(-1), getRating(-1),),	
   }, 
 
   {
     "title" : "Bouygues Tel",
+	"branch" : "",
 	"type":	altenType,
     "catId": 2,
-    "dates": getDates( 4 ),     
+    "dates": getDates( 4 ),    
+	"ratings": getRatingList( getRating(4), getRating(3), getRating(2), ),
   },  
     
   {
-    "title" : "Parrot (Drone TestBench)",
+    "title" : "Parrot",
+	"branch" : "Drone TestBench",
 	"type":	altenType,
     "catId": 4,
     "dates": getDates( 1 ),    
+	"ratings": getRatingList( getRating(-1), getRating(-1), getRating(-1),),
   }, 
 
   {
-    "title" : "Cisco (3D-TV)",
+    "title" : "Cisco",
+	"branch" : "3D-TV",
 	"type":	altenType,
     "catId": 2,
-    "dates": getDates( 5 ),         
+    "dates": getDates( 5 ),    
+	"ratings": getRatingList( getRating(4), getRating(4), getRating(3), ),	
   },
 
   {
-    "title" : "MyProj [Unity3D Rogue-ARPG]",
+    "title" : "MyProj[GAME]",
+	"branch" : "Unity3D Rogue-ARPG",
     "catId": 1,
     "dates": getDates( 6 ),  
+	"ratings": getRatingList( getRating(4), getRating(4), getRating(3), ),	
   },
   {
 	  "title" : "_",
@@ -141,9 +162,11 @@ defaultCorps = [
 	  "dates": getDates(6),      
   },
   {
-    "title" : "MyProj [WebApps++]",  // GPU/AI
+    "title" : "MyProj[APP]",  // GPU/AI
+	"branch" : "GPU/AI/Gam° WebApps",
     "catId": 0,
     "dates": getDates( 6 ),   
+	"ratings": getRatingList( getRating(4), getRating(4), getRating(3), ),	
   },
   
   {
@@ -162,14 +185,14 @@ function overloadCategories(){
 	var catId = 0;
 	categories.push(
 		{
-		  "title": "Advanced Webapps",
+		  "title": "WebApp Dev",
 		  "catId": catId,
 		  "subDivs": [
 			{
 			  "corps": getCorpsByCategory(catId),
 			  "roles": [ roles["PROJ_MGR"], roles["EXPERT"],  ],
-			  "mgtSkills": [ mgtSkills["AUTO"], ],
-			  "subSkills": [ appSkills["APP_ADVANCED"], techSkills["3D"],  aiSkills["AI_OTHER"] ],
+			  "mgtSkills": [ mgtSkills["AUTO"],  mgtSkills["HQ_CODE"],],
+			  "subSkills": [ appSkills["APP_ADVANCED"], gpuSkills["GPU_3D"],  aiSkills["AI_OTHER"] ],
 			},
 		  ],
 		}
@@ -184,8 +207,8 @@ function overloadCategories(){
 			{
 			  "corps": getCorpsByCategory(catId),
 			  "roles": [  roles["PROJ_MGR"], roles["LEAD"], roles["EXPERT"], ],
-			  "mgtSkills": [ mgtSkills["AUTO"], mgtSkills["AGILE"], ],
-			  "subSkills": [ techSkills["GAME"], techSkills["MW_TOOLS"], techSkills["3D"],  aiSkills["AI_GAME"] ],
+			  "mgtSkills": [ mgtSkills["AUTO"], mgtSkills["AGILE"],  mgtSkills["HQ_CODE"], ],
+			  "subSkills": [ techSkills["GAME"], techSkills["MW_TOOLS"], gpuSkills["GPU_3D"],  aiSkills["AI_GAME"] ],
 			},
 		  ],
 		}
@@ -201,7 +224,7 @@ function overloadCategories(){
 			{
 			  "corps": getCorpsByCategory(catId),
 			  "roles": [  roles["LEAD"], roles["EXPERT"], ],
-			  "mgtSkills": [ mgtSkills["AUTO"], mgtSkills["AGILE"],   ],
+			  "mgtSkills": [ mgtSkills["AUTO"], mgtSkills["AGILE"],  mgtSkills["HQ_CODE"],  ],
 			  "subSkills": [ appSkills["APP_STB"], techSkills["MW_TOOLS"],  ],
 			},
 		  ],
@@ -212,7 +235,7 @@ function overloadCategories(){
 	catId++;
 	categories.push(
 		{
-		  "title": "Embedded",
+		  "title": "Embedded Dev",
 		  "catId": catId,
 		  "subDivs": [
 			{
@@ -228,7 +251,7 @@ function overloadCategories(){
 	catId++;
 	categories.push(
 		{
-		  "title": "OTHER",
+		  "title": "Other Dev",
 		  "catId": catId,
 		  "subDivs": [
 			{
