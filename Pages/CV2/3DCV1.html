@@ -2,7 +2,7 @@
 <html>
 
 <head>
-<title>IFRAME CV</title>
+<title>CV + 3D Frame</title>
 
 <style>
 body{
@@ -11,28 +11,33 @@ body{
 </style>
 </head>
 
-<body style="background-image: linear-gradient(to right,  white, black, white);">
+<body style="
+//background-image: linear-gradient(to right,  white, black, white);
+background-color:black;
+color:grey;
+">
 
-  URLs:
-  <input type="text" id="input1">
+  FrameURLs:
+  <input type="text" id="input1" style="width:300px;">
   <button onclick="setIframeSrc1()">GO</button>
-  <input type="text" id="input2">
+
+  &nbsp - &nbsp 
+  <input type="text" id="input2" style="width:300px;">
+  <select id="urlSelect">
+    <option value="---">-----</option>
+	<option value="3DSkyShader.html">3DSkyShader.html</option>
+	<option value="3D1.html">3D1.html</option>
+	<option value="3D2.html">3D2.html</option>	
+  </select>
   <button onclick="setIframeSrc2()">GO</button>
 	
-	<!-- <iframe src="iframe.html" height="600" width="800"></iframe>	 -->
-	<!-- <iframe src="iframe_BasicLinks.html" height="600" width="800"></iframe>	 -->
-	<!-- <iframe src="iframe_Particles.html" height="600" width="200"></iframe> -->
-	
-	<!-- height="1940" -->
-	<iframe id="iframe1" width="1356" height="666" src="https://chrismcg61.github.io/Pages/CV2/CV.html" 
+	<iframe id="iframe1" width="1356" height="666" src="CV.html" 
 	  style="position:absolute; left:0px; top:20px; z-index:1;" 
 	></iframe>
-	<iframe id="iframe2" width="1356" height="666" src="https://chrismcg61.github.io/Pages/CV2/3D1.html"   
+	<iframe id="iframe2" width="1656" height="666" src="3D1.html"   
 	  style="position:absolute; left:0px; top:20px; z-index:-1;"
 	></iframe>
-	
-	<!-- <iframe src="file:///C:/Users/chris/Downloads/_MyGitRepos/chrismcg61.github.io/Pages/iframe/iframe_Text3D.html?text=Christopher_McGARRY&camD=99" height="500" width="900"></iframe> -->
-	<!-- <iframe src="file:///C:/Users/chris/Downloads/_MyGitRepos/chrismcg61.github.io/Pages/iframe/iframe_Text3D.html?text=Christopher_McGARRY&camD=80" height="200" width="900"></iframe> -->
+
 
 </body>
 
@@ -43,6 +48,10 @@ function setIframeSrc1(){
 }
 function setIframeSrc2(){
   iframe2.src = input2.value;
+}
+
+urlSelect.onchange = function(){
+  input2.value = urlSelect.value;
 }
 </script>
 </html>

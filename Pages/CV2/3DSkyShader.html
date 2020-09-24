@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Shader Skybox</title>
+
+
+
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/libs/stats.min.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/libs/dat.gui.min.js"></script>
+<!-- - -->
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/build/three.min.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/renderers/CanvasRenderer.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r97/examples/js/renderers/Projector.js"></script>
+<!-- - -->
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.58/MyLibs/Three/MyThreeMin.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.58/MyLibs/GUI.js"></script>
+
+
+</head>
+
+
+
+
+
+<body style="">
+	
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// gpuMode = 1;
+// statsMode = 1;
+fogDist = 200;
+ambLightIntensity = 0.1;
+shadowMode = 0;
+// aliasingMode = true;
+camParams = {fov:70, near:0.01, far:2000};
+// backColor = 0x030322;
+/************************* GUI *******************************/
+var gVars = { ReinitRender:initRenderer, ReinitScene:function(){initScene( myInitScene )}, };
+var vars = { 
+  // speed: 0.001, 
+  // testColor:{rgb:0xaaaaff,a:0},
+  //colorVars:{r:5.0,g:0.0,b:5.0},
+  r:0.6,g:0.1,b:2.5,
+};
+initGUI();
+/************************* 3D Scene Init *******************************/
+setTimeout( function(){ initDefault( myInitScene, myAnimScene, gpuMode,statsMode ) } ,  1);
+/*** ***/
+
+
+var mesh;
+var uniforms;
+function myInitScene(){
+  //container.removeChild( stats.domElement );
+  //scene.background = new THREE.Color( 0xff0000 );  
+  camera.position.set(0,1,3);  
+  camera.rotation.x = 0.2;
+  
+  // var light = new THREE.AmbientLight( 0xffffff, 0.1 );  //0xaaaaff
+  // scene.add( light );
+  
+  
+  var vShader = `
+  varying vec3 vColor;
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+    gl_Position = projectionMatrix * mvPosition; 
+  }
+  `;
+  var fShader = ``;
+  //
+  var fShader2 = `
+  uniform float time;
+  uniform float colorR;
+  uniform float colorG;
+  uniform float colorB;
+  //uniform sampler2D colorTexture;
+  varying vec2 vUv;
+  //varying vec3 vColor;
+  void main()	{
+				vec2 p = - 1.0 + 2.0 * vUv;
+				float a = time * 15.0;
+				float d, e, f, g = 1.0 / 40.0 ,h ,i ,r ,q;
+				e = 400.0 * ( p.x * 0.5 + 0.5 );
+				f = 400.0 * ( p.y * 0.5 + 0.5 );
+				i = 200.0 + sin( e * g + a / 150.0 ) * 20.0;
+				d = 200.0 + cos( f * g / 2.0 ) * 18.0 + cos( e * g ) * 7.0;
+				r = sqrt( pow( abs( i - e ), 2.0 ) + pow( abs( d - f ), 2.0 ) );
+				q = f / r;
+				e = ( r * cos( q ) ) - a / 2.0;
+				f = ( r * sin( q ) ) - a / 2.0;
+				d = sin( e * g ) * 176.0 + sin( e * g ) * 164.0 + r;
+				h = ( ( f + d ) + a / 2.0 ) * g;
+				i = cos( h + r * p.x / 1.3 ) * ( e + e + a ) + cos( q * g * 6.0 ) * ( r + h / 3.0 );
+				h = sin( f * g ) * 144.0 - sin( e * g ) * 212.0 * p.x;
+				h = ( h + ( f - e ) * q + sin( r - ( a + h ) / 7.0 ) * 10.0 + i / 4.0 ) * g;
+				i += cos( h * 2.3 * sin( a / 350.0 - q ) ) * 184.0 * sin( q - ( r * 4.3 + a / 12.0 ) * g ) + tan( r * g + h ) * 184.0 * cos( r * g + h );
+				i = mod( i / 5.6, 256.0 ) / 64.0;
+				if ( i < 0.0 ) i += 4.0;
+				if ( i >= 2.0 ) i = 4.0 - i;
+				d = r / 350.0;
+				d += sin( d * d * 8.0 ) * 0.52;
+				f = ( sin( a * g ) + 1.0 ) / 2.0;
+				gl_FragColor = vec4( vec3( f*i*colorR, (i+d)*colorG, i*colorB )  * d * p.x + vec3( (i+d)*colorR, (i+d)*colorG, i*colorB ) * d * ( 1.0 - p.x ), 1.0 );
+			}`;
+  var fShaderBis = `
+uniform float time;
+varying vec2 vUv;
+void main() {
+  float timeSin = sin(time*1.0);
+  vec2 pos = -1.0 + 2.0 * vUv;    
+  vec2 pos2 = vec2(timeSin,0.5);
+  //
+  float l0 = sin( pos.y*6.0 + time*0.1 );
+  l0 = distance(pos2, pos);
+  gl_FragColor = vec4( l0,0.0,1.0, 0.99 ); 
+}`;
+  uniforms = {
+    "time": { value: 0.0 },
+	"colorR": { value: 0.0 },
+	"colorG": { value: 0.0 },
+	"colorB": { value: 0.0 },
+    //"colorTexture": { value: new THREE.TextureLoader().load('https://cdn.rawgit.com/mrdoob/three.js/r97/examples/textures/disturb.jpg') }
+  };
+  //uniforms[ "colorTexture" ].value.wrapS = uniforms[ "colorTexture" ].value.wrapT = THREE.RepeatWrapping;
+  //txtArea.value = fShaderBis;
+  //
+  var shaderMaterial = new THREE.ShaderMaterial( {
+    side:THREE.DoubleSide,
+    uniforms: uniforms,
+    vertexShader: vShader,
+    fragmentShader: fShader2,
+  } ); 
+  var shaderMaterialBis = new THREE.ShaderMaterial( {
+    side:THREE.DoubleSide,
+    uniforms: uniforms,
+    vertexShader: vShader,
+    fragmentShader: "",
+  } ); 
+  
+ 
+  
+  var skyGeo = new THREE.SphereGeometry(900, 16, 16);
+  var sky = new THREE.Mesh( skyGeo,  shaderMaterial);
+  scene.add( sky );
+  //console.log(shaderMaterial);
+  
+  /*** FLOOR ***/
+  var floorGeometry = new THREE.PlaneBufferGeometry( 9000, 9000, 100, 100 );
+  floorGeometry.rotateX( - Math.PI / 2 );
+  var floor = new THREE.Mesh( floorGeometry, new THREE.MeshPhongMaterial({color:0x004488,shininess:60,opacity:0.9,transparent:true, })  );
+  scene.add( floor ); 
+  //if(vars.shadows) floor.receiveShadow = true;
+  
+  //applyShader();
+}
+//
+function applyShader(){
+  mesh.material.fragmentShader = txtArea.value;
+  mesh.material.needsUpdate = true;
+}
+//
+function myAnimScene(){
+  var now = Date.now();  
+  // mesh.position.x = 2*Math.cos(now*vars.speed);
+  uniforms[ "time" ].value += 0.05;
+  uniforms[ "colorR" ].value = vars.r;
+  uniforms[ "colorG" ].value = vars.g;
+  uniforms[ "colorB" ].value = vars.b;
+}
+</script>
+</html>

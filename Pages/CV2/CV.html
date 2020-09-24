@@ -4,14 +4,35 @@
 <head>
 <title>CV</title>
 
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/DataMgt.js"></script>
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.46/MyLibs/DataCV.js"></script>
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.60/MyLibs/DataMgt.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.60/MyLibs/DataCV.js"></script>
+
+
+
 
 <style>
 body{
   background-color: rgba(0,0,0, 0.8);
   color:white; 
   margin: 0 0 0 0;
+}
+
+a:link, a:visited {
+  background-color: rgba(255,50,0, 0.9);
+  color: white;
+  padding: 4px 8px;
+  margin-left: 8px;
+  //text-align: center;
+  font-weight: bold;
+  //text-decoration: none;
+  //display: block;
+  border: 2px solid #888888;
+  border-radius: 10px;
+}
+a:hover, a:active {
+  background-color: rgba(255,200,150, 0.9);
+  color:black;
 }
 
 
@@ -25,15 +46,15 @@ body{
 }
 
 .maintTitle{
-  font-size: 200%;
+  font-size: 180%;
   box-shadow: 8px -8px 8px #888888 inset;
 /*   text-align:center; */
 }
 .title{
-  font-size: 170%;
+  font-size: 120%;
 }
 .title2{
-  font-size: 150%;
+  font-size: 120%;
 }
 
 .divCol1{
@@ -44,20 +65,21 @@ body{
   //box-shadow: 5px 10px 20px red inset:
 }
 .interDiv{
-  font-size: 80%; 
+  font-size: 30%; 
   //background-color : rgba(0,0,0, 0.5);
 }
 
 .hilightHi{
-  box-shadow: 8px 16px 16px #008888 inset;
+  box-shadow: 8px 8px 16px #00bbff inset;
 }
 .hilightLo{
-  //opacity: 0.5;
-  //visibility: hidden;
-  //font-size: 80%; 
-  
-  //color:rgb(40,40,40);
-  box-shadow: 8px 16px 16px #888888 inset;
+  box-shadow: 8px 8px 16px #669999 inset;
+}
+.backColHi{
+  background-color : rgba(0,200,255, 0.5);
+}
+.backColLo{
+  background-color : rgba(100,150,150, 0.5);
 }
 
 .separateDiv{
@@ -81,7 +103,7 @@ body{
 .tooltip {
 /*   display: none; */
   visibility: hidden;
-  font-size: 180%;
+  font-size: 200%;
   cursor:pointer;
 }
 .tooltipBtn{
@@ -105,18 +127,48 @@ body{
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.centeredH {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
 </style>
 
 
 </head>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <body>
-<div style="color:grey;" >
-Details:<input id="showDetails" type="checkbox"  onchange="initDisplayData()">
-Expand:<input id="" type="checkbox"  onchange="expandAll()">
-Modal:<input id="" type="checkbox"  onchange="createModal()">
-Light:<input id="" type="checkbox"  onchange="lightOn()">
+<div style="color:rgb(200,200,200);" >
+DetailView<input id="showDetails" type="checkbox"  onchange="initDisplayData()">
+- &nbsp  EXPAND: 
+Default<input id="" type="checkbox"  onchange="expandPrio(1)">
+All<input id="" type="checkbox"  onchange="expandPrio(0)">
+- &nbsp  TimelineModal<input id="" type="checkbox"  onchange="showModal()">
+- &nbsp  Light<input id="" type="checkbox"  onchange="lightOn()">
 </div>
 
 <div id="containerDiv" 
@@ -150,12 +202,37 @@ Light:<input id="" type="checkbox"  onchange="lightOn()">
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
 /*** DataMgt Vars ***/
 var TAG_SEPARATOR = small("&nbsp●&nbsp");  //"•";  //
 var BAR_FACTOR = 2.1;
 var BAR_FONTSIZE = "60%";
 /**/
+
+
+
+
 
 
 
@@ -315,6 +392,7 @@ else showDetails.checked = false;
 //
 function initDisplayData(){
   containerDiv.innerHTML = "";
+  //
   myData.subDivs[0].subDivs = [];
   myData.subDivs[1].subDivs = [];
   myData.subDivs[2].subDivs = [];
@@ -330,26 +408,41 @@ function initDisplayData(){
     addDivs(baseDivsR, 0);    
   }
   displayData(myData, containerDiv, 0);  
+  //
+  if(modalDiv) createModal();
 }
 initDisplayData();
 //
 
 
 
-var missionColors = ["rgba(0,0,0, 0.5)"];
-missionColors["OTHER"] = "rgba(90,90,90, 0.5)";
-missionColors["Embed"] = "rgba(180,180,180, 0.5)";
+var modalOpacity = 0.8;
+var missionColors = ["rgba(0,0,0, "+modalOpacity+")"];
+missionColors["OTHER"] = "rgba(90,90,90, "+modalOpacity+")";
+missionColors["Embed"] = "rgba(180,180,180, "+modalOpacity+")";
 //
-missionColors["GameDev"] = "rgba(0,0,255, 0.5)";
-missionColors["STB"] = "rgba(0,150,255, 0.5)";
-missionColors["WebApp++"] = "rgba(0,255,255, 0.5)";
+missionColors["GameDev"] = "rgba(0,0,255, "+modalOpacity+")";
+missionColors["STB"] = "rgba(0,150,255, "+modalOpacity+")";
+missionColors["WebApp++"] = "rgba(0,255,255, "+modalOpacity+")";
 //
-//createModal();
+
+var modalDiv;
+function showModal(){	
+	if(modalDiv.style.visibility == "visible")
+		modalDiv.style.visibility = "hidden";
+	else modalDiv.style.visibility = "visible";
+}
+createModal();
 function createModal(){
-	var modalDiv = addElt("DIV", containerDiv, "== MODAL ==");
-	modalDiv.classList.add( "centered" ); 	
+	modalDiv = addElt("DIV", containerDiv, "");
+	modalDiv.style.visibility = "hidden";
+	modalDiv.classList.add( "centeredH" ); 	
 	modalDiv.classList.add( "column" ); 	
 	modalDiv.classList.add( "divCol1" ); 
+	modalDiv.style.backgroundColor = missionColors[ 0 ];
+	
+	var modalTitle = addElt("div", modalDiv, "= Timeline =");
+	modalTitle.style.textAlign = "center";
 	
 	var subDivs = missionsByDate.subDivs;
 	for ( var i=0; i<subDivs.length; i++ ) {
@@ -364,10 +457,17 @@ function createModal(){
 }
 //
 //expandAll();
-function expandAll(){
+// function expandAll(){
+	// var expandBtns = document.getElementsByClassName("spanBtn");
+	// for ( var i=0; i<expandBtns.length; i++ ) {
+		// expandBtns[i].click();
+	// }
+// }
+function expandPrio(_prio){
 	var expandBtns = document.getElementsByClassName("spanBtn");
 	for ( var i=0; i<expandBtns.length; i++ ) {
-		expandBtns[i].click();
+		var expandBtn = expandBtns[i];
+		if(_prio==0 || expandBtn.expandPrio==_prio) expandBtn.click();
 	}
 }
 //
