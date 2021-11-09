@@ -59,7 +59,17 @@ select {
 <script>
 //selectSrc();
 myAudio.volume = 0.25; 
-setTimeout( function(){myAudio.play()} , 2000 )	
+//setTimeout( function(){myAudio.play()} , 2000 )	
+tryPlay()
+function tryPlay(){
+	try {
+		//nonExistentFunction();
+		let startPlayPromise = myAudio.play();
+	} catch (error) {
+		console.error(error);
+		setTimeout( tryPlay , 2000 )	
+	}
+}
 	
 function loadStatus(){
 	//alert('onloadstart');
