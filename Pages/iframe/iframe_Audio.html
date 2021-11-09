@@ -29,7 +29,7 @@ select {
 
   <span>
     <audio id="myAudio" controls autoplay onended="onAudioEnd()" 
-		onloadstart="loadStatus()" oncanplay=""
+		onloadstart="loadStatus()" oncanplay="oncanplay()"
 		style="position: relative; top:10px; width:340px; transform: scaleY(1.0);">
       <!-- <source src="https://rawgit.com/chrismcg61/TechDemos/master/Media/PianoMin_C7.wav"/> -->
       <source src="https://rawgit.com/chrismcg61/TechDemos/master/Media/OST_BSG.mp4"/>
@@ -59,7 +59,6 @@ select {
 <script>
 //selectSrc();
 myAudio.volume = 0.25; 
-myAudio.play();
 	
 function loadStatus(){
 	//alert('onloadstart');
@@ -67,6 +66,9 @@ function loadStatus(){
 
 function selectSrc(){
   myAudio.src = mySelect.value;  
+}
+function oncanplay(){
+  myAudio.play();	
 }
 function onAudioEnd() {
   //alert("The audio has ended");
