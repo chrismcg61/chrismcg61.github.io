@@ -29,7 +29,7 @@ select {
 
   <span>
     <audio id="myAudio" controls autoplay onended="onAudioEnd()" 
-		onloadstart="loadStatus()" oncanplay="oncanplay()"
+		onloadstart="loadStatus()" oncanplay=""
 		style="position: relative; top:10px; width:340px; transform: scaleY(1.0);">
       <!-- <source src="https://rawgit.com/chrismcg61/TechDemos/master/Media/PianoMin_C7.wav"/> -->
       <source src="https://rawgit.com/chrismcg61/TechDemos/master/Media/OST_BSG.mp4"/>
@@ -66,14 +66,17 @@ function tryPlay(){
 		//nonExistentFunction();
 		let startPlayPromise = myAudio.play();
 		if (startPlayPromise !== undefined) {
-		  startPlayPromise.then(() => {
-		  }).catch(error => {
-		    if (error.name === "NotAllowedError") {
-		      setTimeout( tryPlay , 2000 )	
-		    } else {
-		      // Handle a load or playback error
-		      setTimeout( tryPlay , 2000 )	
-		    }
+		 startPlayPromise.then(() => {
+		}).catch(error => {
+		    	if (error.name === "NotAllowedError") {
+				if (confirm('Play Background Music?')) {
+					setTimeout( tryPlay , 2000 )	
+				}
+			}
+			else{ 
+				console.error(error);
+				setTimeout( tryPlay , 2000 )	
+			}
 		  });
 		}
 	} catch (error) {
@@ -84,8 +87,6 @@ function tryPlay(){
 	
 function loadStatus(){
 	//alert('onloadstart');
-}
-function oncanplay() {
 }
 
 function selectSrc(){
