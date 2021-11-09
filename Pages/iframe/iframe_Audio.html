@@ -65,6 +65,17 @@ function tryPlay(){
 	try {
 		//nonExistentFunction();
 		let startPlayPromise = myAudio.play();
+		if (startPlayPromise !== undefined) {
+		  startPlayPromise.then(() => {
+		  }).catch(error => {
+		    if (error.name === "NotAllowedError") {
+		      setTimeout( tryPlay , 2000 )	
+		    } else {
+		      // Handle a load or playback error
+		      setTimeout( tryPlay , 2000 )	
+		    }
+		  });
+		}
 	} catch (error) {
 		console.error(error);
 		setTimeout( tryPlay , 2000 )	
