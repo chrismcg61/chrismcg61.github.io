@@ -59,6 +59,7 @@ select {
 <script>
 //selectSrc();
 myAudio.volume = 0.25; 
+setTimeout( function(){myAudio.play()} , 2000 )	
 	
 function loadStatus(){
 	//alert('onloadstart');
@@ -66,9 +67,6 @@ function loadStatus(){
 
 function selectSrc(){
   myAudio.src = mySelect.value;  
-}
-function oncanplay(){
-  myAudio.play();	
 }
 function onAudioEnd() {
   //alert("The audio has ended");
