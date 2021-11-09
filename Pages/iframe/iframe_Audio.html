@@ -4,12 +4,27 @@
 <head>
 <style>
 select {
-  width: 100px;
-  padding: 6px;
-  border: none;
-  border-radius: 5px;
-  background-color: #cccccc;  
-  font-size:18px;
+	width: 100px;
+	padding: 6px;
+	border: none;
+	border-radius: 5px;
+	background-color: #cccccc;  
+	font-size:18px;
+}
+.overlay {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background: rgba(250,250,250, 0.8);
+	z-index: 10;
+
+	font: bold 50px Arial, sans-serif;
+	color:red;
+	cursor: pointer;
+
+	display:none;
 }
 </style>
 
@@ -23,7 +38,7 @@ select {
 
 <body>
 
-
+<div id="myOverlay" class='overlay' onclick="hideOverlay()">PLAY AUDIO</div>  
 
 <div style=" ">
 
@@ -69,9 +84,10 @@ function tryPlay(){
 		 startPlayPromise.then(() => {
 		}).catch(error => {
 		    	if (error.name === "NotAllowedError") {
-				if (confirm('Play Background Music?')) {
-					setTimeout( tryPlay , 2000 )	
-				}
+				//if (confirm('Play Background Music?')) {
+				//	setTimeout( tryPlay , 2000 )	
+				//}
+				myOverlay.style.display = "block";
 			}
 			else{ 
 				console.error(error);
@@ -100,6 +116,10 @@ function onAudioEnd() {
   
   mySelect.selectedIndex = selectedIndex.toString();
   selectSrc();
+}
+	
+function hideOverlay(){
+	myOverlay.style.display = "none";
 }
 </script>
 
