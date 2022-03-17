@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>CV</title>
+
+
+<script src="DataMgt.js"></script>
+<!-- <script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.84/MyLibs/DataMgt.js"></script> -->
+<!-- <script src="https://cdn.rawgit.com/chrismcg61/TechDemos/1.84/MyLibs/DataCV.js"></script> -->
+<script src="DataCV.js"></script>
+
+
+
+
+<style>
+body{
+  background-color: rgba(0,0,0, 0.8);
+  color:white; 
+  margin: 0 0 0 0;
+}
+
+a:link, a:visited {
+  background-color: rgba(255,50,0, 0.9);
+  color: white;
+  padding: 2px 4px;
+  margin-left: 2px;
+  //text-align: center;
+  font-size: 80%;
+  font-weight: bold;
+  //text-decoration: none;
+  //display: block;
+  border: 2px solid #888888;
+  border-radius: 6px;
+}
+a:hover, a:active {
+  background-color: rgba(255,200,150, 0.9);
+  color:black;
+}
+
+
+
+.column{
+  width:660px;  
+  display:inline-block;
+}
+.columnR{
+  float:right;
+}
+
+.maintTitle{
+  font-size: 180%;
+  box-shadow: 8px -8px 8px #888888 inset;
+/*   text-align:center; */
+}
+.title{
+  font-size: 120%;
+}
+.title2{
+  font-size: 120%;
+}
+
+.divCol1{
+/*   font-size: 180%; */
+  //background-color : rgba(10,10,20, 0.8);
+  border: 6px solid black;
+  box-shadow: 1px 1px 16px #888888;
+  //box-shadow: 5px 10px 20px red inset:
+}
+.interDiv{
+  font-size: 30%; 
+  //background-color : rgba(0,0,0, 0.5);
+}
+
+.hilightHi{
+  box-shadow: 8px 8px 16px #00ddff inset;
+}
+.hilightLo{
+  box-shadow: 8px 8px 16px #669999 inset;
+}
+
+.backColLo{
+  background-color : rgba(100,150,150, 0.5);
+}
+.backColLo2{
+  background-color : rgba(100,150,200, 0.5);
+}
+.backColHi{
+  background-color : rgba(0,170,250, 0.5);
+}
+.backColHi2{
+  background-color : rgba(0,200,250, 0.5);
+}
+.backColHi3{
+  background-color : rgba(0,230,250, 0.5);
+}
+
+.separateDiv{
+/*   margin:30px 0 0 0; */
+}
+
+.spanBtn{
+  font-size: 80%; 
+  cursor:pointer;
+  background-color : rgba(255,80,80, 0.8);
+  padding: 0 4px;
+  border: 3px outset white;
+  border-radius: 6px; 
+  //box-shadow: 2px 2px #ffffff;
+  margin-left: 8px;
+}
+.spanBtn:hover{
+  background-color : rgba(0,255,255, 0.8);
+}
+
+.tooltip {
+/*   display: none; */
+  visibility: hidden;
+  font-size: 200%;
+  cursor:pointer;
+}
+.tooltipBtn{
+  cursor:pointer;
+}
+.tooltipBtn:hover + .tooltip {
+/*   display: block; */
+  visibility: visible;
+}
+.tooltip:hover {
+/*   display: block; */
+  visibility: visible;
+}
+/* .tooltipContainer:hover {
+  opacity: 0.5;
+} */
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.centeredH {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
+
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 2px solid #505050;
+  background-color: #000000;
+}
+/* Style the buttons inside the tab */
+.tab button {
+  color: white;
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 6px 28px;
+  transition: 0.3s;
+  //font-size: 12px;
+}
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #505050;
+}
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #aaaaaa;
+}
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #aaaaaa;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 10px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 16px;
+}
+input:checked + .slider {
+  background-color: #2196F3;
+}
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
+}
+</style>
+
+
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body>
+<div style="display:none;  	color:rgb(200,200,200);" >
+DetailView<input id="showDetails" type="checkbox"  onchange="initDisplayData()">
+- &nbsp  EXPAND: 
+Default<input id="" type="checkbox"  onchange="expandPrio(1)">
+All<input id="" type="checkbox"  onchange="expandPrio(0)">
+- &nbsp  TimelineModal<input id="" type="checkbox"  onchange="showModal()">
+- &nbsp  Light<input id="" type="checkbox"  onchange="lightOn()">
+</div>
+
+<div class="tab">
+	<button class="tablinks" id="tab0" onclick="openTab(event, 'Min')">Min</button>
+	<button class="tablinks" id="tab1" onclick="openTab(event, 'Default')">Default</button>
+	<button class="tablinks" id="tab2" onclick="openTab(event, 'Expanded')">Expanded</button>
+	<button class="tablinks" id="tab3" onclick="openTab(event, 'MAX')">MAX</button>		
+</div>
+
+<div style="background-color:rgba(0,0,0, 1.0); color:rgb(200,200,200);" >
+	<b>LIGHT</b>
+	<label class="switch">
+		<input type="checkbox" id="myLightInput" onchange="lightOn()">
+		<span class="slider"></span>
+	</label>
+	&nbsp <b>TIMELINE</b>
+	<label class="switch">
+		<input type="checkbox" onchange="showModal()">
+		<span class="slider"></span>
+	</label>
+</div>
+
+
+<div id="containerDiv" 
+  style="font-size: 24px;       
+		 line-height: 1.25;  
+         font-family: Lucida Console, Monaco, monospace;
+         text-shadow: 1px 1px 8px #AAFFFF;">
+</div>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+/*** DataMgt Vars ***/
+var TAG_SEPARATOR = small("&nbsp●&nbsp");  //"•";  //
+var BAR_FACTOR = 2.1;
+var BAR_FONTSIZE = "60%";
+/**/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        
+var myData = {
+  // maintTitle:"MY_BIG_TITLE",
+  // subTitle:"SubTitle",  
+  subDivs:[
+    {
+      classes:["centered", "column"],
+      // classes:["divCol1", "column"],
+      subDivs:[ ],
+    },
+    {
+      classes:["column"],
+      subDivs:[ ],
+    },
+    {
+      classes:["column", "columnR"],
+      subDivs:[ ],
+    },
+  ],
+};
+var baseDivsL = [
+  {
+    subDivs:rootData_Pers.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    // classes:["title","interDiv"],
+    classes:["interDiv"],
+  },
+];
+var baseDivsR = [  
+  {
+    subDivs:rootData_JobTitles.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },
+];
+var extraDivsL = [
+  /*{
+    subDivs:favProjsData.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },*/
+  
+  {
+    subDivs:projContractsData.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },
+
+  {
+    subDivs:liveProjsData.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },
+  
+  {
+    subDivs:missionsByType.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },
+];
+var extraDivsR = [  
+  {
+    subDivs:skillMgtData.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },
+  
+  {
+    subDivs:skillData.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },  
+  
+  {
+    subDivs:langData.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    // classes:["title","interDiv"],
+    classes:["interDiv"],
+  },  
+  
+  {
+    subDivs:hobbiesTechData.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },
+  
+  {
+    subDivs:miniJobsData.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },
+  
+  
+];
+//
+function addDivs(_subDivs, _id){
+  for ( var i=0; i<_subDivs.length; i++ ) {
+    myData.subDivs[_id].subDivs.push( _subDivs[i] );
+  }
+}
+//
+var urlParams = (new URL(document.location)).searchParams;
+var urlParam_detail = urlParams.get('d');
+if(urlParam_detail==1) tab1.click();  //showDetails.checked = true;
+else tab0.click(); //showDetails.checked = false;
+//
+function initDisplayData(){
+  containerDiv.innerHTML = "";
+  //
+  myData.subDivs[0].subDivs = [];
+  myData.subDivs[1].subDivs = [];
+  myData.subDivs[2].subDivs = [];
+  //
+  if(showDetails.checked) {
+    addDivs(baseDivsL, 1);
+    addDivs(extraDivsL, 1);
+    addDivs(baseDivsR, 2);
+    addDivs(extraDivsR, 2);
+  }
+  else{
+    addDivs(baseDivsL, 0);
+    addDivs(baseDivsR, 0);    
+  }
+  displayData(myData, containerDiv, 0);  
+  //
+  if(modalDiv) createModal();
+}
+initDisplayData();
+//
+
+
+
+var modalOpacity = 0.8;
+var missionColors = ["rgba(0,0,0, "+modalOpacity+")"];
+missionColors["OTHER"] = "rgba(90,90,90, "+modalOpacity+")";
+missionColors["Embed"] = "rgba(90,90,120, "+modalOpacity+")";
+//
+missionColors["STB"] = "rgba(0,150,250, "+modalOpacity+")";
+missionColors["GameDev"] = "rgba(0,200,250, "+modalOpacity+")";
+missionColors["WebApp++"] = "rgba(0,250,250, "+modalOpacity+")";
+//
+
+var modalDiv;
+function showModal(){	
+	if(modalDiv.style.display == "inline-block")
+		modalDiv.style.display = "none";
+	else modalDiv.style.display = "inline-block";
+}
+createModal();
+function createModal(){
+	modalDiv = addElt("DIV", containerDiv, "");
+	modalDiv.style.display = "none";
+	modalDiv.classList.add( "centeredH" ); 	
+	modalDiv.classList.add( "column" ); 	
+	modalDiv.classList.add( "divCol1" ); 
+	modalDiv.style.backgroundColor = missionColors[ 0 ];
+	
+	var modalTitle = addElt("div", modalDiv, "= Timeline =");
+	modalTitle.style.textAlign = "center";
+	
+	var subDivs = missionsByDate.subDivs;
+	for ( var i=0; i<subDivs.length; i++ ) {
+		var subDiv = subDivs[i];
+		for ( var j=0; j<subDiv.dates.duration; j++ ) {
+			var dateDiv = addElt("DIV", modalDiv, "&nbsp");
+			dateDiv.style.backgroundColor = missionColors[ 0 ];
+			if(subDiv.type) dateDiv.style.backgroundColor = missionColors[ subDiv.type ];
+			var startY = Math.floor( subDiv.dates.start );
+			var startQ = 1+(subDiv.dates.start - startY)*4;
+			if(j==0 && subDiv.tagDiv) dateDiv.innerHTML = startY+".Q"+startQ +" "+ subDiv.tagDiv.title;
+		}
+	}
+}
+//
+//expandAll();
+// function expandAll(){
+	// var expandBtns = document.getElementsByClassName("spanBtn");
+	// for ( var i=0; i<expandBtns.length; i++ ) {
+		// expandBtns[i].click();
+	// }
+// }
+function expandPrio(_prio){
+	var expandBtns = document.getElementsByClassName("spanBtn");
+	for ( var i=0; i<expandBtns.length; i++ ) {
+		var expandBtn = expandBtns[i];
+		if(_prio==0 || expandBtn.expandPrio==_prio) expandBtn.click();
+	}
+}
+//
+function lightOn(){	
+	//if(document.body.style.color=="white"){
+	if(myLightInput.checked){
+		document.body.style.color = "black";
+		document.body.style.backgroundColor = "rgba(255,255,255, 0.1)";	 //"white";
+	}
+	else{
+		document.body.style.color = "white";
+		document.body.style.backgroundColor = "rgba(0,0,0, 0.8)";		
+	}
+}
+
+
+
+function openTab(evt, name) {
+  //alert(name)
+  var tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  evt.currentTarget.className += " active";
+  //
+  if(name=="Min"){
+	showDetails.checked = false
+	initDisplayData()
+  }
+  else if(name=="Default"){ 
+	showDetails.checked = true
+	initDisplayData()
+  }
+  else if(name=="Expanded"){ 
+	showDetails.checked = true
+	initDisplayData()
+	expandPrio(1)
+  }
+  else if(name=="MAX"){ 
+	showDetails.checked = true
+	initDisplayData()
+	expandPrio(0)
+  }
+}
+
+
+</script>
+
+</html>
