@@ -140,7 +140,7 @@ var app = new Vue({
     subDivs: rootData_Pers.subDivs,
   },
   methods: {
-    nextDiv: function(){ this.subDivs = rootData_JobTitles.subDivs[0].subDivs },
+    nextDiv: function(){ this.subDivs = rootData_JobTitles.subDivs },
     prevDiv: function(){ this.subDivs = rootData_Pers.subDivs },
     mousemove(evt){ 
       var now = Date.now();
