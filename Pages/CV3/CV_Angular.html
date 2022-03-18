@@ -97,7 +97,7 @@ var app = angular.module("myApp", ['ngSanitize']);
 app.controller("myCtrl", function($scope, $timeout, $sanitize) {    
   $scope.subDivs = rootData_Pers.subDivs;  
   
-  $scope.nextDiv = function(){ $scope.subDivs = rootData_JobTitles.subDivs[0].subDivs; }
+  $scope.nextDiv = function(){ $scope.subDivs = rootData_JobTitles.subDivs; }  //rootData_JobTitles.subDivs[0].subDivs;
   $scope.prevDiv = function(){ $scope.subDivs = rootData_Pers.subDivs; }
   
   $scope.modifyHtmlDiv = function(){
