@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>3D CV Intro</title>
+
+	
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/build/three.min.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r134/examples/js/libs/dat.gui.min.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/libs/stats.min.js"></script>
+	<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r205/MyLibs/Three/My3D.js"></script>
+	<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r205/Libs/PostFX.js"></script>
+
+	<!-- <script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/utils/BufferGeometryUtils.js"></script> -->
+
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/shaders/SSRShader.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/postprocessing/SSRPass.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/objects/ReflectorForSSRPass.js"></script>
+
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/objects/Reflector.js"></script>
+
+	<!-- <script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/shaders/LuminosityShader.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/shaders/ToneMapShader.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/postprocessing/AdaptiveToneMappingPass.js"></script> -->
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/shaders/ACESFilmicToneMappingShader.js"></script>
+	<!-- <script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/shaders/ColorifyShader.js"></script> -->
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/postprocessing/BloomPass.js"></script>
+
+</head>
+
+<body>
+</body>
+
+
+
+
+
+
+<script>
+	MY3D.preInit(THREE);
+	var stats = new Stats();  document.body.appendChild( stats.dom );
+	var gui = new dat.GUI();
+
+	var RenderModes = {PostFx:0, NoPostFx:1, SplitScreen:2, PiP:3, OrthoSceneStatic:4, OrthoScene:5, SceneComposite:6, };
+	var bloomParams = {intensity:0.7,radius:0.1,threshold:0.1};
+	var fxParams = {Bloom:bloomParams, ssr:false, bloom:true,toneMap:true,film:true, gamma:false,vignette:false,dotScreen:false,sepia:false,afterImage:false,hblur:false,fxaa:false};
+	var params = { camPosX:0,camPosY:0.5,camPosZ:5,camRotX:-0.01,   dirLightCol:0x010101, fogCol:0x010101,fogDensity:0.05,  PostFX:fxParams    };
+	var gParams = { RESTART:ReInit, exposeFactor:0.12,  scene0:true,RenderModes:RenderModes,  addGroundMirror:MY3D.addMirrorSimplePlane, addSsrMesh:MY3D.addSsrMesh, maxY:4, addCityBlock:addCityBlock, 
+				   scaleXZ:75,alphaXZ:0.7,   useParticlesTexXZ:useParticlesTexXZ,   };
+	//
+	var hiddenParams = { HiddenParams:params, };
+	var showParams = { MainParams:gParams, };
+	MY3D.addGuiParams(gui, hiddenParams, false, 90,0.01);
+	MY3D.addGuiParams(gui, showParams, true, 30,0.01);
+	//
+	gParams.RenderModes = 5;
+	// gui.__folders.MainParams.add( mParams, "RenderModes", mParams.RenderModes ).onChange(  function ( value ) { RenderMode = value; }  );
+	gui.close();
+
+	
+	
+
+
+	var mesh, mesh0, lightMesh;
+	var lightMeshes = [];
+	// var groupCamera2;
+	var X0 = 0;
+	var Z0 = 0;
+	var cityLightBlocks = [];
+	var bloc1;
+	// var quads = [];
+	var fontTexture;
+	var noiseMap = new THREE.TextureLoader().load("https://cdn.rawgit.com/chrismcg61/TechDemos/master/Media/Noise.png");
+	var buildingMap = new THREE.TextureLoader().load("https://cdn.rawgit.com/chrismcg61/TechDemos/master/Media/NightOfficeWindows.jpg");
+	buildingMap.anisotropy = 8;  buildingMap.wrapS = buildingMap.wrapT = THREE.RepeatWrapping;   buildingMap.repeat.set( 1, 4 );
+	var SIZE_B = new THREE.Vector3(1,8,1);
+	//
+	ReInit();
+	function ReInit(){  
+	  MY3D.ReInit0();  
+	  renderer.toneMapping = THREE.NoToneMapping;   //NoToneMapping  //LinearToneMapping  //CineonToneMapping  //ACESFilmicToneMapping  //CustomToneMapping  
+	  // sceneOrtho_BG.material.map = composer.readBuffer.texture;
+	  sceneOrtho_BG.material = MY3D.initShaderMaterial();
+	  
+	  
+	  fontTexture = MY3D.addTexture(1024);
+	  MY3D.initTexture_Text(fontTexture, 160, 'rgba(255,255,255, 1)','rgba(0,0,0, 1)',  "_",  [ "CHRIS","McGARRY", "_","_", ] );
+	  // sceneOrtho_BG.material.uniforms.tex0.value = fontTexture;  
+	  // sceneOrtho_BG.material.uniforms.tex0.value = composerScene2.readBuffer.texture;
+	  
+	  // const SIZE_MESH = 1.1;
+	  var geo = new THREE.PlaneGeometry( 6,6 );
+	  // var geo = new THREE.SphereGeometry( SIZE_MESH, 16,16 );  // new THREE.IcosahedronGeometry( .08, 4 )
+	  mesh = new THREE.Mesh( geo,   new THREE.MeshBasicMaterial( { color:0x000000, side:THREE.DoubleSide, alphaMap:fontTexture,alphaTest:0.1,  transparent:true, } )   );
+	  mesh.position.y = 1;
+	  // mesh.rotation.y = -Math.PI/2;;
+	  scene.add( mesh ); 
+	  if(enableShadows) mesh.castShadow  = true;
+		
+	  // groupCamera2 = new THREE.Group();
+	  // groupCamera2.add( camera2 );
+	  // groupCamera2.add( mesh2 );
+	  scene2.add( camera2 );
+	  camera2.position.set(45,50,5);
+	  camera2.rotation.x = -0.8;
+	  
+	  // var lightGeo = new THREE.BoxGeometry( 0.3,10,1 );  
+	  const SIZE_MESH = 0.8;
+	  lightMeshes = [];
+	  for (i=0; i<8; i++) {
+		var newLightMesh = new THREE.Mesh( new THREE.BoxGeometry( SIZE_MESH,10,0.5 ),  new THREE.MeshBasicMaterial( { color:0xff0505, transparent:true, } )  );
+		newLightMesh.position.set(-2.6+SIZE_MESH*i,0,-1);
+		scene.add( newLightMesh ); 
+		lightMeshes.push(newLightMesh);
+	  }
+	  
+	  var plane = new THREE.Mesh( new THREE.PlaneGeometry( 9,9 ),  new THREE.MeshStandardMaterial( { alphaMap:concreteMap,alphaTest:0.51 } )  );
+	  plane.rotation.x = -Math.PI/2;
+	  plane.position.y = 0.05;
+	  scene.add( plane ); 
+	  if(enableShadows) plane.receiveShadow  = true; 
+	  
+
+	  // SCENE 2 (City) :
+	  X0 = Z0 = 0;
+	  cityLightBlocks = [];
+	  addCityBlock();
+	  addCityBlock();
+	  addCityBlock();
+	  addCityBlock();  
+	  gParams.maxY *= 2;
+	  addCityBlock();
+	  gParams.maxY /= 2;
+	 
+	  
+	  initNoPostFxScene();
+	  
+	  MY3D.addMirrorSimplePlane();
+	}
+	function initNoPostFxScene(){
+	  var screenNoPostFx1 = new THREE.Mesh( new THREE.PlaneGeometry( 2,1 ),   new THREE.MeshBasicMaterial( { map:composer.renderTarget2.texture,  } )   ); //composer.writeBuffer.texture
+	  screenNoPostFx1.position.set(-1.3,0,1.5);
+	  sceneNoPostFx.add( screenNoPostFx1 );
+	  // screenNoPostFx1.scale.set( window.innerWidth, window.innerHeight, 1 ); 
+	  var screenNoPostFx2 = new THREE.Mesh( new THREE.PlaneGeometry( 2,1 ),   new THREE.MeshBasicMaterial( { map:composer.readBuffer.texture,  } )   );
+	  screenNoPostFx2.position.set(1.3,0,1.5);
+	  sceneNoPostFx.add( screenNoPostFx2 );
+	  screenNoPostFx2.material = MY3D.initShaderMaterial();
+	  screenNoPostFx2.material.uniforms.tex1.value = composer.readBuffer.texture;  
+	}
+	
+	function addCityBlock(){
+	  X0 += 0.5;
+	  Z0 += 0.5;
+	  SIZE_B.y = gParams.maxY;
+	  // var geometryList1 = [];
+	  const NB_X = 30;
+	  const NB_Z = 30;
+	  // var cityLightMat = MY3D.initShaderMaterial();
+	  // cityLightMat.uniforms.tex0.value = concreteMap;  
+	  // cityLightMat.uniforms.tex1.value = concreteMap;  
+	  // var cityLightMat = new THREE.MeshBasicMaterial( { color:new THREE.Color( 0.6+rand(0.2), 0.6+rand(0.2), 0.6+rand(0.2) ), map:buildingMap,  alphaMap:buildingMap,alphaTest:0.2 } );
+	  var fontTexture2 = MY3D.addTexture(1024);
+	  // MY3D.initTexture_Text(fontTexture2, 160, 'rgba(0,0,0, 1)','rgba(255,255,255, 1)',  "00000000",  [ "11111111","22222222", "333333333","_", ] );
+	  MY3D.initTexture_Text(fontTexture2, 190, 'rgba(0,0,0, 1)','rgba(255,255,255, 1)',  "_",  [ "SENIOR", "DEV",   ] );
+	  //
+	  var newCityLightMat = MY3D.initShaderMaterial();
+	  newCityLightMat.uniforms.tex0.value = buildingMap;  
+	  newCityLightMat.uniforms.tex1.value = buildingMap;
+	  newCityLightMat.uniforms.speed.value = 0.06;    
+	  newCityLightMat.uniforms.useNoise.value = 1;    
+	  newCityLightMat.uniforms.strNoise.value = 4;
+	  newCityLightMat.uniforms.scaleNoise.value = 80; 
+	  newCityLightMat.uniforms.uColor.value = new THREE.Vector4( 0.5+rand(0.5), 0.5+rand(0.5), 0.5+rand(0.5),  1); 
+	  newCityLightMat.uniforms.texNoise.value = noiseMap;
+	  newCityLightMat.uniforms.texXZ.value = fontTexture2;
+	  newCityLightMat.uniforms.scaleXZ.value = gParams.scaleXZ;    
+	  // cityLightBlocks[i].material = newCityLightMat;
+	  //
+	  const newCityBlock1 = new THREE.InstancedMesh( new THREE.BoxGeometry( SIZE_B.x,SIZE_B.y,SIZE_B.z ),  newCityLightMat,  NB_X*NB_Z );
+	  const newCityBlock2 = new THREE.InstancedMesh(  new THREE.BoxGeometry( SIZE_B.x*0.5,SIZE_B.y*1.05,SIZE_B.z*0.5 ),  new THREE.MeshStandardMaterial( { color:0x888888,  } ),  NB_X*NB_Z );
+	  var index = 0;
+	  for (xx=0; xx<NB_X; xx++) {
+		for (zz=0; zz<NB_Z; zz++) {      
+		  var randY = SIZE_B.y/2 - rand(SIZE_B.y);
+		  var newPos = new THREE.Vector3(X0+xx*3, randY, Z0-zz*3);
+		  var newBuildingMesh = new THREE.Mesh( );
+		  //
+		  var matrix = newBuildingMesh.matrix;
+		  matrix.setPosition(newPos.x,newPos.y,newPos.z);
+		  newCityBlock1.setMatrixAt( index, matrix );
+		  var matrix2 = newBuildingMesh.matrix;
+		  matrix2.setPosition(newPos.x,newPos.y,newPos.z);
+		  newCityBlock2.setMatrixAt( index, matrix2 );
+		  //
+		  index++;
+		}
+	  }
+	  scene2.add( newCityBlock1 );
+	  scene2.add( newCityBlock2 );
+	  // lastCityBlock = newCityBlock1;
+	  cityLightBlocks.push(newCityBlock1);
+	  // const mergedGeometry1 = THREE.BufferGeometryUtils.mergeBufferGeometries( geometryList1 );
+	  // var newCityBlockMesh1 = new THREE.Mesh( mergedGeometry1,  new THREE.MeshBasicMaterial( { color:0x0044ff, map:buildingMap,  alphaMap:buildingMap,alphaTest:0.2 } )  );
+	  // scene.add(newCityBlockMesh1);
+	}
+	
+	
+	function useParticlesTexXZ(){
+	  particles.material.uniforms.useTexXZ.value = 1;  
+	}
+
+
+
+
+
+	var loopError = false;
+	loop();
+	function loop() { 
+	  try {
+		MY3D.render();
+		stats.update();
+		updateScene();
+		if(false==loopError) requestAnimationFrame( loop );
+	  } catch (error) {
+		console.error(error);
+		loopError = true;
+	  }
+	}
+	function updateScene() {
+	  MY3D.updateSceneCommon();
+
+	  // effectBloom.combineUniforms[ 'strength' ].value = bloomParams.intensity;
+	  // effectTM.uniforms.exposure.value = gParams.exposeFactor*10;
+	  // THREE.ACESFilmicToneMappingShader.uniforms.exposure.value = gParams.exposeFactor*10;
+	  
+	  for (i=0; i<lightMeshes.length; i++) { 
+		lightMeshes[i].material.opacity = 0.5 + 0.5*Math.sin(0.8*now*(i+1) ); 
+	  }
+	  for ( i=0; i<shaderUniformList.length; i++ ) {
+		shaderUniformList[i].scaleXZ.value = gParams.scaleXZ;
+		shaderUniformList[i].alphaXZ.value = 0.7 + 0.2*Math.cos( 2*now );
+	  }
+	  
+	  // for (i=0; i<cityLightBlocks.length; i++) {
+		// cityLightBlocks[i].material.opacity = 0.5 + 0.5*Math.cos(0.2*now*(i) );
+	  // }
+	  
+	   
+	}
+		
+	
+	
+	
+</script>
+
+</html>
