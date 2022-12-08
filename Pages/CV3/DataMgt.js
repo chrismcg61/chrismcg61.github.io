@@ -38,6 +38,9 @@ function getDate(_durationQ){
 function small(_txt){
   return "<small><i>"+_txt+"</i></small>"  
 }
+function strong(_txt){
+  return "<span style='font-size:110%; background-color:rgba(0,255,255,0.1);'><b>"+_txt+"</b></span>"  
+}
 //
 function addTableTag(_table, _tag, _obj){
   _table[_tag] = _obj;  
@@ -135,8 +138,8 @@ function displayData(_data, _parent, _lvl){
         var dateSpan = addElt("SPAN", newSubDiv, dateStr);
         dateSpan.style.marginRight = DATE_MARGIN; //"8px";
 		//
-		var totalW = 1.7; // 50;
-		var maxQ = 10;
+		var totalW = 2.3; // 50;
+		var maxQ = 12;
 		var durationStr = "";
 		durationStr += dates.duration + small("Q");
 		var durationSpan1 = addElt("SPAN", newSubDiv, durationStr);
@@ -217,3 +220,4 @@ function displayData(_data, _parent, _lvl){
     }
   }
 }
+
