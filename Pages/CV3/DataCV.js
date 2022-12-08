@@ -45,7 +45,7 @@ addTableTag( contracts, "MAIN", {
 var rootData_Pers = {
   subDivs:[
     {
-      title:{txt:"Christopher McGARRY", classes:["maintTitle"]},
+      title:{txt:"<span style='font-size:110%;'> ░ Christopher McGARRY</span>", classes:["maintTitle"]},
       // classes:["maintTitle"],
     },
     {
@@ -130,396 +130,6 @@ var rootData_Pers = {
 	
   ],
 };
-
-
-
-/*** JOB TITLES ***/
-var rootData_JobTitles = {
-  // subDivs:[
-    // {
-      // classes:["separateDiv"],
-      subDivs:[
-        {
-          title:{txt:"Senior Versatile Programmer", classes:["maintTitle"]},
-        },
-        {
-          tagDiv:{title:"", tags:[
-            "Tech Expert",
-            "Team Lead",
-            small("Scrum Master"),
-          ]},
-        },
-        {
-          tagDiv:{title:"", tags:[
-            "Junior Proj-Manager",
-            small("Product-Owner"),
-          ]},
-        },
-        {
-          tagDiv:{title:"Junior Teacher : ", tags:[            
-            small("Maths/Physics"),
-			small("Programming"),
-            small("FR/ENG"),
-          ]},
-        },  
-      ],
-    // },    
-  // ],
-};
-
-
-
-
-/*** LANG ***/
-var langData = {
-  subDivs:[
-    {
-      subDivs:[
-        {
-          title:{txt:"Languages", classes:["maintTitle"]},
-        },
-        {
-          rating:95,    
-          tagDiv:{title:"English / French", tags:[ ]},
-        },
-        {
-          rating:80,    
-          tagDiv:{title:"German", tags:[ ]},
-        },
-        {
-          rating:70,    
-          tagDiv:{title:"Spanish", tags:[ ]},
-        },
-        {
-          rating:50,    
-          tagDiv:{title:"Chinese", tags:[ ]},
-        },        
-      ],
-    },    
-  ]
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*** HOBBIES ***/
-var hobbiesTechData = {
-  subDivs:[
-    {
-      subDivs:[
-		  {
-			subDivs:[  
-	  
-			{
-			  title:{txt:"Hobbies [Tech]", classes:["maintTitle"]},
-			},		
-			
-			{
-			  //rating:95,    
-			  tagDiv:{title:"Tech Research: ", tags:[ "Coding++"+small("(Techs/Concepts)"), "Mgt++"+small("(Tools/Methods)"), ]},
-			  // subDivs:[
-				// {
-				  // hidden:true,
-				  // subDivs:[                        
-					// {  
-					  // tagDiv:{title:"XXX", tags:[   ]},
-					// },
-				  // ]
-				// }
-			  // ]
-			},
-			{
-			  tagDiv:{title:"Gaming/DevTest: ", tags:[ "Early-Access", "Competitive", "Indie", "Retro"+small("(80-90's)"),  ]},
-			  // subDivs:[
-				// {
-				  // hidden:true,
-				  // subDivs:[                        
-					// {  
-					  // tagDiv:{title:"XXX", tags:[  ]},
-					// },
-				  // ]
-				// }
-			  // ]
-			},
-			{
-			  tagDiv:{title:"Documentaries: ", tags:[ "Techs/Science", "History/Politics", "Psycho/Mgt", ]},
-			  // subDivs:[
-				// {
-				  // hidden:true,
-				  // subDivs:[                        
-					// {  
-					  // tagDiv:{title:"XXX", tags:[   ]},
-					// },
-				  // ]
-				// }
-			  // ]
-			},
-			
-			
-			{
-			  title:{txt:"Hobbies [Other]", classes:["maintTitle"]},
-			},
-			
-			{
-				subDivs:[
-					{
-					  tagDiv:{title:"Music: ", tags:[ "Piano++", "Guitar", "Singing/Musicals", ]},
-					},
-					{
-					  tagDiv:{title:"Sports: ", tags:[ "Semi-Marathon", "Mountain-Bike", "Racket Sports", "Football", ]},
-					  subDivs:[
-						{
-						  hidden:true,
-						  subDivs:[                        
-							{  
-							  tagDiv:{title:"", tags:[
-								  "Ski/Snowboard"  ]},
-							},
-						  ]
-						}
-					  ]
-					},
-					{
-					  tagDiv:{title:"Culture: ", tags:[ 
-					    "TV-Series"+small("(Books)"), "SF/Fantasy/Thriller", "BritPop"+small("/WorldMusic"),   ]},
-					  // subDivs:[
-						// {
-						  // hidden:true,
-						  // subDivs:[ 
-							// {  
-							  // tagDiv:{title:"XXX", tags:[   ]},
-							// },
-						  // ]
-						// }
-					  // ]
-					},
-					{
-					  tagDiv:{title:"Events: ", tags:[ 
-					    "EU-Football", "ATP-Tennis", "Olympics", "Cycling"+small("(TdF…)"),  "E-Sports",  ]},
-					  // subDivs:[
-						// {
-						  // hidden:true,
-						  // subDivs:[ 
-							// {  
-							  // tagDiv:{title:"XXX", tags:[  ]},
-							// },
-						  // ]
-						// }
-					  // ]
-					},
-				]
-			},
-			]
-		 }
-      ],
-    },    
-  ],
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*** MiniJobs ***/
-var miniJobsData = {
-  subDivs:[
-    {
-      subDivs:[
-	  {
-		  subDivs:[
-		  
-			{
-			  title:{txt:"MiniJobs & Volunteer", classes:["maintTitle"]},
-			},
-			
-			{
-			  tagDiv:{title:"Job++"+small(" (PC/Elec-ER & Teaching)"), tags:[]},
-			  subDivs:[
-				{
-				  hidden:true,
-				  subDivs:[                        
-					{  
-					  tagDiv:{title:"Computer/Robot/Electronics Install/Repair", tags:[]},
-					},
-					{  
-					  tagDiv:{title:"Teaching (Maths, Prog)", tags:[]},
-					},                
-					
-					
-				  ],
-				},
-			  ],
-			},
-			
-			{
-			  tagDiv:{title:"Job+"+small(" (Translator & Animator)"), tags:[]},   // Proficient
-			  subDivs:[
-				{
-				  hidden:true,
-				  subDivs:[                        
-					{  
-					  tagDiv:{title:"Translator (ENG/FR)", tags:[]},
-					},
-					{  
-					  tagDiv:{title:"Teen Summer Camp Animator", tags:[]},
-					},
-					
-				  ],
-				},
-			  ],
-			},
-			
-			{
-			  tagDiv:{title:"Other"+small(" (Elder-ER, Event Org°...)"), tags:[]},
-			  subDivs:[
-				{
-				  hidden:true,
-				  subDivs:[   
-					{  
-					  tagDiv:{title:"Elder/Dependent People Assist", tags:[]},
-					},                
-					{  
-					  tagDiv:{title:"Event Org°", tags:[]},
-					},
-					{  
-					  tagDiv:{title:"Gardening/Construction", tags:[]},
-					},
-					
-				  ],
-				},
-			  ],
-			},
-		  
-		  
-		  
-		  ]
-	  }
-	  
-        
-        
-      ],
-    },    
-  ],
-};
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*** LIVE PROJs ***/
-var liveProjsData = {
-	subDivs:[
-    // {
-      // subDivs:[
-        {
-          title:{txt:"Projects [Live]", classes:["maintTitle"]},
-        },
-        {
-          tagDiv:{title:"GPU-AI++"+small(" (M-Learning++, Traffic/Pathing++, Image-AI)"), tags:[ ]},
-		  subDivs:[
-			{
-			  hidden:true,
-			  subDivs:[                        
-				{  
-				  tagDiv:{title:"Machine-Learning: ", tags:[
-				    "GPU M-Learning", "Bots Optim"+small(" (Act°/Strat)"),]},
-				},
-				{  
-				  tagDiv:{title:"PathFinding: ", tags:[ "Traffic Sim", "GPU-PathFinding", ]},
-				},
-				{  
-				  tagDiv:{title:"Image Analysis AI: ", tags:[
-				    "Face Detect°", "Auto-Optim", ]},
-				},
-			  ],
-			},
-		  ],
-		  
-        },
-        {
-          tagDiv:{title:"Mgt++"+small(" (Tools/Metrics++, Objectives++, WorkForce++)"), tags:[ ]},
-		  subDivs:[
-			{
-			  hidden:true,
-			  subDivs:[   
-				{  
-				  tagDiv:{title:"", tags:[ "Async Tools", "Metrics++", "WorkForce Correct°" ]},
-				},				
-				{  
-				  tagDiv:{title:"Bonus Objectives", tags:[]},
-				  subDivs:[
-					{
-					  hidden:true,
-					  subDivs:[                        
-						{  
-						  tagDiv:{title:"Tech: ", tags:[ 
-						    "AI"+small(" (Assist+DataProc)"), "Gamificat°", "Energy...",  ]},
-						},
-						{  
-						  tagDiv:{title:"Soft: ", tags:[ 
-						    "Mentoring++", "RiskPrevent°++", "Ecology/Social...",  ]},
-						},
-					  ],
-					},
-				  ],
-				},
-			  ],
-			},
-		  ],
-        },                
-      // ],
-    // },    
-  ]
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -793,8 +403,7 @@ addTableTag( techSkills, "WebAPP",  {
       hidden:true,
       subDivs:webAppSkills,
     },
-  ],
-  
+  ],  
 });
 addTableTag( techSkills, "AI",  {
   rating:89,
@@ -808,6 +417,7 @@ addTableTag( techSkills, "AI",  {
   ],
   
 });
+
 addTableTag( techSkills, "3D", {
 	rating:89,
 	tagDiv:{title:"3D/GPU", tags:[ ]},
@@ -853,7 +463,8 @@ addTableTag( techSkills, "GameDev", {
 		  ],
 		},
 	],
-  });
+});
+  
 addTableTag( techSkills, "MW", {
     rating:89,
     tagDiv:{title:"MiddleWare", tags:[ ]},
@@ -883,6 +494,7 @@ addTableTag( techSkills, "MW", {
 		},
 	],
 });
+
 addTableTag( techSkills, "Tools", {
     rating:89,
     tagDiv:{title:"Tools", tags:[ ]},
@@ -1064,6 +676,412 @@ var skillData = {
 
 
 
+/*** JOB TITLES ***/
+var rootData_JobTitles = {
+  // subDivs:[
+    // {
+      // classes:["separateDiv"],
+      subDivs:[
+        {
+          title:{txt:"Senior Versatile Programmer", classes:["maintTitle"]},
+        },
+		{
+          tagDiv:{title:"", tags:[			
+			small( techSkills["GameDev"].tagDiv.title ),
+			small( techSkills["3D"].tagDiv.title ),
+			small( techSkills["AI"].tagDiv.title ),
+			small( techSkills["WebAPP"].tagDiv.title ),
+			small( techSkills["MW"].tagDiv.title ),
+			small( techSkills["Tools"].tagDiv.title ),
+          ]},
+        },
+        {
+          tagDiv:{title:"Roles : ", tags:[
+            ("Tech Expert"),
+            ("Team Lead"),
+            small("Scrum Master"),
+          ]},
+        },
+        {
+          tagDiv:{title:"", tags:[
+            "Junior Proj-Manager",
+            small("Product-Owner"),
+          ]},
+        },
+        {
+          tagDiv:{title:"Junior Teacher : ", tags:[            
+            small("Maths/Physics"),
+			small("Programming"),
+            small("FR/ENG"),
+          ]},
+        },  
+      ],
+    // },    
+  // ],
+};
+
+
+
+
+/*** LANG ***/
+var langData = {
+  subDivs:[
+    {
+      subDivs:[
+        {
+          title:{txt:"Languages", classes:["maintTitle"]},
+        },
+        {
+          rating:95,    
+          tagDiv:{title:"English / French", tags:[ ]},
+        },
+        {
+          rating:80,    
+          tagDiv:{title:"German", tags:[ ]},
+        },
+        {
+          rating:70,    
+          tagDiv:{title:"Spanish", tags:[ ]},
+        },
+        {
+          rating:50,    
+          tagDiv:{title:"Chinese", tags:[ ]},
+        },        
+      ],
+    },    
+  ]
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*** HOBBIES ***/
+var hobbiesTechData = {
+  subDivs:[
+    {
+      subDivs:[
+		  {
+			subDivs:[  
+	  
+			{
+			  title:{txt:"Hobbies [Tech]", classes:["maintTitle"]},
+			},		
+			
+			{
+			  //rating:95,    
+			  tagDiv:{title:"Tech Research: ", tags:[ "Coding++"+small("(Techs/Concepts)"), "Mgt++"+small("(Tools/Methods)"), ]},
+			  // subDivs:[
+				// {
+				  // hidden:true,
+				  // subDivs:[                        
+					// {  
+					  // tagDiv:{title:"XXX", tags:[   ]},
+					// },
+				  // ]
+				// }
+			  // ]
+			},
+			{
+			  tagDiv:{title:"Gaming/DevTest: ", tags:[ "Early-Access", "Competitive", "Indie", "Retro"+small("(80-90's)"),  ]},
+			  // subDivs:[
+				// {
+				  // hidden:true,
+				  // subDivs:[                        
+					// {  
+					  // tagDiv:{title:"XXX", tags:[  ]},
+					// },
+				  // ]
+				// }
+			  // ]
+			},
+			{
+			  tagDiv:{title:"Documentaries: ", tags:[ "Techs/Science", "History/Politics", "Psycho/Mgt", ]},
+			  // subDivs:[
+				// {
+				  // hidden:true,
+				  // subDivs:[                        
+					// {  
+					  // tagDiv:{title:"XXX", tags:[   ]},
+					// },
+				  // ]
+				// }
+			  // ]
+			},
+			
+			
+			{
+			  title:{txt:"Hobbies [Other]", classes:["maintTitle"]},
+			},
+			
+			{
+				subDivs:[
+					{
+					  tagDiv:{title:"Music: ", tags:[ "Piano++", "Guitar", "Singing/Musicals", ]},
+					},
+					{
+					  tagDiv:{title:"Sports: ", tags:[ "Semi-Marathon", "Mountain-Bike", "Racket Sports", "Football", ]},
+					  subDivs:[
+						{
+						  hidden:true,
+						  subDivs:[                        
+							{  
+							  tagDiv:{title:"", tags:[
+								  "Ski/Snowboard"  ]},
+							},
+						  ]
+						}
+					  ]
+					},
+					{
+					  tagDiv:{title:"Culture: ", tags:[ 
+					    "TV-Series"+small("(Books)"), "SF/Fantasy/Thriller", "BritPop"+small("/WorldMusic"),   ]},
+					  // subDivs:[
+						// {
+						  // hidden:true,
+						  // subDivs:[ 
+							// {  
+							  // tagDiv:{title:"XXX", tags:[   ]},
+							// },
+						  // ]
+						// }
+					  // ]
+					},
+					{
+					  tagDiv:{title:"Events: ", tags:[ 
+					    "EU-Football", "ATP-Tennis", "Olympics", "Cycling"+small("(TdF…)"),  "E-Sports",  ]},
+					  // subDivs:[
+						// {
+						  // hidden:true,
+						  // subDivs:[ 
+							// {  
+							  // tagDiv:{title:"XXX", tags:[  ]},
+							// },
+						  // ]
+						// }
+					  // ]
+					},
+				]
+			},
+			]
+		 }
+      ],
+    },    
+  ],
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*** MiniJobs ***/
+var miniJobsData = {
+  subDivs:[
+    {
+      subDivs:[
+	  {
+		  subDivs:[
+		  
+			{
+			  title:{txt:"MiniJobs & Volunteer", classes:["maintTitle"]},
+			},
+			
+			{
+			  tagDiv:{title:"Skill+"+small(" (PC/Elec-ER & Teaching)"), tags:[]},
+			  subDivs:[
+				{
+				  hidden:true,
+				  subDivs:[                        
+					{  
+					  tagDiv:{title:"Computer/Robot/Electronics Install/Repair", tags:[]},
+					},
+					{  
+					  tagDiv:{title:"Teaching (Maths, Prog)", tags:[]},
+					},                
+					
+					
+				  ],
+				},
+			  ],
+			},
+			
+			{
+			  tagDiv:{title:"Skill"+small(" (Translator & Animator)"), tags:[]},   // Proficient
+			  subDivs:[
+				{
+				  hidden:true,
+				  subDivs:[                        
+					{  
+					  tagDiv:{title:"Translator (ENG/FR)", tags:[]},
+					},
+					{  
+					  tagDiv:{title:"Teen Summer Camp Animator", tags:[]},
+					},
+					
+				  ],
+				},
+			  ],
+			},
+			
+			{
+			  tagDiv:{title:"Other"+small(" (Elder-ER, Event Org°...)"), tags:[]},
+			  subDivs:[
+				{
+				  hidden:true,
+				  subDivs:[   
+					{  
+					  tagDiv:{title:"Elder/Dependent People Assist", tags:[]},
+					},                
+					{  
+					  tagDiv:{title:"Event Org°", tags:[]},
+					},
+					{  
+					  tagDiv:{title:"Gardening/Construction", tags:[]},
+					},
+					
+				  ],
+				},
+			  ],
+			},
+		  
+		  
+		  
+		  ]
+	  }
+	  
+        
+        
+      ],
+    },    
+  ],
+};
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*** LIVE PROJs ***/
+var liveProjsData = {
+	subDivs:[
+    // {
+      // subDivs:[
+        {
+          title:{txt:"Projects [Live]", classes:["maintTitle"]},
+        },
+        {
+          tagDiv:{title:"GPU-AI++"+small(" (M-Learning++, Traffic/Pathing++, Image-AI)"), tags:[ ]},
+		  subDivs:[
+			{
+			  hidden:true,
+			  subDivs:[                        
+				{  
+				  tagDiv:{title:"Machine-Learning: ", tags:[
+				    "GPU M-Learning", "Bots Optim"+small(" (Act°/Strat)"),]},
+				},
+				{  
+				  tagDiv:{title:"PathFinding: ", tags:[ "Traffic Sim", "GPU-PathFinding", ]},
+				},
+				{  
+				  tagDiv:{title:"Image Analysis AI: ", tags:[
+				    "Face Detect°", "Auto-Optim", ]},
+				},
+			  ],
+			},
+		  ],
+		  
+        },
+        {
+          tagDiv:{title:"Mgt++"+small(" (Tools/Metrics++, Objectives++, WorkForce++)"), tags:[ ]},
+		  subDivs:[
+			{
+			  hidden:true,
+			  subDivs:[   
+				{  
+				  tagDiv:{title:"", tags:[ "Async Tools", "Metrics++", "WorkForce Correct°" ]},
+				},				
+				{  
+				  tagDiv:{title:"Bonus Objectives", tags:[]},
+				  subDivs:[
+					{
+					  hidden:true,
+					  subDivs:[                        
+						{  
+						  tagDiv:{title:"Tech: ", tags:[ 
+						    "AI"+small(" (Assist+DataProc)"), "Gamificat°", "Energy...",  ]},
+						},
+						{  
+						  tagDiv:{title:"Soft: ", tags:[ 
+						    "Mentoring++", "RiskPrevent°++", "Ecology/Social...",  ]},
+						},
+					  ],
+					},
+				  ],
+				},
+			  ],
+			},
+		  ],
+        },                
+      // ],
+    // },    
+  ]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1191,7 +1209,7 @@ var projContractsData = {
 		{
 			subDivs:[				
 				{
-				  tagDiv:{title:"Agile++ Projs", tags:[ ],  },  // Mgt-Skills
+				  tagDiv:{title:"AGILE++ Projects"+small(" (AgiStruct & Scope/Sprint++ & Pair/XP)"), tags:[ ],  },  // Mgt-Skills
 				  subRatings:{title:"", S:85},
 				  subDivs:[
 					{
@@ -1209,7 +1227,7 @@ var projContractsData = {
 				},
 				
 				{
-				  tagDiv:{title:"Ambitious Projs"+small(" (Hi-Productivity & Hi-Quality)"), tags:[ ],  },
+				  tagDiv:{title:"Ambitious Projects"+small(" (Hi-Productivity & Hi-Quality)"), tags:[ ],  },
 				  subRatings:{title:"", S:85},
 				  subDivs:[
 					{
@@ -1389,7 +1407,7 @@ var missionsByDate = {
       type:"Embed",
       dates:getDate(2),
 	  region:"Paris"+small("[SSII]"),
-      tagDiv:{title:"NeoPost", tags:[ ]},
+      tagDiv:{title:"NeoPost"+small(" [StampBots]"), tags:[ ]},
     },
 	{
       type:"Embed",
@@ -1407,13 +1425,13 @@ var missionsByDate = {
       type:"OTHER",
       dates:getDate(1),
 	  region:"Paris"+small("[SSII]"),
-      tagDiv:{title:"Technicolor", tags:[ ]},
+      tagDiv:{title:"Technicolor"+small(" [VoIP]"), tags:[ ]},
     },
 	{
       type:"OTHER",
       dates:getDate(1),
 	  region:"Paris"+small("[SSII]"),
-      tagDiv:{title:"SagemCom", tags:[ ]},
+      tagDiv:{title:"SagemCom"+small(" [MW-Net]"), tags:[ ]},
     },
 	{
       type:"STB",
@@ -1429,13 +1447,17 @@ var missionsByDate = {
     },
 	{
       type:"STB",
-      dates:getDate(5),
+      dates:getDate(4),
 	  region:"Paris"+small("[SSII]"),
       tagDiv:{title:"Cisco"+small(" [TV]"), tags:[ ]},
     },	
 	{
+      dates:getDate(1),
+	  tagDiv:{title:"", tags:[ ]},
+    },
+	{
       type:"GameDev",
-      dates:getDate(8),
+      dates:getDate(9),
 	  region:"Paris",
       tagDiv:{title:"Indie-Project"+small(" [NextGen-Game]"), tags:[ ]},  // MyProj
     },
@@ -1445,8 +1467,8 @@ var missionsByDate = {
     },
 	{
       type:"WebApp++",
-      dates:getDate(8),
-	  region:"Normandy",
+      dates:getDate(10),
+	  region:"France",
       tagDiv:{title:"Indie-Project"+small(" [WebApp++]"), tags:[ ]},
     },
 	{
@@ -1641,5 +1663,3 @@ var missionsByType = {
 	}
   ],
 };
-
-
