@@ -57,7 +57,7 @@ a:hover, a:active {
   font-size: 120%;
 }
 .title2{
-  font-size: 120%;
+  font-size: 95%;
 }
 
 .divCol1{
@@ -68,7 +68,7 @@ a:hover, a:active {
   //box-shadow: 5px 10px 20px red inset:
 }
 .interDiv{
-  font-size: 30%; 
+  font-size: 10%; 
   //background-color : rgba(0,0,0, 0.5);
 }
 
@@ -93,6 +93,33 @@ a:hover, a:active {
 }
 .backColHi3{
   background-color : rgba(0,230,250, 0.5);
+}
+
+.titleTags{
+	font-size: 80%;
+	// background-color : rgba(0,250,250, 0.3);
+}
+
+.expTitle0{
+  line-height: 100%;
+  font-size: 120%;
+  background-color : rgba(0,0,0, 0.1);
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.9) inset;
+}
+.expTitle1{
+  font-size: 120%;
+  background-color : rgba(150,250,0, 0.15);
+  box-shadow: 2px 10px 16px rgba(150,250,0,0.9) inset;
+}
+.expTitle2{
+  font-size: 120%;
+  background-color : rgba(250,0,250, 0.15);
+  box-shadow: 2px 10px 16px rgba(250,0,250,0.9) inset;
+}
+.expTitle3{
+  font-size: 120%;
+  background-color : rgba(0,250,250, 0.15);
+  box-shadow: 2px 10px 16px rgba(0,250,250,0.9) inset;
 }
 
 .separateDiv{
@@ -279,6 +306,11 @@ All<input id="" type="checkbox"  onchange="expandPrio(0)">
 		<input type="checkbox" onchange="showModal()">
 		<span class="slider"></span>
 	</label>
+	&nbsp <b>ToggleExp</b>
+	<label class="switch">
+		<input type="checkbox" onchange="toggleExperience()">
+		<span class="slider"></span>
+	</label>
 </div>
 
 
@@ -370,7 +402,7 @@ var BAR_FONTSIZE = "60%";
 
 
 
-
+var experienceMode = 1;
 //        
 var myData = {
   // maintTitle:"MY_BIG_TITLE",
@@ -422,14 +454,14 @@ var extraDivsL = [
     classes:["interDiv"],
   },*/
   
-  {
+  /*{
     subDivs:projContractsData.subDivs,
 	classes:["divCol1"],
   },
   {
     title:{txt:"&nbsp", classes:[]},
     classes:["interDiv"],
-  },
+  },*/
 
   {
     subDivs:liveProjsData.subDivs,
@@ -440,6 +472,8 @@ var extraDivsL = [
     classes:["interDiv"],
   },
   
+];
+var experienceDivs_Type = [
   {
     subDivs:missionsByType.subDivs,
 	classes:["divCol1"],
@@ -449,6 +483,17 @@ var extraDivsL = [
     classes:["interDiv"],
   },
 ];
+var experienceDivs_Date = [
+  {
+    subDivs:missionsByDate2.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },
+];
+
 var extraDivsR = [  
   {
     subDivs:skillMgtData.subDivs,
@@ -520,6 +565,9 @@ function initDisplayData(){
   if(showDetails.checked) {
     addDivs(baseDivsL, 1);
     addDivs(extraDivsL, 1);
+	if(experienceMode==0) addDivs(experienceDivs_Type, 1);	
+	else addDivs(experienceDivs_Date, 1);	
+	//
     addDivs(baseDivsR, 2);
     addDivs(extraDivsR, 2);
   }
@@ -634,6 +682,14 @@ function openTab(evt, name) {
 	expandPrio(0)
   }
 }
+
+
+function toggleExperience(){
+	if(experienceMode==0) experienceMode = 1;
+	else  experienceMode = 0;
+	initDisplayData()
+}
+
 
 </script>
 
