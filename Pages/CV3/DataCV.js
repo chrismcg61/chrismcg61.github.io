@@ -41,95 +41,6 @@ addTableTag( contracts, "MAIN", {
     }
   );
 }
-//
-var rootData_Pers = {
-  subDivs:[
-    {
-      title:{txt:"<span style='font-size:110%;'> ░ Christopher McGARRY</span>", classes:["maintTitle"]},
-      // classes:["maintTitle"],
-    },
-    {
-      tagDiv:{title:"", tags:[
-        "FR",
-        small("Age: ")+getAge(1983+310/365),
-        small("XP: ")+getAge(2008+1/365),
-        small("Visionary-Mediator-Entrepreneur"),
-      ]},
-    },
-    {
-      tagDiv:{title:"✎🎓 Degrees: ", tags:[
-        "IT-Engineer"+small("(2006)"),        
-        small("HMI-Robotics"),
-      ]},
-      subDivs:[
-        {
-          hidden:true,
-          subDivs:[
-			{  
-              tagDiv:{title:"BAC+2: Maths-Sup/Spe"+small("(2003)"), tags:[]},
-            }, 		  
-            {  
-              tagDiv:{title:"BAFA "+small("(Summer-Camp Animator)"), tags:[]},
-            },
-            {  
-              tagDiv:{title:"BIA "+small("(Small Aircraft Pilot)"), tags:[]},
-            },
-            {  
-              tagDiv:{title:"Security Accreditations "+small("(Secret & Elec)"), tags:[]},
-            },
-          ],
-        },
-      ],
-    },
-    {
-      tagDiv:{title:"✈🌍 Mobility: ", tags:[  //"LYON",          
-		"Global", small(small("HiTech-Cities")),
-      ]},
-	  url:"http:/a/HiTech/LoAdmin Regions",
-      subDivs:[
-        {
-          hidden:true,
-          subDivs:[                        
-            {  
-              tagDiv:{title:"", tags:[ "EU"+small("-West"), "Americas",  "Asia"+small("-S.East"), ]},
-            },
-          ],
-        },
-      ],
-    },    
-    {
-      tagDiv:{title:"✉🌐 Full-WebCV: ", tags:[    // 🌌
-        "chrismcg61.wixsite.com/home"
-      ]},
-      subDivs:[
-        {
-		  expandPrio:1,
-          hidden:true,
-          subDivs:[                        
-            {  
-              tagDiv:{title:"✉📞 Mail" +small("(Pro)")+ " & Tel: ", tags:[ "mcgarrychristopher<b>@</b>"+small("yahoo.fr") ]},   // Mail(Pro)
-              subDivs:[
-                {
-                  hidden:true,
-                  subDivs:[                        
-                    {  
-                      tagDiv:{title:"Tel: ", tags:[ "0635915517", small("10am-7pm"+small(" (CET)")),  ]},
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },  
-
-	
-	
-	
-	
-  ],
-};
 
 
 
@@ -164,12 +75,12 @@ addTableTag( techList, "TOOLS", {
 		  subDivs:[
 		    {
 				rating:85,
-				tagDiv:{title:"", tags:[ 
+				tagDiv:{title:"", alternateBg:true, tags:[ 
 				  "Unity"+small("(Unreal)"), "VStudio", "Win/Linux"+small("(All)"), "VMware", ]},
 				url:"http:/VirtualBox_Virtools",
 				subDivs:[
 					{
-					  expandPrio:1,
+					  expandPrio:0,
 					  hidden:true,
 					  subDivs:[
 					    {
@@ -219,10 +130,10 @@ addTableTag( techList, "LANG", {
 			// },
 			{
 				rating:85,
-				tagDiv:{title:"C-family: ", tags:[ "C,C++,C#", "Dart", "TypeScript"+small("(JS)"),  ]},
+				tagDiv:{title:"C-family: ", alternateBg:true, tags:[ "C,C++,C#", "Dart", "TypeScript"+small("(JS)"),  ]},
 				subDivs:[
 					{
-					  expandPrio:1,
+					  expandPrio:0,
 					  hidden:true,
 					  subDivs:[
 						{
@@ -236,11 +147,11 @@ addTableTag( techList, "LANG", {
 			},
 			{
 				rating:85,
-				tagDiv:{title:"Other: ", tags:[ "JS", "Lua", "HTML/CSS3D", "Bash"  ]},
+				tagDiv:{title:"Other: ", alternateBg:true, tags:[ "JS", "Lua", "HTML/CSS3D", "Bash"  ]},
 				url:"http:/a/Batch/PowerShell",
 				subDivs:[
 					{
-					  expandPrio:1,
+					  expandPrio:0,
 					  hidden:true,
 					  subDivs:[
 						{
@@ -266,16 +177,16 @@ addTableTag( techList, "LIBS", {
 		  subDivs:[
 			{
 				rating:85,
-				tagDiv:{title:"GPU: ", tags:[ 
+				tagDiv:{title:"GPU: ", alternateBg:true, tags:[ 
 				  "WebGL"+small("(OpenGL/DX)"), "WebCL/GLSL"+small("(OpenCL)"), "Wii/PS3" ]},  
 				url:"http:/Cuda__PC_Xbox",
 			},
 			{
 				rating:75,
-				tagDiv:{title:"Other: ", tags:[ "AngularJS", "ReactJS", small("VueJS"), ]},
+				tagDiv:{title:"Other: ", alternateBg:true, tags:[ "AngularJS", "ReactJS", small("VueJS"), ]},
 				subDivs:[
 					{
-					  expandPrio:1,
+					  expandPrio:0,
 					  hidden:true,
 					  subDivs:[
 						{
@@ -396,10 +307,10 @@ var techSkills = [];
 {
 addTableTag( techSkills, "WebAPP",  {
   rating:89,
-  tagDiv:{title:"WebApp", tags:[ ]},
+  tagDiv:{title:"WebApp"+small(""), tags:[ ]},
   subDivs:[
     {
-	  expandPrio:1,
+	  expandPrio:0,
       hidden:true,
       subDivs:webAppSkills,
     },
@@ -407,10 +318,10 @@ addTableTag( techSkills, "WebAPP",  {
 });
 addTableTag( techSkills, "AI",  {
   rating:89,
-  tagDiv:{title:"AI", tags:[ ]},
+  tagDiv:{title:"AI/M-Learning", tags:[ ]},
   subDivs:[
     {
-      expandPrio:1,
+      expandPrio:0,
 	  hidden:true,
       subDivs:aiSkills,
     },
@@ -420,7 +331,7 @@ addTableTag( techSkills, "AI",  {
 
 addTableTag( techSkills, "3D", {
 	rating:89,
-	tagDiv:{title:"3D/GPU", tags:[ ]},
+	tagDiv:{title:"3D/GPU Dev", tags:[ ]},
 	subDivs:[
 	{
 	  //expandPrio:1,
@@ -594,7 +505,7 @@ addTableTag( mgtSkills, "AGILE", {
 	  small("SCRUM"), small("PairCommit"), small("SprintReview"), ]},
 	subDivs:[
 		{
-		  expandPrio:1,
+		  expandPrio:0,
 		  hidden:true,
 		  subDivs:[
 			  {
@@ -614,7 +525,7 @@ addTableTag( mgtSkills, "CodeQual", {
     tagDiv:{title:processTags["CodeQual"]+": ", tags:[ small("Strong UTs"), small("Qual/Regr° Monitor"), ]},
 	subDivs:[
 		{
-		  expandPrio:1,
+		  expandPrio:0,
 		  hidden:true,
 		  subDivs:[
 			{
@@ -686,13 +597,14 @@ var rootData_JobTitles = {
           title:{txt:"Senior Versatile Programmer", classes:["maintTitle"]},
         },
 		{
-          tagDiv:{title:"", tags:[			
+          classes:["titleTags"],
+		  tagDiv:{title:"", alternateBg:true, tags:[			
 			small( techSkills["GameDev"].tagDiv.title ),
 			small( techSkills["3D"].tagDiv.title ),
 			small( techSkills["AI"].tagDiv.title ),
 			small( techSkills["WebAPP"].tagDiv.title ),
 			small( techSkills["MW"].tagDiv.title ),
-			small( techSkills["Tools"].tagDiv.title ),
+			// small( techSkills["Tools"].tagDiv.title ),
           ]},
         },
         {
@@ -778,7 +690,7 @@ var hobbiesTechData = {
 			
 			{
 			  //rating:95,    
-			  tagDiv:{title:"Tech Research: ", tags:[ "Coding++"+small("(Techs/Concepts)"), "Mgt++"+small("(Tools/Methods)"), ]},
+			  tagDiv:{title:"Tech Survey: ", tags:[ "Coding++"+small("(Techs/Concepts)"), "Mgt++"+small("(Tools/Methods)"), ]},
 			  // subDivs:[
 				// {
 				  // hidden:true,
@@ -942,13 +854,13 @@ var miniJobsData = {
 			},
 			
 			{
-			  tagDiv:{title:"Other"+small(" (Elder-ER, Event Org°...)"), tags:[]},
+			  tagDiv:{title:"Other"+small(" (Caregiver, Event Org°...)"), tags:[]},
 			  subDivs:[
 				{
 				  hidden:true,
 				  subDivs:[   
 					{  
-					  tagDiv:{title:"Elder/Dependent People Assist", tags:[]},
+					  tagDiv:{title:"Elder/Family Caregiver", tags:[]},
 					},                
 					{  
 					  tagDiv:{title:"Event Org°", tags:[]},
@@ -997,8 +909,8 @@ var miniJobsData = {
 /*** LIVE PROJs ***/
 var liveProjsData = {
 	subDivs:[
-    // {
-      // subDivs:[
+    {
+      subDivs:[
         {
           title:{txt:"Projects [Live]", classes:["maintTitle"]},
         },
@@ -1055,8 +967,8 @@ var liveProjsData = {
 			},
 		  ],
         },                
-      // ],
-    // },    
+      ],
+    },    
   ]
 }
 
@@ -1115,19 +1027,134 @@ var favProjsData = {
 
 
 
+
+var subDivs_ProjTargets =  [				
+	{
+	  tagDiv:{title:"AGILE++ Projects"+small(" (AgiStruct & Scope/Sprint++ & Pair/XP)"), tags:[ ],  },  // Mgt-Skills
+	  subRatings:{title:"", S:85},
+	  subDivs:[
+		{
+		  hidden:true,
+		  subDivs:[ 
+			//contracts["MAIN"],
+			mgtSkills["AUTO"],  
+			mgtSkills["AGILE"],
+			{
+			  tagDiv:{title:"AGILE++: ", tags:[ "Agile-Struct"+small("(MgtDuo|Sprint)"), "Sprint Correct°", "XP-Prog", ]},
+			},
+		  ],
+		},
+	  ],
+	},
+	
+	{
+	  tagDiv:{title:"Ambitious Projects"+small(" (Hi-Productivity & Hi-Quality)"), tags:[ ],  },
+	  subRatings:{title:"", S:85},
+	  subDivs:[
+		{
+		  hidden:true,
+		  subDivs:[ 
+			{
+			  tagDiv:{title:"Hi-Productivity Projs"+small(" (Tasks/Tools++, WorkLoad/ChangeReq)"), tags:[ ],  },
+			  subRatings:{title:"", S:85},
+			  subDivs:[
+				{
+				  hidden:true,
+				  subDivs:[ 
+					{
+					  tagDiv:{title:"Tasks++ : ", tags:[ "Automation", "Bonus Dev-Tasks" ]},   // Lo-Tech Tasks Automation
+					},
+					{
+					  tagDiv:{title:"Tools++ : ", tags:[ "Async CoWorking", "Prod/Qual Metrics" ]},
+					},	
+					{
+					  tagDiv:{title:"WorkLoad++ : ", tags:[ "Holiday-Season Continuity", "Hi-Workload Mgt" ]},
+					  // tagDiv:{title:"WorkLoad"+small(" (Continuity++, Hi-Workload++)"), tags:[  ]},
+					  // subDivs:[
+						// {
+						  // hidden:true,
+						  // subDivs:[ 
+							// {
+							  // tagDiv:{title:"Continuity (Holiday-Season Mgt)", tags:[  ]},
+							// },
+							// {
+							  // tagDiv:{title:"Hi-Workload Mgt", tags:[  ]},
+							// },				
+						  // ],
+						// },
+					  // ],
+					},
+					{
+					  tagDiv:{title:"", tags:[ "Lo-ChangeReq", "Release Freq" ]},
+					},
+				  ],
+				},
+			  ],
+			}, 
+			
+			{
+			  tagDiv:{title:"Hi-Quality Projs"+small(" (Success/Risk Mgt)"), tags:[ ]},
+			  subRatings:{title:"", S:65},
+			  subDivs:[
+				{
+				  hidden:true,
+				  subDivs:[ 
+					{
+					  tagDiv:{title:"Quality: ", tags:[ "Value Features", "ROI(Tech...)", "Regression Prevent°", ]},
+					},	
+					{
+					  tagDiv:{title:"Success Scopes: ", tags:[ "Corporate", "Product", "Project", small("Future-Project"),  ]},
+					},
+					{
+					  tagDiv:{title:"Corrections: ", tags:[ "Lo-Workload Mgt", "Corp Issue Escalat°",  ]},
+					},	
+					{
+					  tagDiv:{title:"Prevent°: ", tags:[ "Risk-Plan"+small("(Proj/Corp)"), "Risk-Limit", "Risk-Mgr", "StressTest", ]},
+					},	
+				  ],
+				},
+			  ],
+			},
+		  ],
+		},
+	  ],
+	},
+	
+					
+	
+	{
+	  tagDiv:{title:"Team-Building"+small(" (Training, Research, ProBono...)"), tags:[ ]},
+	  subRatings:{title:"", S:75},
+	  subDivs:[
+		{
+		  hidden:true,
+		  subDivs:[ 
+			{
+			  tagDiv:{title:"", tags:[ "Agile Training/Mentoring", ]},
+			},
+			{
+			  tagDiv:{title:"", tags:[ "CoWorking-Days & Offices++", ]},
+			},
+			{
+			  tagDiv:{title:"", tags:[ "Research/PhD", "ProBono-Missions", "Instructor-Missions", ]},
+			},							
+		  ],
+		},
+	  ],
+	},
+];			
 var projContractsData = {
 	subDivs:[
+		// {
+			// subDivs:[ { title:{txt:"Availability [Contracts]", classes:["maintTitle"]}, } ]
+		// },		
 		{
-			subDivs:[ {
-				title:{txt:"Availability [Contracts]", classes:["maintTitle"]},
-			} ]
-		},		
-		{
+			// tagDiv:{title:"AVAIL", tags:[ ]}, 
 			subDivs:[				
 				{
 				  // title:{txt:"Contracts:", classes:["title2"]},
 				  // classes:["title"],
-				  tagDiv:{title:"", tags:[
+				  tagDiv:{title:"Contracts : ", tags:[
 					"AGILE++",
 					"3-Months+",
 					"PartTime"+small("[50-90%]"),
@@ -1202,127 +1229,24 @@ var projContractsData = {
 		
 		
 		{		  
-		  subDivs:[ {
-				title:{txt:"Availability [Projects]", classes:["maintTitle"]},   // Projects of Interest
+		  subDivs:[ { 
+				// title:{txt:"Availability [Projects]", classes:["maintTitle"]},   // Projects of Interest
 			} ]
-		},		
+		},
 		{
 			subDivs:[				
 				{
-				  tagDiv:{title:"AGILE++ Projects"+small(" (AgiStruct & Scope/Sprint++ & Pair/XP)"), tags:[ ],  },  // Mgt-Skills
-				  subRatings:{title:"", S:85},
-				  subDivs:[
-					{
+				  tagDiv:{title:"Proj-Targets : ", tags:[ "AGILE++ Projs", "Ambitious Projs", "Team-Building", ]},  
+				  subDivs:[{
 					  hidden:true,
-					  subDivs:[ 
-					    //contracts["MAIN"],
-					    mgtSkills["AUTO"],  
-						mgtSkills["AGILE"],
-						{
-						  tagDiv:{title:"AGILE++: ", tags:[ "Agile-Struct"+small("(MgtDuo|Sprint)"), "Sprint Correct°", "XP-Prog", ]},
-						},
-					  ],
-					},
-				  ],
+					  subDivs: subDivs_ProjTargets,					  
+				  }]
 				},
-				
-				{
-				  tagDiv:{title:"Ambitious Projects"+small(" (Hi-Productivity & Hi-Quality)"), tags:[ ],  },
-				  subRatings:{title:"", S:85},
-				  subDivs:[
-					{
-					  hidden:true,
-					  subDivs:[ 
-						{
-						  tagDiv:{title:"Hi-Productivity Projs"+small(" (Tasks/Tools++, WorkLoad/ChangeReq)"), tags:[ ],  },
-						  subRatings:{title:"", S:85},
-						  subDivs:[
-							{
-							  hidden:true,
-							  subDivs:[ 
-								{
-								  tagDiv:{title:"Tasks++ : ", tags:[ "Automation", "Bonus Dev-Tasks" ]},   // Lo-Tech Tasks Automation
-								},
-								{
-								  tagDiv:{title:"Tools++ : ", tags:[ "Async CoWorking", "Prod/Qual Metrics" ]},
-								},	
-								{
-								  tagDiv:{title:"WorkLoad++ : ", tags:[ "Holiday-Season Continuity", "Hi-Workload Mgt" ]},
-								  // tagDiv:{title:"WorkLoad"+small(" (Continuity++, Hi-Workload++)"), tags:[  ]},
-								  // subDivs:[
-									// {
-									  // hidden:true,
-									  // subDivs:[ 
-										// {
-										  // tagDiv:{title:"Continuity (Holiday-Season Mgt)", tags:[  ]},
-										// },
-										// {
-										  // tagDiv:{title:"Hi-Workload Mgt", tags:[  ]},
-										// },				
-									  // ],
-									// },
-								  // ],
-								},
-								{
-								  tagDiv:{title:"", tags:[ "Lo-ChangeReq", "Release Freq" ]},
-								},
-							  ],
-							},
-						  ],
-						}, 
-						
-						{
-						  tagDiv:{title:"Hi-Quality Projs"+small(" (Success/Risk Mgt)"), tags:[ ]},
-						  subRatings:{title:"", S:65},
-						  subDivs:[
-							{
-							  hidden:true,
-							  subDivs:[ 
-								{
-								  tagDiv:{title:"Quality: ", tags:[ "Value Features", "ROI(Tech...)", "Regression Prevent°", ]},
-								},	
-								{
-								  tagDiv:{title:"Success Scopes: ", tags:[ "Corporate", "Product", "Project", small("Future-Project"),  ]},
-								},
-								{
-								  tagDiv:{title:"Corrections: ", tags:[ "Lo-Workload Mgt", "Corp Issue Escalat°",  ]},
-								},	
-								{
-								  tagDiv:{title:"Prevent°: ", tags:[ "Risk-Plan"+small("(Proj/Corp)"), "Risk-Limit", "Risk-Mgr", "StressTest", ]},
-								},	
-							  ],
-							},
-						  ],
-						},
-					  ],
-					},
-				  ],
-				},
-				
-								
-				
-				{
-				  tagDiv:{title:"Team-Building"+small(" (Training, Research, ProBono...)"), tags:[ ]},
-				  subRatings:{title:"", S:75},
-				  subDivs:[
-					{
-					  hidden:true,
-					  subDivs:[ 
-						{
-						  tagDiv:{title:"", tags:[ "Agile Training/Mentoring", ]},
-						},
-						{
-						  tagDiv:{title:"", tags:[ "CoWorking-Days & Offices++", ]},
-						},
-						{
-						  tagDiv:{title:"", tags:[ "Research/PhD", "ProBono-Missions", "Instructor-Missions", ]},
-						},							
-					  ],
-					},
-				  ],
-				},
-			]
-		},
+			],
+		},				
+		// {
+			// subDivs: subDivs_ProjTargets,
+		// },
 	]
 }
 
@@ -1340,6 +1264,103 @@ var projContractsData = {
 
 
 
+var rootData_Pers = {
+  subDivs:[
+    {
+      title:{txt:"<span style='font-size:105%;'> ░ Christopher McGARRY</span>", classes:["maintTitle"]},
+      // classes:["maintTitle"],
+    },
+    {
+      tagDiv:{title:"", tags:[
+        "FR",
+        small("Age: ")+getAge(1983+310/365),
+        small("XP: ")+getAge(2008+1/365),
+        small("Visionary-Mediator-Entrepreneur"),
+      ]},
+    },
+    {
+      tagDiv:{title:"✎🎓 Degrees: ", tags:[
+        "IT-Engineer"+small("(2006)"),        
+        small("HMI-Robotics"),
+      ]},
+      subDivs:[
+        {
+          hidden:true,
+          subDivs:[
+			{  
+              tagDiv:{title:"BAC+2: Maths-Sup/Spe"+small("(2003)"), tags:[]},
+            }, 		  
+            {  
+              tagDiv:{title:"BAFA "+small("(Summer-Camp Animator)"), tags:[]},
+            },
+            {  
+              tagDiv:{title:"BIA "+small("(Small Aircraft Pilot)"), tags:[]},
+            },
+            {  
+              tagDiv:{title:"Security Accreditations "+small("(Secret & Elec)"), tags:[]},
+            },
+          ],
+        },
+      ],
+    },
+    {
+      tagDiv:{title:"✈🌍 Mobility: ", tags:[  //"LYON",          
+		"Global", small(small("HiTech-Cities")),
+      ]},
+	  url:"http:/a/HiTech/LoAdmin Regions",
+      subDivs:[
+        {
+          hidden:true,
+          subDivs:[                        
+            {  
+              tagDiv:{title:"", tags:[ "EU"+small("-West"), "Americas",  "Asia"+small("-S.East"), ]},
+            },
+          ],
+        },
+      ],
+    },    
+    {
+      tagDiv:{title:"✉🌐 Full-WebCV: ", alternateBg:true,  tags:[    // 🌌
+        "chrismcg61.wixsite.com/home"
+      ]},
+      subDivs:[
+        {
+		  expandPrio:1,
+          hidden:true,
+          subDivs:[                        
+            {  
+              tagDiv:{title:"✉📞 Mail" +small("(Pro)")+ " & Tel: ", alternateBg:true, tags:[ "mcgarrychristopher<b>@</b>"+small("yahoo.fr") ]},   // Mail(Pro)
+              subDivs:[
+                {
+                  hidden:true,
+                  subDivs:[                        
+                    {  
+                      tagDiv:{title:"Tel: ", alternateBg:true, tags:[ "0635915517", small("10am-7pm"+small(" (CET)")),  ]},
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+	
+	{
+      title:{txt:" &nbsp ",   classes:["interDiv"]},
+      // classes:["maintTitle"],
+    },
+	
+	{
+      // tagDiv:{title:"", tags:[ ]},
+      subDivs:projContractsData.subDivs,
+	  classes:["title2"],
+    },
+
+
+	
+  ],
+};
 
 
 
@@ -1357,7 +1378,37 @@ var projContractsData = {
 
 
 
-
+var subDivsSTB = [ { hidden:true,
+			subDivs:[
+				{tagDiv:{title:"TV-Num STB Dev (Middleware Drivers, WebApp...)", tags:[ ]},},
+				{tagDiv:{title:"", tags:[ roleTags["EXPERT"], processTags["AGILE"], ]},},
+				{tagDiv:{title:"", alternateBg:true, tags:[ "Linux","C,C++,JS,Dart","Git&Co", "Jira,Bugzilla", "VStudio,VMware,Eclipse",  ]},},
+				{tagDiv:{title:"", tags:[ techSkills["WebAPP"].tagDiv.title, techSkills["MW"].tagDiv.title,techSkills["Tools"].tagDiv.title, ]},
+					subDivs:[{ hidden:true,
+						subDivs:[ techSkills["MW"],techSkills["Tools"],  webAppSkills["Generic"],webAppSkills["STB"], ]
+					}]
+				},
+			],},];
+var subDivsEmbed = [ { hidden:true,
+			subDivs:[
+				{tagDiv:{title:"Embedded Dev (Automation/Security/Drivers...)", tags:[ ]},},
+				{tagDiv:{title:"", tags:[ "API/UTs", processTags["CodeQual"] ]},},
+				{tagDiv:{title:"", alternateBg:true, tags:[ 
+					"Linux", "C,JS,Java"+small(",Assembly"), "Git&Co", "Jira,Bugzilla", small("VStudio,VMware,Eclipse"),  ]},},
+				// techSkills["Embed"],
+			],},];
+var subDivsGamedev = [ { hidden:true,
+			subDivs:[
+				{tagDiv:{title:"GameDev (GamePlay Scripts, Engine, Tools)", tags:[ ]},},
+				{tagDiv:{title:"", tags:[ roleTags["LEAD"],roleTags["EXPERT"],   processTags["AUTO"], processTags["AGILE"], ]},},
+				{tagDiv:{title:"", alternateBg:true, tags:[ 
+					"Linux","C,C++,C#,Lua,JS","Git&Co", "Jira,Bugzilla", small("VStudio,VMware,Eclipse"),  ]},},
+				{tagDiv:{title:"", tags:[ techSkills["3D"].tagDiv.title, techSkills["GameDev"].tagDiv.title, techSkills["AI"].tagDiv.title, techSkills["MW"].tagDiv.title,techSkills["Tools"].tagDiv.title, ]},
+					subDivs:[{ hidden:true,
+						subDivs:[ techSkills["GameDev"],techSkills["3D"],techSkills["MW"],techSkills["Tools"], aiSkills["Generic"],aiSkills["GAME"], ]
+					}]
+				},
+			],},];
 
 
 
@@ -1369,7 +1420,8 @@ var missionsByDate = {
       type:"OTHER",
       dates:getDate(2),
 	  region:"London",
-      tagDiv:{title:"Holomatix"+small(" [WebAds]"), tags:[ ]},
+      tagDiv:{title:"Holomatix"+small("  (Internship) [WebAds]"), tags:[ ]},
+	  classesBis:["expTitle0"],
     },
 	{
       dates:getDate(7),
@@ -1380,7 +1432,9 @@ var missionsByDate = {
       type:"Embed",
       dates:getDate(3),
 	  region:"Istres",
-      tagDiv:{title:"Dassault"+small(" [Aviat°]"), tags:[ ]},
+      tagDiv:{title:"Dassault"+small(" (Avionics) [EMBED]"), tags:[ ]},
+	  subDivs: createPrioDivs(subDivsEmbed),
+	  classesBis:["expTitle1"],
     },
     { 
 	  //classes:["hilightHi"],
@@ -1389,67 +1443,85 @@ var missionsByDate = {
 	  region:"Lyon",  // +"&nbsp&nbsp"
       tagDiv:{title:"Ubisoft/Etranges-Lib"+"<sup><i>ul</i></sup>", tags:[ ]},
 	  url:"https://en.wikipedia.org/wiki/%C3%89tranges_Libellules",
+	  subDivs: createPrioDivs(subDivsGamedev),
+	  classesBis:["expTitle3"],
     },
 	{ 
       type:"GameDev",
       dates:getDate(8),
 	  region:"Lyon",
-      tagDiv:{title:"Ubisoft/Phoenix", tags:[ ]},
+      tagDiv:{title:"Ubisoft/Phoenix-Studio", tags:[ ]},
 	  url:"https://fr.wikipedia.org/wiki/Phoenix_Studio",
+	  subDivs: subDivsGamedev,
+	  classesBis:["expTitle3"],
     },
 	{
       type:"OTHER",
       dates:getDate(1),
 	  region:"Lyon",
-      tagDiv:{title:"Sword"+small(" [Web]"), tags:[ ]},
+      tagDiv:{title:"Sword"+small(" (HealthServices) [WEB]"), tags:[ ]},
+	  classesBis:["expTitle0"],
     },
 	{
       type:"Embed",
       dates:getDate(2),
 	  region:"Paris"+small("[SSII]"),
-      tagDiv:{title:"NeoPost"+small(" [StampBots]"), tags:[ ]},
+      tagDiv:{title:"NeoPost"+small(" (StampBot) [EMBED]"), tags:[ ]},
+	  subDivs: subDivsEmbed,
+	  classesBis:["expTitle1"],
     },
 	{
       type:"Embed",
       dates:getDate(2),
 	  region:"Paris"+small("[SSII]"),
-      tagDiv:{title:"Nagra/Canal+", tags:[ ]},
+      tagDiv:{title:"Nagra/Canal+"+small(" (Secu) [EMBED]"), tags:[ ]},
+	  subDivs: subDivsEmbed,
+	  classesBis:["expTitle1"],
     },
 	{
       type:"STB",
       dates:getDate(5),
 	  region:"Paris"+small("[SSII]"),
-      tagDiv:{title:"Orange/Soft@Home", tags:[ ]},
+      tagDiv:{title:"Orange/Soft@Home"+small(" [TV-STB]"), tags:[ ]},
+	  subDivs: createPrioDivs(subDivsSTB),
+	  classesBis:["expTitle2"],
     },
 	{
       type:"OTHER",
       dates:getDate(1),
 	  region:"Paris"+small("[SSII]"),
-      tagDiv:{title:"Technicolor"+small(" [VoIP]"), tags:[ ]},
+      tagDiv:{title:"Technicolor"+small(" [MW-VoIP]"), tags:[ ]},
+	  classesBis:["expTitle0"],
     },
 	{
       type:"OTHER",
       dates:getDate(1),
 	  region:"Paris"+small("[SSII]"),
-      tagDiv:{title:"SagemCom"+small(" [MW-Net]"), tags:[ ]},
+      tagDiv:{title:"SagemCom"+small(" [MW-Network]"), tags:[ ]},
+	  classesBis:["expTitle0"],
     },
 	{
       type:"STB",
       dates:getDate(4),
 	  region:"Paris"+small("[SSII]"),
-      tagDiv:{title:"Bouygues"+small(" [Telecom]"), tags:[ ]},
+      tagDiv:{title:"Bouygues"+small(" [TV-STB]"), tags:[ ]},
+	  subDivs: subDivsSTB,
+	  classesBis:["expTitle2"],
     },
 	{
       type:"OTHER",
       dates:getDate(1),
 	  region:"Paris"+small("[SSII]"),
-      tagDiv:{title:"Parrot"+small(" [Drones]"), tags:[ ]},
+      tagDiv:{title:"Parrot"+small(" [Drones/TestBench]"), tags:[ ]},
+	  classesBis:["expTitle0"],
     },
 	{
       type:"STB",
       dates:getDate(4),
 	  region:"Paris"+small("[SSII]"),
-      tagDiv:{title:"Cisco"+small(" [TV]"), tags:[ ]},
+      tagDiv:{title:"Cisco"+small(" (WebApp-3D) [TV-STB]"), tags:[ ]},
+	  subDivs: subDivsSTB,
+	  classesBis:["expTitle2"],
     },	
 	{
       dates:getDate(1),
@@ -1459,17 +1531,49 @@ var missionsByDate = {
       type:"GameDev",
       dates:getDate(9),
 	  region:"Paris",
-      tagDiv:{title:"Indie-Project"+small(" [NextGen-Game]"), tags:[ ]},  // MyProj
+      tagDiv:{title:"Indie-Project"+small(" [Game-Proto]"), tags:[ ]},  // MyProj
+	  subDivs:[ { hidden:true,
+			expandPrio:1,
+			subDivs:[
+				{tagDiv:{title:"Unity3D Game Prototype (Procedural WorldBuilding & AI/M-Learning)", tags:[ ]},},
+				{tagDiv:{title:"", tags:[ roleTags["MGR"],roleTags["EXPERT"], processTags["AUTO"], ]},},
+				{tagDiv:{title:"", alternateBg:true, tags:[ "Unity"+small("(Unreal)"), "C#", "Git/SVN",  ],  },},
+				{tagDiv:{title:"", tags:[ techSkills["3D"].tagDiv.title, techSkills["GameDev"].tagDiv.title, techSkills["AI"].tagDiv.title, ]},
+					subDivs:[{ hidden:true,
+						subDivs:[ techSkills["GameDev"],techSkills["3D"], aiSkills["Generic"],aiSkills["GAME"], ]
+					}]
+				},
+			],},],
+	  classesBis:["expTitle3"],
     },
 	{
+      type:"OTHER",
       dates:getDate(8),
-	  tagDiv:{title:"", tags:[ ]},
+	  region:"Normandy",
+      tagDiv:{title:"Family Caregiver"+small(" + Teaching & Co"), tags:[ ]},
+	  classesBis:["expTitle0"],
     },
 	{
       type:"WebApp++",
       dates:getDate(10),
 	  region:"France",
-      tagDiv:{title:"Indie-Project"+small(" [WebApp++]"), tags:[ ]},
+      tagDiv:{title:"Indie-Project"+small(" [WebApp-Proto]"), tags:[ ]},
+	  subDivs:[ { hidden:true,
+			// classes:["expTitle2"],
+			expandPrio:1,
+			subDivs:[
+				{tagDiv:{title:"3D WebApp & Tech Survey (GPU-Prog, AI/M-Learning & Gamification)", tags:[ ]},},
+				{tagDiv:{title:"", tags:[ roleTags["MGR"],roleTags["EXPERT"], processTags["AUTO"], ]},},
+				{tagDiv:{title:"", alternateBg:true, tags:[ 
+					"JS", "C#", "Angular"+small("(React/Vue)"), "GitHub", "Unity","Lua,WebGL/Shaders","CSS3D" ]},},
+				{tagDiv:{title:"", tags:[ techSkills["3D"].tagDiv.title, techSkills["WebAPP"].tagDiv.title, techSkills["AI"].tagDiv.title, techSkills["GameDev"].tagDiv.title, ]},
+					subDivs:[{ hidden:true,
+						subDivs:[ techSkills["3D"], webAppSkills["Generic"],webAppSkills["Std"], aiSkills["Generic"],aiSkills["FLEX"], techSkills["GameDev"], ]
+					}]
+				},
+			],},],
+	  // classes:["backColHi3"],  //backColHi3  //expTitle2
+	  classesBis:["expTitle3"],
     },
 	{
       dates:getDate(1),
@@ -1482,6 +1586,26 @@ var missionsByDate = {
 
 
 
+var missionsByDate2 = {
+	subDivs:[
+		{
+		  title:{txt:"Experience", classes:["maintTitle"]},
+		  // classes:["maintTitle"],
+		},
+		{
+			// classes:["hilightHi"],
+			title:{txt:"", classes:["title"]},
+			subDivs:[
+				{
+				  // classes:["backColHi3"],
+				  // classes:["expTitle"],
+				  subDivs:getMissionsByDateInv(missionsByDate.subDivs),
+				  // subDivs: missionsByDate.subDivs,
+				},        
+			],
+		},
+	]
+}
 
 
 
@@ -1663,3 +1787,5 @@ var missionsByType = {
 	}
   ],
 };
+
+
