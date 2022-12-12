@@ -5,7 +5,8 @@ var BAR_TXT = "░"; // "▌";
 var BAR_OFFSET = 20;
 var BAR_FACTOR = 2.5;
 // var BAR_COL = "rgba(255,0,0, 0.99)";
-var TAG_BG_COL = "rgba(150,150,150, 0.5)";
+var TAG_BG_COL = "rgba(180,210,210, 0.5)";
+var TAG_BG_COL2 = "rgba(250,250,100, 0.5)";
 var TAG_SEPARATOR = "&nbsp●&nbsp";
 var TAG_TITLE_FONTW = "bold";
 var DIV_BTN_OFF = "▼";
@@ -62,6 +63,23 @@ function addElt(_tag, _parent, _txt){
   return newDiv;
 }
 //
+function createPrioDivs(_subDivs){
+	var subDivs = structuredClone( _subDivs );
+	subDivs[0].expandPrio=1;
+	return subDivs;
+}
+//
+function getMissionsByDateInv(_subDivs){
+  var newDivList = [];
+  for ( var i=_subDivs.length-1; i>=0; i-- ) {
+    var subDiv = structuredClone( _subDivs[i] );
+    if(subDiv.type){
+	  subDiv.classes = subDiv.classesBis;
+      newDivList.push( subDiv );      
+    }
+  }  
+  return newDivList;
+}
 function getMissionsByType(_type, _subDivs){
   var newDivList = [];
   for ( var i=_subDivs.length-1; i>=0; i-- ) {
@@ -144,6 +162,7 @@ function displayData(_data, _parent, _lvl){
 		durationStr += dates.duration + small("Q");
 		var durationSpan1 = addElt("SPAN", newSubDiv, durationStr);
 		durationSpan1.style.color = ALPHA_TEXT_COL;
+		durationSpan1.style.textShadow="1px 1px #000000";
 		// durationSpan1.style.fontSize = "90%";	
 		//durationSpan1.style.opacity = dates.duration/8;	
 		durationSpan1.style.display = "inline-block";
@@ -153,15 +172,20 @@ function displayData(_data, _parent, _lvl){
 		var durationSpan2 = addElt("SPAN", newSubDiv, "&nbsp");
 		durationSpan2.style.display = "inline-block";
         durationSpan2.style.width = (totalW*(maxQ-dates.duration)/maxQ)+"em";
-		durationSpan2.style.backgroundColor = "rgba(150,150,150, 0.5)";
+		durationSpan2.style.backgroundColor = "rgba(100,100,100, 0.5)";
+		// durationSpan2.style.zIndex="-1";
 		//durationSpan2.style.marginRight = DATE_MARGIN;
 		//
 		//
-		var endDateStr =  endY+small(endQ_Str);
-		var dateSpan2 = addElt("SPAN", newSubDiv, endDateStr);
-		dateSpan2.style.marginRight = DATE_MARGIN;
-		dateSpan2.style.fontSize = DATE2_FONT_SIZE;
-		dateSpan2.style.opacity = 0.4;
+		// if(experienceMode==0)
+		{
+			var endDateStr =  endY+small(endQ_Str);
+			if(experienceMode==1) endDateStr="&nbsp";
+			var dateSpan2 = addElt("SPAN", newSubDiv, endDateStr);
+			dateSpan2.style.marginRight = DATE_MARGIN;
+			dateSpan2.style.fontSize = DATE2_FONT_SIZE;
+			dateSpan2.style.opacity = 0.4;
+		}
       }
 	  //
 	  if(subDiv.region){
@@ -169,6 +193,7 @@ function displayData(_data, _parent, _lvl){
 		  var regionSpan = addElt("SPAN", newSubDiv, regionTxt);
 		  regionSpan.style.marginRight = DATE_MARGIN;
 		  regionSpan.style.color = ALPHA_TEXT_COL;
+		  regionSpan.style.textShadow="1px 1px #000000";
 		  regionSpan.style.fontSize = REGION_FONT_SIZE;		  
 		  regionSpan.style.display = "inline-block";
 		  regionSpan.style.width = "7em";
@@ -188,6 +213,7 @@ function displayData(_data, _parent, _lvl){
           if(j>0) addElt("SPAN", newSubDiv, TAG_SEPARATOR);
           var newSpan = addElt("SPAN", newSubDiv, tag);
           newSpan.style.backgroundColor = TAG_BG_COL;
+		  if(tagDiv.alternateBg) newSpan.style.backgroundColor = TAG_BG_COL2;
         }
       }
 	  //
@@ -220,4 +246,3 @@ function displayData(_data, _parent, _lvl){
     }
   }
 }
-
