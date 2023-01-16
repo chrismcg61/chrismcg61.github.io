@@ -73,7 +73,7 @@ function getMissionsByDateInv(_subDivs){
   var newDivList = [];
   for ( var i=_subDivs.length-1; i>=0; i-- ) {
     var subDiv = structuredClone( _subDivs[i] );
-    if(subDiv.type){
+    if(subDiv.type && !subDiv.skippable){
 	  subDiv.classes = subDiv.classesBis;
       newDivList.push( subDiv );      
     }
@@ -174,18 +174,18 @@ function displayData(_data, _parent, _lvl){
         durationSpan2.style.width = (totalW*(maxQ-dates.duration)/maxQ)+"em";
 		durationSpan2.style.backgroundColor = "rgba(100,100,100, 0.5)";
 		// durationSpan2.style.zIndex="-1";
-		//durationSpan2.style.marginRight = DATE_MARGIN;
+		durationSpan2.style.marginRight = DATE_MARGIN;
 		//
 		//
 		// if(experienceMode==0)
-		{
-			var endDateStr =  endY+small(endQ_Str);
-			if(experienceMode==1) endDateStr="&nbsp";
-			var dateSpan2 = addElt("SPAN", newSubDiv, endDateStr);
-			dateSpan2.style.marginRight = DATE_MARGIN;
-			dateSpan2.style.fontSize = DATE2_FONT_SIZE;
-			dateSpan2.style.opacity = 0.4;
-		}
+		// {
+			// var endDateStr =  endY+small(endQ_Str);
+			// if(experienceMode==1) endDateStr="&nbsp";
+			// var dateSpan2 = addElt("SPAN", newSubDiv, endDateStr);
+			// dateSpan2.style.marginRight = DATE_MARGIN;
+			// dateSpan2.style.fontSize = DATE2_FONT_SIZE;
+			// dateSpan2.style.opacity = 0.4;
+		// }
       }
 	  //
 	  if(subDiv.region){
@@ -196,7 +196,7 @@ function displayData(_data, _parent, _lvl){
 		  regionSpan.style.textShadow="1px 1px #000000";
 		  regionSpan.style.fontSize = REGION_FONT_SIZE;		  
 		  regionSpan.style.display = "inline-block";
-		  regionSpan.style.width = "7em";
+		  regionSpan.style.width = "4.9em";
 		  regionSpan.style.textAlign = "center";
 		  regionSpan.style.backgroundColor = DATE_BG_COL;
 	  }
@@ -230,12 +230,14 @@ function displayData(_data, _parent, _lvl){
         var spanContainer = addElt("SPAN", newSubDiv, "");
         spanContainer.style.position = "relative";
         spanContainer.style.float = "right";
-        var newSpan = addElt("SPAN", spanContainer, BAR_TXT);
+        var newSpan;
+		if(subDiv.showRatingVal) newSpan = addElt("SPAN", spanContainer, subDiv.rating+'%');
+		else newSpan = addElt("SPAN", spanContainer, BAR_TXT);
         newSpan.style.display = "inline-block";
         newSpan.style.width = BAR_FACTOR*(subDiv.rating-BAR_OFFSET)+"px";
         newSpan.style.backgroundColor = "rgba(255,"+(-BAR_COLOR_OFFSET+_lvl*70)+",0, 0.99)"; //BAR_COL;
         newSpan.style.marginLeft = "8px";
-		    newSpan.style.fontSize = BAR_FONTSIZE;
+		newSpan.style.fontSize = BAR_FONTSIZE;
         newSpan.classList.add( "tooltipBtn" ); 
         var tooltip = addElt("DIV", spanContainer, subDiv.rating+"%");
         tooltip.classList.add( "centered" ); 
