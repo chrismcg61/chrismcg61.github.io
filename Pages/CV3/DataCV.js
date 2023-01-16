@@ -77,7 +77,7 @@ addTableTag( techList, "TOOLS", {
 		    {
 				rating:85,
 				tagDiv:{title:"", alternateBg:true, tags:[ 
-				  "Jira/Bugzilla", "Eclipse", small("Unreal"),small("VMware"), ]},
+				  "Jira/Bugzilla", "Eclipse", "Unreal", "VMware", ]},
 				url:"http:/a/VirtualBox_/Virtools_/Codepen/SO",
 			},
 			
@@ -89,7 +89,7 @@ addTableTag( techList, "TOOLS", {
 addTableTag( techList, "LANG", {
     rating:89,
 	// Prog-Languages
-    tagDiv:{title:"Lang: ", alternateBg:true, tags:[ "C,C++,C#", "JS"+small("/TypeScript"), small("HTML/CSS3D"), small("Lua"), ]},   
+    tagDiv:{title:"Lang: ", alternateBg:true, tags:[ "C,C++,C#", "JS", "HTML/CSS3D", "Lua", ]},   
 	subDivs:[
 		{
 		  expandPrio:1,
@@ -97,7 +97,7 @@ addTableTag( techList, "LANG", {
 		  subDivs:[			
 			{
 				rating:70,
-				tagDiv:{title:"", alternateBg:true, tags:[ "Dart", "Java", "Python", "Assembly", "Bash", ]},
+				tagDiv:{title:"", alternateBg:true, tags:[ "TypeScript", "Dart", "Java", "Python", "Assembly", "Bash", ]},
 				url:"http:/a/Batch/PowerShell",
 				subDivs:[
 					{
@@ -136,7 +136,7 @@ addTableTag( techList, "LANG", {
 addTableTag( techList, "LIBS", {
     rating:80,
 	// Libs/Frameworks
-    tagDiv:{title:"Libs: ", alternateBg:true, tags:[ "WebGL"+small("(OpenGL/DX)"), "WebCL/GLSL", small("AngularJS"), ]},
+    tagDiv:{title:"Libs: ", alternateBg:true, tags:[ "WebGL"+small("(OpenGL/DX)"), "WebCL/GLSL", "Angular", ]},
 	url:"http:/a/OpenCL/Cuda_/Wii/PS3/Xbox",
 	subDivs:[
 		{
