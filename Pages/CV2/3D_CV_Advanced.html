@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>3D CV Advanced</title>
+
+	
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r148/build/three.min.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r134/examples/js/libs/dat.gui.min.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/libs/stats.min.js"></script>
+	<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r216/MyLibs/Three/My3D.js"></script>
+	<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r216/MyLibs/Three/My3D_Basic.js"></script>
+	<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r216/Libs/PostFX.js"></script>
+
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/utils/BufferGeometryUtils.js"></script>
+
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/shaders/SSRShader.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/postprocessing/SSRPass.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/objects/ReflectorForSSRPass.js"></script>
+
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/objects/Reflector.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/objects/Refractor.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/shaders/WaterRefractionShader.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/objects/Water2.js"></script>
+
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/shaders/ACESFilmicToneMappingShader.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/postprocessing/BloomPass.js"></script>
+
+
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/misc/GPUComputationRenderer.js"></script>
+
+
+	<script src="https://cdn.jsdelivr.net/gh/chrismcg61/chrismcg61.github.io@r34/Pages/CV3/DataMgt.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/chrismcg61/chrismcg61.github.io@r34/Pages/CV3/DataCV.js"></script>
+	<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r209/MyLibs/Three/MousePick.js"></script>
+
+	<!-- <link type="text/css" rel="stylesheet" href="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/main.css"> -->
+
+</head>
+
+<body>
+</body>
+
+
+
+
+
+
+<script>
+	MY3D.addTexture = function(_ww,_hh){
+	  var texCanvas = document.createElement( 'canvas' );
+	  texCanvas.width = _ww; 
+	  texCanvas.height = _hh;
+	  var newTexture = new THREE.Texture( texCanvas );
+	  newTexture.texCanvas = texCanvas;
+	  newTexture.anisotropy = 8;
+	  //newTexture.magFilter = THREE.NearestFilter;
+	  // newTexture.wrapS = newTexture.wrapT = THREE.RepeatWrapping;
+	  // newTexture.repeat.set( 1, 1 );
+	  // newTexture.offset.set( 0, 0 );
+	  MY3D.initTexture_Text(newTexture, _ww*0.1, 'rgba(0,0,0, 0.1)', 'rgba(255,255,255, 1)',
+		"TITLE_TITLE",  ["A","B","C","D","E","F","g","H","I","j", ] );
+	  return newTexture;
+	}
+	MY3D.initTexture_Text = function(texture, _fontSize, col0, col1, title, txtLines, nbCols, randCol){
+	  var ctx = texture.texCanvas.getContext( '2d' );
+	  var ww = texture.texCanvas.width;
+	  ctx.clearRect( 0, 0, ww,ww );  
+	  ctx.fillStyle = col0;
+	  ctx.fillRect( 0, 0, ww,ww );  
+	  ctx.fillStyle = col1;
+	  ctx.textAlign = "center";
+	  var titleSize = _fontSize*1.5;
+	  //
+	  for ( var jj=1; jj<=nbCols; jj++ ) {
+		var yPos = 0;
+		if(title!=''){
+		  yPos += titleSize;
+		  ctx.font = "bold "+ (titleSize) +"px Verdana";
+		  ctx.fillText(title, ww*jj/(nbCols+1), yPos);  
+		  // ctx.lineWidth = 8;      
+		}
+		ctx.font = "bold "+ (_fontSize) +"px Verdana";
+		for ( var i=0; i<txtLines.length; i++ ) {
+		  yPos += _fontSize;
+		  var txt = txtLines[i];
+		  // ctx.fillStyle = 'rgba('+rand(255)+','+rand(255)+','+rand(255)+', 1)';  //col1
+		  var aa = rand(randCol);
+		  ctx.fillStyle = 'rgba('+aa*255+','+(1-aa)*255+',255, 1)';    
+		  //
+		  ctx.fillText(txt, ww*jj/(nbCols+1), yPos);  
+		}  
+	  }
+	  // ctx.strokeText("A", ww*0.5,ww*0.35);  
+	  texture.needsUpdate = true;
+	}
+
+	MY3D_Basic.ReInitPostFX = function() {
+	  // renderer.toneMapping = THREE.ReinhardToneMapping;    // renderer.toneMappingExposure = Math.pow( 1.1, 4.0 );
+	  var renderPass = new THREE.RenderPass( scene, camera );
+	  composer = new THREE.EffectComposer( renderer );
+	  // composer.renderToScreen = false;
+	  composer.setSize( width,height );
+	  composer.addPass( renderPass );
+	  {
+		ssrMeshes = [];
+		ssrPass = new THREE.SSRPass( { renderer,scene,camera, width:width,height:height, selects:ssrMeshes, } );  //groundReflector:ssrGroundReflector,
+		ssrPass.renderToScreen = false;
+		ssrPass.maxDistance  = 3;
+		if(sVars.ssr) composer.addPass( ssrPass );
+		// MY3D_Basic.addSsrMesh()
+		// console.log(ssrPass);
+	  }
+	  {
+		filmPass = new THREE.FilmPass( sVars.filmFactor, 0.05, 90,  false )
+		if(sVars.filmFactor>0) composer.addPass( filmPass );
+		// console.log(filmPass);
+	  }
+	  {
+		unrealBloomPass = new THREE.UnrealBloomPass( new THREE.Vector2( width,height ), sVars.bloomFactor*2,0.2,0.9,  );
+		if(sVars.bloomFactor>0) composer.addPass( unrealBloomPass );
+	  }
+	  {
+		effectTM = new THREE.ShaderPass( THREE.ACESFilmicToneMappingShader );  //AdaptiveToneMappingPass
+		effectTM.uniforms.exposure.value = sVars.tmExposeFactor*4;
+		if(sVars.tmExposeFactor>0) composer.addPass( effectTM );
+	  }
+	  if(sVars.gamma) composer.addPass( new THREE.ShaderPass( THREE.GammaCorrectionShader ) );
+	}
+
+	MY3D_Basic.render = function() {
+	  MY3D_Basic.updateVars();
+	  animate();
+	  if(composer && vars.RenderModes==RenderModes.PostFx) {
+		unrealBloomPass.strength  = sVars.bloomFactor*2;
+		filmPass.uniforms.nIntensity.value = sVars.filmFactor;
+		effectTM.uniforms.exposure.value = sVars.tmExposeFactor*4;
+		composer.render();
+	  }
+	  else renderer.render( scene, camera );
+	  //
+	  requestAnimationFrame( MY3D_Basic.render );
+	}
+
+	MY3D_Basic.newQuadParticles_MergedMesh = function( _partNb, _partSize, _vSize, _mat, _autoAnim ) {
+	  var geometries = [];
+	  for ( ii=0; ii<_partNb; ii++ ) {
+		var newGeo = new THREE.PlaneGeometry( _partSize,_partSize );
+		var newPos = new THREE.Vector3( sRand(_vSize.x),rand(_vSize.y),sRand(_vSize.z) );  //.normalize();
+		newGeo.translate( newPos.x,newPos.y,newPos.z );  
+		geometries.push( newGeo );
+		MY3D_Basic.setVertexAttribs(newGeo, 1.0, newPos);
+	  }
+	  var mergedGeometry = THREE.BufferGeometryUtils.mergeBufferGeometries( geometries );
+	  var mergedMesh = new THREE.Mesh( mergedGeometry,   _mat  );  // particleMat lambertMat
+	  scene.add(mergedMesh);  
+	  //
+	  if(_autoAnim) mergedMesh.onBeforeRender = MY3D_Basic.animWorldParticles;
+	  return mergedMesh;
+	}
+
+
+
+
+	try{
+	  MY3D_Basic.initMain();
+	  MY3D_Basic.initOptional();
+	  //
+	  // MY3D_Basic.onWindowResize();
+	  initVars();
+	  //
+	  preInitScene()
+	  // postFx = false;
+	  MY3D_Basic.ReInitScene();
+	  //
+	  MY3D_Basic.render();
+	} catch (error) { console.error(error); }
+
+	function initVars(){
+	  gui = new dat.GUI();
+	  RenderModes = {NoPostFx:0, PostFx:1, };
+	  MeshModes = { Mesh0:0,Mesh1:1,Mesh2:2, };
+	  sVars = { camPosX:0,camPosY:29.5,camPosZ:3.4, camRotX:0.1, fogCol:0x015555,fogDensity:0.2, ssr:false,bloomFactor:0.25,filmFactor:0.01,tmExposeFactor:0.25,gamma:false, };  //bloomRadius:0.2,bloomThreshold:0.9,
+	  vars = { ReInit:MY3D_Basic.ReInitScene, RenderModes:RenderModes, MeshModes:MeshModes,meshPosX:0.1,meshPosZ:0.1, emitBluTest:0.7, rotSpeed:0.2,      };
+	  // gui.add(params, "camPosX");
+	  MY3D.addGuiParams(gui, { HideParams:sVars }, false, 30,0.01);
+	  MY3D.addGuiParams(gui, { MainParams:vars }, true, 30,0.01);
+	  //
+	  vars.RenderModes = 1;
+	  vars.MeshModes = 0;
+	  gui.close()
+	}
+
+	function preInitScene(){
+	  MY3D_Basic.onWindowResize()
+	  camera.layers.enable( 1 );
+	  infoDiv.innerHTML = "Hover Mouse to Rotate";  
+	  //
+	  lambertMat = new THREE.MeshLambertMaterial( {  } );   //MeshStandardMaterial
+	  concreteMapXL = new THREE.TextureLoader().load("https://cdn.rawgit.com/chrismcg61/TechDemos/master/Media/Concrete.jpg");
+	  concreteMapXL.repeat.set( 20,20 );  concreteMapXL.wrapS = concreteMapXL.wrapT = THREE.RepeatWrapping;
+	  
+	  if(typeof video === 'undefined'){
+		video = document.createElement( 'video' );
+		video.crossOrigin = "anonymous"
+		// video.src = "https://cdn.rawgit.com/chrismcg61/TechDemos/master/Media/VidGame_RememberMe.mp4"   // "https://cdn.rawgit.com/mrdoob/three.js/r144/examples/textures/sintel.mp4"
+		video.src = "https://cdn.rawgit.com/chrismcg61/TechDemos/master/Media/VidGame_Detroit.mp4"
+		video.currentTime = 10
+		video.loop = true
+		video.muted = true
+		// video.autoplay = true;   video.onload = function(){ video.play() }
+		//
+		var playBtn = document.createElement( 'button' );
+		playBtn.style.fontSize = "20px"
+		playBtn.innerHTML = "Play";
+		playBtn.onclick = function(){vidStarted=true; video.play(); infoDiv.style.height = "auto"; infoDiv.style.display="block";}   //overlay.remove();
+		// overlay.appendChild( playBtn );
+		infoDiv.innerHTML += " ";
+		infoDiv.appendChild( playBtn );
+		infoDiv.style.left = 0;  infoDiv.style.width = "100%";  
+		infoDiv.style.height = "100%";  infoDiv.style.backgroundColor = "rgba(0,0,0, 0.9)";
+		infoDiv.style.display="flex";  infoDiv.style.alignItems="center"; infoDiv.style.justifyContent="center"; infoDiv.style.flexDirection="column";  
+	  }
+	  var videoTexture = new THREE.VideoTexture( video );    
+	  vidMaterial = new THREE.MeshBasicMaterial( {map:videoTexture,color:new THREE.Color(1,1,1) } );
+	  customVidMat( vidMaterial )
+	}
+
+	function ReInitSceneObjs(){
+	  var plane = new THREE.Mesh( new THREE.PlaneGeometry( 400,400 ),   new THREE.MeshLambertMaterial( {alphaMap:concreteMapXL,alphaTest:0.45,  } )  );
+	  scene.add( plane );
+	  plane.rotation.x = -Math.PI/2;
+	  plane.position.set( 0,0.01,-0 )
+	  plane.receiveShadow = true;
+	  
+	  
+	  
+	  dynSpotLight0 = addRedBluSpotLights()
+	  dynSpotLight0.position.set( 0.9,1.9,0 );
+	  //
+	  var camSpotLight = addSpotlightGroup( 0xffffff,0.15 );
+	  camSpotLight.rotation.y = Math.PI
+	  scene.add( camSpotLight );
+	  camSpotLight.position.set( 0.9,1.5,4.5 )
+	  
+	  timedMatList = []
+	  //
+	  textScreen = initTextPanel()  
+	  textScreen.position.set( -2,2,0 );
+	  textScreen.rotation.y = 1.4;  
+	  //
+	  addAllHelixes()
+	  
+	  
+	  curHoveredGroup = null;
+	  container = renderer.domElement;
+	  initMousePicking();
+	  //
+	  var camCube = new THREE.Mesh( new THREE.BoxGeometry( 0.02,0.02,0.02 ),   new THREE.MeshBasicMaterial( {} )  );
+	  camera.add(camCube)
+	  camCube.position.set( 0,0.12,-0.2 )
+	  camCube.onclick = getClickFunc(0);
+	  camCube.group = camCube;
+	  //
+	  textScreen.onclick = getClickFunc(0);
+	  textScreen.group = textScreen;
+	  
+	  initSmokeGroup()
+	  
+	  initWater_Refractor()
+	  
+	  
+	  addVideoCity()
+	  //
+	  dynSpotLight_City = addRedBluSpotLights()
+	  dynSpotLight_City.position.set( 0,3,-15 );
+	  //
+	  dynSpotLight_City2 = addRedBluSpotLights()
+	  dynSpotLight_City2.position.set( 0,3,-10 );
+	  
+	  
+	  
+
+	  
+	  guiMeshes = []
+	  guiMeshes.push( new THREE.Object3D() )
+	  guiMeshes.push( smokeQuads )
+	}
+
+	function addVideoCity(){
+	  var fontTexture = MY3D.addTexture(512,512);
+	  var chars = []
+	  for ( var ii=0; ii<32; ii++ ) { chars.push("■") }
+	  MY3D.initTexture_Text(fontTexture, 16, 'rgba(0,0,0, 1)','rgba(255,255,255, 1)',  "",  chars, 32, 0.95 );
+	  fontTexture.repeat.set( 1,1 );  fontTexture.wrapS = fontTexture.wrapT = THREE.RepeatWrapping;   fontTexture.anisotropy = 8;  
+	  fontTexture.magFilter =  THREE.NearestFilter; //LinearFilter
+	  fontTexture.minFilter = THREE.NearestFilter ;  //NearestFilter NearestMipmapNearestFilter  NearestMipmapLinearFilter LinearFilter LinearMipmapNearestFilter LinearMipmapLinearFilter    
+	  //
+	  dynLitEmitMaterial = new THREE.MeshLambertMaterial( { emissiveMap:fontTexture,emissive:0xffffff, map:concreteMap,  } )  //bumpMap:concreteMap,bumpScale:0.1,
+	  customMat_EmitAnim_City( dynLitEmitMaterial )
+	  //
+	  var cityBlockR = addCityBlock();
+	  cityBlockR.position.set( 8,0,-15 )
+	  //
+	  var cityBlockL = addCityBlock();
+	  cityBlockL.position.set( -78,0,-15 )
+	  //
+	  var cityBaseCube = new THREE.Mesh( new THREE.BoxGeometry( 10,0.3,10 ),   new THREE.MeshLambertMaterial( {bumpMap:concreteMap,bumpScale:0.2,} )  );
+	  scene.add(cityBaseCube)
+	  cityBaseCube.position.set( 0,0,-15 )
+	}
+	//
+	function customVidMat( _mat ){
+	  _mat.onBeforeCompile = function ( shader ) {
+		// shader.uniforms.litMode = { value: 1 };
+		// shader.fragmentShader = 'uniform float litMode;\n' + shader.fragmentShader;
+		shader.fragmentShader = shader.fragmentShader.replace(
+		  "#include <output_fragment>",
+		  `
+			#ifdef OPAQUE
+			  diffuseColor.a = 1.0;
+			#endif
+			#ifdef USE_TRANSMISSION
+			  diffuseColor.a *= material.transmissionAlpha + 0.1;
+			#endif
+			gl_FragColor = vec4( outgoingLight, diffuseColor.a );
+			gl_FragColor.rgb *= gl_FragColor.rgb;     // pow( gl_FragColor.rgb, 2.0);
+			gl_FragColor *= 1.1;
+		  `);
+		_mat.userData.shader = shader;
+	  };
+	}
+	function customMat_EmitAnim_City( _mat ){
+	  _mat.onBeforeCompile = function ( shader ) {
+		shader.uniforms.time = { value: 0 };
+		shader.uniforms.emitBluTest = { value: 0.7 };
+		shader.fragmentShader = `
+			uniform float time;
+			uniform float emitBluTest;
+		  `+ shader.fragmentShader;
+		shader.fragmentShader = shader.fragmentShader.replace(
+		  '#include <emissivemap_fragment>',
+		  ` 
+			  #ifdef USE_EMISSIVEMAP
+				float tmpRes = 512.0;
+				vec2 tmpUv = vUv;
+				tmpUv = floor( tmpUv*tmpRes )/tmpRes;
+				vec4 emissiveColor = texture2D( emissiveMap,  tmpUv );
+				
+				float aa = emissiveColor.r + emissiveColor.g + emissiveColor.b;
+				// if( aa < 2.0 ) emissiveColor.rgb = vec3( 0.0 );    // vec3( 1.0,0.0,0.0 );       
+				if( aa < 2.0 ) emissiveColor.rgb *= 0.3;    // vec3( 1.0,0.0,0.0 );       
+				
+				totalEmissiveRadiance = emissiveColor.rgb;
+				// totalEmissiveRadiance *= 0.5*vUv.x;            
+				aa += 2.0*emissiveColor.r + emissiveColor.g;
+				totalEmissiveRadiance *= (0.5 + 0.5*cos(time*aa));
+				
+				/** Reduce "Red"  &  No Top Emission : **/
+				totalEmissiveRadiance.r *= 0.7;
+				if(totalEmissiveRadiance.b < emitBluTest)  totalEmissiveRadiance *= 0.0;
+				if(normal.y > 0.9) totalEmissiveRadiance *= 0.0;
+			  #endif
+		`);
+		_mat.userData.shader = shader;
+		// console.log( shader.fragmentShader );
+	  };
+	  // timedMatList.push( _mat );
+	}
+	function addCityBlock(){
+	  var WW_BLOCK = 15
+	  var CubeW = 4
+	  var CubeDelta = CubeW+1
+	  // var RoadW = 6 
+	  var cityBlock = new THREE.Group()
+	  scene.add(cityBlock)
+	  var geometries = []
+	  // var geometriesVid = []
+	  var instancedVidBlock = new THREE.InstancedMesh(  new THREE.BoxGeometry( CubeW+0.01, CubeW*0.5, CubeW+0.01 ),  vidMaterial,  WW_BLOCK*WW_BLOCK );
+	  for ( var zz=0; zz<WW_BLOCK; zz++ ) {
+		for ( var xx=0; xx<WW_BLOCK; xx++ ) {
+		  var ii = xx+WW_BLOCK*zz
+		  var CubeH = CubeW      
+		  var hh = rand(2)
+		  CubeH += hh*CubeW
+		  if(hh>1)  CubeH += hh*CubeW
+		  var buildingGeo = new THREE.BoxGeometry( CubeW,CubeH,CubeW )
+		  buildingGeo.translate( CubeDelta*xx, CubeH/2, -CubeDelta*zz )
+		  geometries.push( buildingGeo )
+		  //
+		  // var vidGeo = new THREE.BoxGeometry( CubeW+0.01, CubeW*0.5, CubeW+0.01 )
+		  // vidGeo.translate( CubeDelta*xx, CubeH/2+sRand(CubeH*0.5), -CubeDelta*zz )
+		  // geometriesVid.push(vidGeo)
+		  var dummy = new THREE.Mesh( );   
+		  dummy.position.set( CubeDelta*xx, CubeH/2+sRand(CubeH*0.5), -CubeDelta*zz )
+		  dummy.updateMatrix();
+		  instancedVidBlock.setMatrixAt( ii, dummy.matrix );
+		  var aa = 0.8+rand(0.5)
+		  instancedVidBlock.setColorAt( ii, new THREE.Color(aa+rand(0.2),aa,aa) )
+		}
+	  }
+	  var mergedGeometry = THREE.BufferGeometryUtils.mergeBufferGeometries( geometries );
+	  var mergedMesh = new THREE.Mesh( mergedGeometry,   dynLitEmitMaterial  );  // particleMat lambertMat
+	  cityBlock.add(mergedMesh); 
+	  mergedMesh.castShadow = true;
+	  mergedMesh.receiveShadow = true;
+	  //
+	  // var mergedGeometryVid = THREE.BufferGeometryUtils.mergeBufferGeometries( geometriesVid );
+	  // var mergedMeshVid = new THREE.Mesh( mergedGeometryVid,   vidMaterial  );  // particleMat lambertMat
+	  // cityBlock.add(mergedMeshVid);
+	  cityBlock.add( instancedVidBlock );
+	  //
+	  // return {mergedMesh:mergedMesh,mergedMeshVid:mergedMeshVid};
+	  return cityBlock;
+	}
+
+
+	function initWater_Refractor(){
+	  water = new THREE.Water( new THREE.PlaneGeometry( 180,180 ), {
+		color: 0x00aaaa,
+		scale: 180,
+		flowDirection: new THREE.Vector2( 2,2 ),
+		textureWidth: 512,  //window.innerWidth * window.devicePixelRatio,
+		textureHeight: 512,
+		reflectivity:0.4,
+		normalMap0:new THREE.TextureLoader().load("https://cdn.rawgit.com/mrdoob/three.js/r144/examples/textures/water/Water_1_M_Normal.jpg"),
+		normalMap1:new THREE.TextureLoader().load("https://cdn.rawgit.com/mrdoob/three.js/r144/examples/textures/water/Water_2_M_Normal.jpg"),
+	  } );
+	  water.position.set( 0,0.1,0 )
+	  water.rotation.x = Math.PI * - 0.5;
+	  scene.add( water );
+	  water.layers.set( 1 );
+	  //
+	  water.myOnBeforeRender = water.onBeforeRender;
+	  water.onBeforeRender = function(){}  
+	}
+
+	function initSmokeGroup(){
+	  var smokeMap = new THREE.TextureLoader().load("https://cdn.rawgit.com/chrismcg61/TechDemos/master/Media/CloudParticle.jpg");  
+	  smokeMat = new THREE.MeshLambertMaterial({transparent:true,opacity:0.3,
+		alphaMap:smokeMap, blending:THREE.AdditiveBlending,depthWrite:false, });  //alphaTest:0.45,depthTest:false,
+	  MY3D_Basic.customizeMat_AlphaLit(smokeMat);  
+	  smokeQuads = MY3D_Basic.newQuadParticles_MergedMesh( 500, 0.3, new THREE.Vector3(0.3,2,0.3), smokeMat, false )  
+	  smokeQuads.receiveShadow = true;
+	  smokeQuads.position.set( 3.5,0,0.2 )
+	  //
+	  var spotLight_Smoke = addSpotlightGroup( 0xff0088,0.08 );
+	  smokeQuads.add( spotLight_Smoke );
+	  spotLight_Smoke.position.y = 2.3
+	  spotLight_Smoke.rotation.x = Math.PI/2;
+	  //
+	  alphaTestSphere = new THREE.Mesh( new THREE.SphereGeometry( 0.45 ),   
+		new THREE.MeshPhongMaterial( {shininess:20,color:0x000000, side:THREE.DoubleSide,alphaMap:concreteMap,alphaTest:0.43,  } )  );
+	  spotLight_Smoke.add( alphaTestSphere )
+	  // alphaTestSphere.castShadow = true;   
+	}
+
+	function myHoverObj( mesh ){
+	  if(!mesh.onclick) return;
+	  mesh.savedColor = mesh.material.color.getHex();
+	  mesh.material.color.setHex( 0xff0000 );
+	  //
+	  curHoveredGroup = mesh.group;
+	}
+
+	function initTextPanel(){
+	  var tagList = [];
+	  panelMat = new THREE.MeshPhongMaterial( { color:0xffffff,shininess:40,emissive:0x555555,bumpScale:0.3, transparent:true,opacity:0.8, } );
+	  customMat_EmitAnim_Basic( panelMat )
+	  //
+	  var fontTexture = MY3D.addTexture(1024,1024);
+	  for ( ii=0; ii<missionsByDate.subDivs.length; ii++ ) {
+		var subStr = missionsByDate.subDivs[ii].tagDiv.title.substring(0, 30);
+		var words = subStr.split('<');
+		tagList.push( words[0] );
+	  }  
+	  // MY3D.initTexture_Text(fontTexture, 45, 'rgba(0,0,0, 1)','rgba(255,255,255, 1)',  "_",  tagList );
+	  MY3D.initTexture_Text(fontTexture, 55, 'rgba(0,0,0, 1)','rgba(255,255,255, 1)',  "◆",  tagList, 1, 0.7 );
+	  fontTexture.anisotropy = 8; 
+	  //
+	  var screenMat = panelMat; //.clone();
+	  screenMat.map = screenMat.bumpMap = screenMat.emissiveMap = fontTexture; 
+	  var screen = new THREE.Mesh( new THREE.BoxGeometry( 4,4,0.1 ),   screenMat  );  
+	  scene.add( screen );
+	  //
+	  return screen;
+	}
+	function addAllHelixes(){
+	  var tagList = [];
+	  for (var ii=0; ii<techSkills.length; ii++ ) {
+		tagList.push( techSkills[ii].tagDiv.title );
+	  }
+	  helix_SkillsGlobal = addHelix( tagList, textScreen.material, new THREE.Vector2(1,0.8), 2.1,0.10,0.0 )
+	  helix_SkillsGlobal.position.set( 1,0.1,-0.4 );
+
+	  var toolList = techList[0].tagDiv.tags;
+	  var toolList2 = techList[0].subDivs[0].subDivs[0].tagDiv.tags;
+	  var langList = techList[1].tagDiv.tags;
+	  var langList2 = techList[1].subDivs[0].subDivs[0].tagDiv.tags;
+	  var libsList = techList[2].tagDiv.tags;
+	  var libsList2 = techList[2].subDivs[0].subDivs[0].tagDiv.tags;
+	  tagList = [];
+	  tagList.push(...toolList);
+	  tagList.push(...langList);
+	  tagList.push(...libsList);
+	  helix_Skills1 = addHelix( tagList, textScreen.material, new THREE.Vector2(1,0.75), 1.4,0.13,0.14 )
+	  helix_Skills1.position.set( 0.9,0.4,0.1 );
+	  
+	  tagList = [];
+	  tagList.push(...toolList2);
+	  tagList.push(...langList2);
+	  tagList.push(...libsList2);
+	  helix_Skills2 = addHelix( tagList, textScreen.material, new THREE.Vector2(0.8,0.6), 1.1,0.12,0.11 )
+	  helix_Skills2.position.set( 0.9,1.9,0.3 );
+	}
+	function addHelix( tagList, panelMat, _vecSize, rr,thetaR, hh ){
+	  var group = new THREE.Group();
+	  for (var ii=0; ii<tagList.length; ii++ ) {
+		var fontTexture = MY3D.addTexture(512,256);
+		var subStr = tagList[ii].substring(0, 14);
+		var words = subStr.split('<');
+		// MY3D.initTexture_Text(fontTexture, 60, 'rgba(0,0,0, 1)','rgba(255,255,255, 1)',  "_",  [ "_", words[0], "_", ] );
+		MY3D.initTexture_Text(fontTexture, 45, 'rgba(0,0,0, 1)','rgba(255,255,255, 1)',  "",  [ ".",".", words[0], ".",".", ], 1, 0.7 );
+		//
+		var theta = ii*2*Math.PI*thetaR;
+		// var rr = 1.5;
+		//
+		var newMat = panelMat.clone();
+		newMat.map = newMat.bumpMap = newMat.emissiveMap = fontTexture; 
+		customMat_EmitAnim_Basic( newMat )
+		var newBox = new THREE.Mesh( new THREE.BoxGeometry( _vecSize.x,_vecSize.y,0.05 ),   newMat  );
+		newBox.position.set( rr*Math.cos(theta), 0.5+theta*hh, -rr*Math.sin(theta) );
+		newBox.rotation.y = theta - Math.PI/2;
+		group.add( newBox );
+		//
+		newBox.onclick = getClickFunc(ii);
+		newBox.group = group;
+	  }
+	  scene.add( group );  
+	  // groupList.push( group );
+	  return group;
+	}
+
+	function addRedBluSpotLights(){
+	  var newDynSpotLight = addSpotlightGroup( 0xff4488,0.3 );
+	  scene.add( newDynSpotLight );
+	  newDynSpotLight.position.set( 0,3,0 );
+	  var dynSpotLightB = addSpotlightGroup( 0x0088ff,0.3 );
+	  newDynSpotLight.add( dynSpotLightB );
+	  dynSpotLightB.position.set( 0,0,-0.1 );
+	  dynSpotLightB.rotation.y = Math.PI;
+	  return newDynSpotLight;
+	}
+	function addSpotlightGroup( _lightCol, _angle ){
+	  var L_SIZE = 0.1
+	  var lightL = new THREE.SpotLight( _lightCol, 1.9, 50, Math.PI*_angle, 0.2 );  
+	  lightL.castShadow = true;  
+	  //
+	  var lightLMesh = new THREE.Mesh( new THREE.BoxGeometry( L_SIZE,L_SIZE,L_SIZE ),  new THREE.MeshBasicMaterial( { color:_lightCol,  } )  );
+	  lightL.add( lightLMesh );
+	  //
+	  var lightLTarget = new THREE.Mesh( new THREE.SphereGeometry( L_SIZE/2 ),  new THREE.MeshBasicMaterial( { color:_lightCol, } )  );
+	  lightL.add( lightLTarget );
+	  lightLTarget.position.z = L_SIZE*1.5;
+	  lightL.target = lightLTarget;  
+	  //
+	  return lightL;
+	}
+
+	function customMat_EmitAnim_Basic( _mat ){
+	  _mat.onBeforeCompile = function ( shader ) {
+		shader.uniforms.time = { value: 0 };
+		shader.fragmentShader = `
+			uniform float time;
+		  `+ shader.fragmentShader;
+		shader.fragmentShader = shader.fragmentShader.replace(
+		  '#include <emissivemap_fragment>',
+		  ` 
+			  #ifdef USE_EMISSIVEMAP
+				vec4 emissiveColor = texture2D( emissiveMap, vUv );
+				totalEmissiveRadiance = emissiveColor.rgb;
+				// totalEmissiveRadiance *= 0.5*vUv.x;
+				float aa = (emissiveColor.r + 0.5) / (emissiveColor.b + 0.5);
+				aa = floor(aa*3.0)/3.0; 
+				aa *= 4.0;
+				totalEmissiveRadiance *= 0.3 + 0.3*(1.0 + cos(time*aa) );
+			  #endif
+		`);
+		_mat.userData.shader = shader;
+		// console.log( shader.fragmentShader );
+	  };
+	  timedMatList.push( _mat );
+	}
+
+
+
+	slowLoop();
+	function slowLoop() {
+	  // cubeCamera.update( renderer, scene );
+	  // mirrorFloor.myOnBeforeRender( renderer, scene, camera )
+	  water.myOnBeforeRender( renderer, scene, camera )
+	  //
+	  setTimeout(slowLoop, 50);
+	}
+	function animate() {
+	  camera.rotation.x = sVars.camRotX
+	  
+	  dynSpotLight0.rotation.y = now*0.9
+	  
+	  // helix_SkillsGlobal.rotation.y = -1.4*vars.rotSpeed*now
+	  // helix_Skills1.rotation.y = 1.2*vars.rotSpeed*now
+	  // helix_Skills2.rotation.y = -1*vars.rotSpeed*now
+	  
+	  // if(typeof panelMat !== 'undefined' && panelMat.userData.shader)  { panelMat.userData.shader.uniforms.time.value = now*0.9; }  
+	  for ( var ii=0; ii<timedMatList.length; ii++ ) {
+		if(timedMatList[ii].userData.shader) timedMatList[ii].userData.shader.uniforms.time.value = now;   
+	  }
+	  
+	  if(typeof smokeMat !== 'undefined' && smokeMat.userData.shader)  smokeMat.userData.shader.uniforms.time.value = now;  
+	  
+	  updateMousePicking(myLeaveObj, myHoverObj);   
+	  if(curHoveredGroup){ curHoveredGroup.rotation.y += 0.01; }
+	  
+	  if(typeof dynLitEmitMaterial !== 'undefined' && dynLitEmitMaterial.userData.shader)  {
+		dynLitEmitMaterial.userData.shader.uniforms.time.value = now*0.5;
+		dynLitEmitMaterial.userData.shader.uniforms.emitBluTest.value = vars.emitBluTest
+	  }
+	  dynSpotLight_City.rotation.y = now*3
+	  dynSpotLight_City.position.z = -15+10*Math.sin(now)
+	  //
+	  dynSpotLight_City2.rotation.y = now*3
+	  dynSpotLight_City2.position.x = 10*Math.sin(now)
+	  
+	  alphaTestSphere.rotation.z = now
+	  
+	  if(sVars.camPosY > 1.5  &&  typeof vidStarted!=='undefined') {
+		var fallSpeed = 0.1
+		if(sVars.camPosY < 6) fallSpeed /= 2
+		if(sVars.camPosY < 3) fallSpeed /= 2
+		sVars.camPosY -= fallSpeed
+	  }
+	}
+
+</script>
+
+</html>
