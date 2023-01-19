@@ -491,6 +491,7 @@
 	  }
 	  helix_SkillsGlobal = addHelix( tagList, textScreen.material, new THREE.Vector2(1,0.8), 2.1,0.10,0.0 )
 	  helix_SkillsGlobal.position.set( 1,0.1,-0.4 );
+	  helix_SkillsGlobal.rotation.y = -0.7*Math.PI
 
 	  var toolList = techList[0].tagDiv.tags;
 	  var toolList2 = techList[0].subDivs[0].subDivs[0].tagDiv.tags;
@@ -504,6 +505,7 @@
 	  tagList.push(...libsList);
 	  helix_Skills1 = addHelix( tagList, textScreen.material, new THREE.Vector2(1,0.75), 1.4,0.13,0.14 )
 	  helix_Skills1.position.set( 0.9,0.4,0.1 );
+	  helix_Skills1.rotation.y = -0.6*Math.PI
 	  
 	  tagList = [];
 	  tagList.push(...toolList2);
@@ -511,6 +513,7 @@
 	  tagList.push(...libsList2);
 	  helix_Skills2 = addHelix( tagList, textScreen.material, new THREE.Vector2(0.8,0.6), 1.1,0.12,0.11 )
 	  helix_Skills2.position.set( 0.9,1.9,0.3 );
+	  helix_Skills2.rotation.y = -0.7*Math.PI
 	}
 	function addHelix( tagList, panelMat, _vecSize, rr,thetaR, hh ){
 	  var group = new THREE.Group();
