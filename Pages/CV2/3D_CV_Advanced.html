@@ -209,13 +209,26 @@
 		video.muted = true
 		// video.autoplay = true;   video.onload = function(){ video.play() }
 		//
+		// mySelect = document.createElement( 'select' );
+		// var option1 = document.createElement( 'option' ); option1.value=option1.innerHTML="Advanced";  mySelect.appendChild( option1 ); 
+		// var option2 = document.createElement( 'option' ); option2.value=option2.innerHTML="Basic";  mySelect.appendChild( option2 ); 
+		// infoDiv.innerHTML += " ";  infoDiv.appendChild( mySelect ); 
+		// mySelect.onclick = function(){ alert(mySelect.value) }
+		sceneMode = "Basic"
+		//
 		var playBtn = document.createElement( 'button' );
 		playBtn.style.fontSize = "20px"
 		playBtn.innerHTML = "Play";
-		playBtn.onclick = function(){vidStarted=true; video.play(); infoDiv.style.height = "auto"; infoDiv.style.display="block";}   //overlay.remove();
-		// overlay.appendChild( playBtn );
-		infoDiv.innerHTML += " ";
-		infoDiv.appendChild( playBtn );
+		playBtn.onclick = function(){
+		  vidStarted=true;  video.play(); 
+		  infoDiv.style.height = "auto";  infoDiv.style.display="block";  //overlay.remove();
+		  //
+		  if( sceneMode=="Advanced" ) sceneMode = "Basic";  //typeof sceneMode!=='undefined'
+		  else sceneMode = "Advanced";
+		  MY3D_Basic.ReInitScene()
+		}
+		infoDiv.innerHTML += " ◆ Start/Toggle Scene:";  infoDiv.appendChild( playBtn ); 
+		// overlay.appendChild( playBtn ); 
 		infoDiv.style.left = 0;  infoDiv.style.width = "100%";  
 		infoDiv.style.height = "100%";  infoDiv.style.backgroundColor = "rgba(0,0,0, 0.9)";
 		infoDiv.style.display="flex";  infoDiv.style.alignItems="center"; infoDiv.style.justifyContent="center"; infoDiv.style.flexDirection="column";  
@@ -262,15 +275,17 @@
 	  camCube.group = camCube;
 	  //
 	  textScreen.onclick = getClickFunc(0);
-	  textScreen.group = textScreen;
-	  
-	  initSmokeGroup()
+	  textScreen.group = textScreen; 
 	  
 	  initWater_Refractor()
 	  
-	  
-	  addVideoCity()
-	  //
+	  if( sceneMode=="Advanced" )  // if(mySelect.value=="Basic")
+	  {
+		initSmokeGroup()
+		//
+		addVideoCity()
+	  }
+
 	  dynSpotLight_City = addRedBluSpotLights()
 	  dynSpotLight_City.position.set( 0,3,-15 );
 	  //
@@ -283,7 +298,7 @@
 	  
 	  guiMeshes = []
 	  guiMeshes.push( new THREE.Object3D() )
-	  guiMeshes.push( smokeQuads )
+	  // guiMeshes.push( smokeQuads )
 	}
 
 	function addVideoCity(){
@@ -600,7 +615,7 @@
 	function slowLoop() {
 	  // cubeCamera.update( renderer, scene );
 	  // mirrorFloor.myOnBeforeRender( renderer, scene, camera )
-	  water.myOnBeforeRender( renderer, scene, camera )
+	  if(typeof water !== 'undefined')  water.myOnBeforeRender( renderer, scene, camera )
 	  //
 	  setTimeout(slowLoop, 50);
 	}
@@ -621,7 +636,7 @@
 	  if(typeof smokeMat !== 'undefined' && smokeMat.userData.shader)  smokeMat.userData.shader.uniforms.time.value = now;  
 	  
 	  updateMousePicking(myLeaveObj, myHoverObj);   
-	  if(curHoveredGroup){ curHoveredGroup.rotation.y += 0.01; }
+	  if(curHoveredGroup){ curHoveredGroup.rotation.y -= 0.01; }
 	  
 	  if(typeof dynLitEmitMaterial !== 'undefined' && dynLitEmitMaterial.userData.shader)  {
 		dynLitEmitMaterial.userData.shader.uniforms.time.value = now*0.5;
@@ -633,7 +648,7 @@
 	  dynSpotLight_City2.rotation.y = now*3
 	  dynSpotLight_City2.position.x = 10*Math.sin(now)
 	  
-	  alphaTestSphere.rotation.z = now
+	  if(typeof alphaTestSphere !== 'undefined')  alphaTestSphere.rotation.z = now
 	  
 	  if(sVars.camPosY > 1.5  &&  typeof vidStarted!=='undefined') {
 		var fallSpeed = 0.1
