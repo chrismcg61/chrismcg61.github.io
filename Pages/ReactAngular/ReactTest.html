@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/libs/stats.min.js"></script>
+  </head>
+  
+  <body>
+    <div id="root"></div>    
+  </body>
+  
+  
+  
+  <script type="text/babel">
+    var stats = new Stats();  document.body.appendChild( stats.dom );
+
+    var enableAnim = false
+    var nbElts = 500
+
+
+    function MyComponent(props) {
+      // return <li style={{backgroundColor: "rgba(0,255,"+props.rgb+", 0.5)"}}>  RGB is { props.rgb }</li>;
+      return <div style={{backgroundColor: "rgba(0,255,"+props.rgb+", 0.5)"}}>  RGB is { props.rgb }</div>;
+    }
+    function MyComponentBis(props) {
+      function onClickImg(){
+        imgMain.src = props.imgSrc
+      }
+      // return <button> BTN </button>;
+      return <img src={props.imgSrc} width="50" height="50" style={{cursor:"pointer"}} onClick={onClickImg} />;  
+    }
+
+
+    function MyComponentContainer() {  
+      var objList = []
+      for(var ii=0; ii<nbElts; ii++){
+        var imgSrc = "https://cdn.rawgit.com/chrismcg61/TechDemos/master/Media/CloudParticle.jpg"
+        if(ii%2==0)  imgSrc = "https://cdn.rawgit.com/chrismcg61/TechDemos/master/Media/BatmanLogoWhite.png"
+        objList.push( {id:ii, rgb:Math.floor( Math.random()*255 ), imgSrc:imgSrc  } )
+      }
+
+      const [myComponent, setMyComponent] = React.useState( objList );
+      const updateColor = () => {
+        objList = []
+        // for(var ii=0; ii<objList.length; ii++){
+        //   objList[ii].rgb = Math.floor( Math.random()*255 )
+        // }
+        setMyComponent( objList );
+      }
+
+      // const updateColor = () => {
+      //   setCar(previousState => {
+      //     return { ...previousState, revision:99 }
+      //   });
+      // }
+
+      function animate(){
+        updateColor()
+        dummyBtn.click()
+        stats.update();
+        if(enableAnim) requestAnimationFrame( animate )
+      }
+      // animate()
+
+      function start(){
+        nbInput.value = nbElts
+        enableAnim = true    
+        animate()
+      }
+      function stop(){
+        enableAnim = false    
+      }
+
+      function setNbElts(){
+        nbElts = nbInput.value    
+      }
+
+      return (
+        <>      
+        <h1 id="headerMain" style={{backgroundSize:"50px 50px", backgroundColor:"rgba(255,255,255,0.5)",}} > ◆ ReactJS ◆</h1>
+
+        <div style={{overflowX:"scroll",whiteSpace:"nowrap", width:"100%",height:60,backgroundColor: "rgb(50,50,50)"}} > 
+          {objList.map((myComponentBis) => <MyComponentBis key={myComponentBis.id}  imgSrc={myComponentBis.imgSrc}   />)} 
+        </div>      
+        <div>  <img id="imgMain" src="" width="100%" height="100" style={{borderStyle:"solid"}} />  </div>
+
+        <br></br>
+
+        <button type="button" id="dummyBtn" style={{display:"none"}}> Dummy </button>      
+        Anim:
+        <button type="button" onClick={start}> START </button>
+        <button type="button" onClick={stop}> Stop </button>
+
+        <input type="number" id="nbInput"   min="1" max="5000"  onChange={setNbElts} />
+
+        <ul>        
+        </ul>
+
+        {objList.map((myComponent) => <MyComponent key={myComponent.id} rgb={myComponent.rgb}  />)}
+
+        </>
+    );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<MyComponentContainer />);
+    // ReactDOM.render(<MyComponentContainer/>, document.getElementById('mydiv') );
+
+
+
+  </script>
+</html>
