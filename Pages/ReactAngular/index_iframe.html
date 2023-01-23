@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  // padding: 10px;
+  // height: 300px; /* Should be removed. Only for demonstration */
+  border-style: solid;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="row">
+  <div class="column" style="">
+  
+    <div>
+      URL:
+      <input id="input1" type="text" style="width:300px;" value="https://www.w3schools.com">
+      <select id="urlSelect1">
+        <option value="---">-----</option>
+        <option value="https://www.w3schools.com">https://www.w3schools.com</option>
+        <option value="https://www.w3schools.com">https://www.w3schools.com</option>
+      </select>
+      <button onclick="setIframeSrc1()">GO</button>
+  </div>
+  <iframe id="iframe1" width="100%" height="800px" src="https://www.w3schools.com" title=""></iframe>
+    
+  </div>
+  <div class="column" style="">
+    
+    <div>
+      URL:
+      <input id="input2" type="text" style="width:300px;" value="https://www.w3schools.com">
+      <select id="urlSelect2">
+        <option value="---">-----</option>
+        <option value="https://www.w3schools.com">https://www.w3schools.com</option>
+        <option value="https://www.w3schools.com">https://www.w3schools.com</option>
+      </select>
+      <button onclick="setIframeSrc2()">GO</button>
+  </div>
+  <iframe id="iframe2" width="100%" height="800px" src="https://www.w3schools.com" title=""></iframe>
+  
+  </div>
+</div>
+
+</body>
+
+
+<script>
+function setIframeSrc1(){
+  iframe1.src = input1.value;
+}
+urlSelect1.onchange = function(){
+  input1.value = urlSelect1.value;
+}
+//
+function setIframeSrc2(){
+  iframe2.src = input2.value;
+}
+urlSelect2.onchange = function(){
+  input2.value = urlSelect2.value;
+}
+</script>
+
+</html>
