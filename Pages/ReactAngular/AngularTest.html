@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/r144/examples/js/libs/stats.min.js"></script>
+
+
+
+<body>
+
+
+<div ng-app="myApp" ng-controller="myCtrl">
+<!--   Name: <input ng-model="name">
+  <h1>You entered: {{name}}</h1> -->
+  <h1 id="headerMain"> ◆ AngularJS ◆</h1>
+  
+  <div style="overflow-x:scroll; white-space:nowrap; width:100%;height:60; background-color:rgb(20,20,20); ">
+    <img ng-repeat="obj in objList" width="50" height="50" style="cursor:pointer;" src="{{obj.imgSrc}}" ng-click=onClickImg(obj.htmlSrc)  />
+  </div>
+
+  <div id="includedDiv" ng-include="htmlSrc"  style="border-style: solid;" ></div>
+  
+  <br>
+  <button style="display:none" id="dummyBtn" ng-click=dummyFunc() >Dummy</button>  
+  Anim : 
+  <button ng-click=start() >START</button>
+  <button ng-click=stop() >Stop</button>
+  <input type="number" id="nbInput"   min="1" max="5000"  value="500" />
+  
+
+  <div ng-repeat="obj in objList" style="background-color:{{obj.color}}" ng-model="objList">
+    {{ obj.color }}
+  </div>
+
+</div>
+
+
+</body>
+
+
+
+
+<script>
+var stats = new Stats();  document.body.appendChild( stats.dom );
+
+var app = angular.module('myApp', []);
+app.config(function($sceDelegateProvider) {
+  $sceDelegateProvider.resourceUrlWhitelist([
+    'https://tryit.w3schools.com/**',
+    'https://chrismcg61.github.io/**',
+  ]);
+});
+app.controller('myCtrl', function($scope) {  
+  $scope.objList = [  ];  
+  $scope.updateColor = function(){
+    $scope.objList = []
+    for(var ii=0; ii<nbInput.value; ii++){
+      var imgSrc = "https://cdn.rawgit.com/chrismcg61/TechDemos/master/Media/CloudParticle.jpg"
+      if(ii%2==0)  imgSrc = "https://cdn.rawgit.com/chrismcg61/TechDemos/master/Media/BatmanLogoWhite.png"
+      var htmlSrc = 'https://chrismcg61.github.io/Pages/CV3/subDiv.html'
+      if(ii%2==0)  htmlSrc = 'https://tryit.w3schools.com/angular_include.php'
+      $scope.objList[ii] =  {color:"rgb(0,255,"+255*Math.random()+")", imgSrc:imgSrc, htmlSrc:htmlSrc,}
+    }  
+    // console.log( $scope.objList[0] )
+  }
+  $scope.updateColor()
+  
+  $scope.dummyFunc = function(){}
+  
+  $scope.htmlSrc = 'https://chrismcg61.github.io/Pages/CV3/subDiv.html'
+  $scope.onClickImg = function(_src){
+    $scope.htmlSrc = _src
+  }
+  
+  $scope.enableAnim = false
+  $scope.myAnim = function(){
+    if($scope.enableAnim) $scope.updateColor()
+    // angular.detectChanges()
+    dummyBtn.click()
+    stats.update();
+    requestAnimationFrame( $scope.myAnim )
+    // setTimeout($scope.myAnim, 100)
+  }
+  $scope.myAnim()
+  
+  $scope.start = function(){
+    $scope.enableAnim = true
+  }
+  $scope.stop = function(){
+    $scope.enableAnim = false
+  }
+  
+  $scope.changeHeader = function(){
+    headerMain.style.color = "rgb(0,255,"+Math.random()*255+")"
+  }
+});
+</script>
+</html>
