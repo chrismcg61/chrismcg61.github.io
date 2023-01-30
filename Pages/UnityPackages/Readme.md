@@ -1,1 +1,1 @@
-![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title")
+![Alt text](AlphaLit_ParticleQuads_630.png?raw=true "Optional Title")
