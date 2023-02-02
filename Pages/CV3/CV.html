@@ -312,6 +312,16 @@ All<input id="" type="checkbox"  onchange="expandPrio(0)">
 		<input type="checkbox" onchange="toggleExperience()">
 		<span class="slider"></span>
 	</label>
+	&nbsp <b>ToggleTech</b>
+	<label class="switch">
+		<input type="checkbox" onchange="toggleTechMode()">
+		<span class="slider"></span>
+	</label>
+	&nbsp <b>ToggleFR</b>
+	<label class="switch">
+		<input type="checkbox" onchange="toggleFR()">
+		<span class="slider"></span>
+	</label>
 </div>
 
 
@@ -404,6 +414,8 @@ var BAR_FONTSIZE = "60%";
 
 
 var experienceMode = 1;
+var techMode = 1;
+var modeFR = 0;
 //        
 var myData = {
   // maintTitle:"MY_BIG_TITLE",
@@ -455,14 +467,14 @@ var extraDivsL = [
     classes:["interDiv"],
   },*/
   
-  /*{
-    subDivs:projContractsData.subDivs,
+  {
+    subDivs:projContractsData_Container.subDivs,  //projContractsData.subDivs,
 	classes:["divCol1"],
   },
   {
     title:{txt:"&nbsp", classes:[]},
     classes:["interDiv"],
-  },*/
+  },
 
   {
     subDivs:liveProjsData.subDivs,
@@ -495,6 +507,34 @@ var experienceDivs_Date = [
   },
 ];
 
+var extraDivsR_Basic = [  
+  {
+    subDivs:skillMgtData.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  }, 
+  
+  {
+    subDivs:langData.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },  
+  
+  {
+    subDivs:hobbiesTechData.subDivs,
+	classes:["divCol1"],
+  },
+  {
+    title:{txt:"&nbsp", classes:[]},
+    classes:["interDiv"],
+  },
+];
 var extraDivsR = [  
   {
     subDivs:skillMgtData.subDivs,
@@ -540,9 +580,8 @@ var extraDivsR = [
   {
     title:{txt:"&nbsp", classes:[]},
     classes:["interDiv"],
-  },*/
-  
-  
+  },
+  */  
 ];
 //
 function addDivs(_subDivs, _id){
@@ -565,12 +604,14 @@ function initDisplayData(){
   //
   if(showDetails.checked) {
     addDivs(baseDivsL, 1);
-    addDivs(extraDivsL, 1);
+    if(techMode==1) addDivs(extraDivsL, 1);
+	//
 	if(experienceMode==0) addDivs(experienceDivs_Type, 1);	
 	else addDivs(experienceDivs_Date, 1);	
 	//
     addDivs(baseDivsR, 2);
-    addDivs(extraDivsR, 2);
+    if(techMode==1) addDivs(extraDivsR, 2);
+	else addDivs(extraDivsR_Basic, 2);
   }
   else{
     addDivs(baseDivsL, 0);
@@ -688,6 +729,16 @@ function openTab(evt, name) {
 function toggleExperience(){
 	if(experienceMode==0) experienceMode = 1;
 	else  experienceMode = 0;
+	initDisplayData()
+}
+function toggleTechMode(){
+	if(techMode==0) techMode = 1;
+	else  techMode = 0;
+	initDisplayData()
+}
+function toggleFR(){
+	if(modeFR==0) modeFR = 1;
+	else  modeFR = 0;
 	initDisplayData()
 }
 
