@@ -133,7 +133,9 @@ function displayData(_data, _parent, _lvl){
       if(SUBDIV_OPACITY<1) newSubDiv.style.opacity = SUBDIV_OPACITY;
       //
       if(subDiv.title) {
-        var newTitleDiv = addElt("DIV", newSubDiv, subDiv.title.txt);
+		var _title = subDiv.title.txt;
+		if(modeFR==1 && subDiv.title.txtFR)  _title=subDiv.title.txtFR;
+        var newTitleDiv = addElt("DIV", newSubDiv, _title);
         if(subDiv.title.classes){
           for ( var j=0; j<subDiv.title.classes.length; j++ ) {
             newTitleDiv.classList.add(subDiv.title.classes[j]); 
@@ -205,12 +207,18 @@ function displayData(_data, _parent, _lvl){
       if(tagDiv){
         var tags = tagDiv.tags;
         if(tagDiv.title) {
-          var tagTitle = addElt("SPAN", newSubDiv, tagDiv.title);
+		  var _title = tagDiv.title;
+		  if(modeFR==1 && tagDiv.titleFR)  _title=tagDiv.titleFR;
+          var tagTitle = addElt("SPAN", newSubDiv, _title);
           tagTitle.style.fontWeight = TAG_TITLE_FONTW;
         }
         for ( var j=0; j<tags.length; j++ ) {
           var tag = tags[j];      
           if(j>0) addElt("SPAN", newSubDiv, TAG_SEPARATOR);
+		  if(tag.FR){
+			  if(modeFR==1) tag=tag.FR;
+			  else tag=tag.ENG;
+		  } 
           var newSpan = addElt("SPAN", newSubDiv, tag);
           newSpan.style.backgroundColor = TAG_BG_COL;
 		  if(tagDiv.alternateBg) newSpan.style.backgroundColor = TAG_BG_COL2;
