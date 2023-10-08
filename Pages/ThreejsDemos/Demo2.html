@@ -80,7 +80,6 @@ MY3D.initSceneBackground()
 
 
 var rotGroup;
-var scene2, camera2;
 //
 var composer;
 var ssrPass;
@@ -103,33 +102,9 @@ function initMyScene() {
   ground.position.y = -0.3
   // ground.scale.set( 2,2, 1 )
   // ground.material.displacementScale = 0.01
-  
-
-  camera2 = new THREE.PerspectiveCamera( 60, MY3D.WW/MY3D.HH, 0.01, 1000 );
-  camera2.position.set( 0,0,2 )
-  scene2 = new THREE.Scene();  
-  var meshScene2 = new THREE.Mesh( new THREE.BoxGeometry(),  new THREE.MeshBasicMaterial({})  );
-  scene2.add( meshScene2 );
-  
-  
+    
   initComposer()
   
-  // addSsr_GroundReflector()
-  
-  // updateSsrConfig()
-  
-  
-  // var newQuad0 = new THREE.Mesh( new THREE.BoxGeometry(0.1,0.9,2),  new THREE.MeshPhysicalMaterial({}) );
-  // newQuad0.position.set( -0.5,0.5,0 )
-  // scene.add(newQuad0)
-  // ssrPass.selects.push( newQuad0 ) 
-  // //
-  // var newQuad0 = new THREE.Mesh( new THREE.BoxGeometry(0.9,0.9,0.9),  new THREE.MeshPhysicalMaterial({emissive:0xff0000}) );
-  // newQuad0.position.set( 0,0.5,0 )
-  // scene.add(newQuad0)
-  // // ssrPass.selects.push( newQuad0 ) 
-  
-
 }
 function animSceneBackground(){
   scene.background = new THREE.Color( params.backCol );
