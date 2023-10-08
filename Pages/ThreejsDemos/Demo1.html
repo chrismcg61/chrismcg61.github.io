@@ -38,7 +38,7 @@ function initWebglRenderer1() {
 	camera.position.set( 0,0.5,3 )
 	scene = new THREE.Scene();  
 	
-	renderer = new THREE.WebGLRenderer( { antialias: true } );
+	renderer = new THREE.WebGLRenderer( { antialias: false } );
 	document.body.appendChild( renderer.domElement );  
 	renderer.setSize( WW,HH );
 	// window.addEventListener( 'resize', onWindowResize );   //renderer.setPixelRatio( window.devicePixelRatio );
@@ -51,10 +51,10 @@ function initWebglRenderer1() {
 		var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.9 );
 		directionalLight.position.set( 1,1,1 );  
 		directionalLight.castShadow = true;
-		directionalLight.shadow.mapSize.width = directionalLight.shadow.mapSize.height = 1024;   //directionalLight.shadow.camera.near=0.05;  //directionalLight.shadow.bias=-0.00005;
+		// directionalLight.shadow.mapSize.width = directionalLight.shadow.mapSize.height = 1024;   //directionalLight.shadow.camera.near=0.05;  //directionalLight.shadow.bias=-0.00005;
 		scene.add( directionalLight );
 		//
-		var ground = new THREE.Mesh( new THREE.PlaneGeometry(6,6, 512,512),  new THREE.MeshPhysicalMaterial({displacementMap:myBumpMap,displacementScale:0.3,}) );
+		var ground = new THREE.Mesh( new THREE.PlaneGeometry(6,6, 32,32),  new THREE.MeshLambertMaterial({displacementMap:myBumpMap,displacementScale:0.3,}) );
 		ground.position.y = -0.1
 		ground.rotation.x = -Math.PI/2;
 		ground.receiveShadow = true;
