@@ -11,8 +11,8 @@
 <script type="importmap">
 {
   "imports": {
-    "three": "https://cdn.rawgit.com/mrdoob/three.js/r156/build/three.module.js",
-    "three/addons/": "https://cdn.rawgit.com/mrdoob/three.js/r156/examples/jsm/"
+    "three": "https://cdn.rawgit.com/mrdoob/three.js/r157/build/three.module.js",
+    "three/addons/": "https://cdn.rawgit.com/mrdoob/three.js/r157/examples/jsm/"
   }
 }
 </script>
@@ -31,9 +31,10 @@ import * as __THREE from 'three';
 import Stats from 'three/addons/libs/stats.module.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
-
+	
 var stats = new Stats();  document.body.appendChild( stats.dom );
-var params = {  groundRes:16,meshNb:90,basicMaterial:false,castShadow:true,ReInit:ReInit,  dirLightCol:0x444444,camLightCol:0x000000,camPosZ:3,  speedFactor:0.01,  }
+var params = {  folder1:"AAA", groundRes:16,meshNb:90,basicMaterial:false,castShadow:true,
+  ReInit:ReInit, groundBump:0.1,backCol:0x004488,dirLightCol:0x444444,camLightCol:0x000000,camPosZ:3,  speedFactor:0.01, }
 
 MY3D.initGui(params, new GUI())
 
@@ -46,16 +47,19 @@ MY3D.initSceneBackground()
 var rotGroup;
 initMyScene()
 function ReInit() {
-  // MY3D.initWebglRenderer(THREE)
   MY3D.initSceneBackground()
   initMyScene()
 }
+function updateBackgroundConfig() {
+  scene.background = new THREE.Color( params.backCol )
+  directionalLight.castShadow = params.castShadow
+  directionalLight.color = new THREE.Color( params.dirLightCol )
+  camera.position.set( 0,0.5, params.camPosZ )  
+  camPLight.color = new THREE.Color( params.camLightCol )
+  ground.material.displacementScale = params.groundBump
+}
 function initMyScene() {
-  directionalLight.castShadow = params.castShadow;
-  //
-  ground.position.y = -0.3  
-  ground.geometry = new THREE.PlaneGeometry(6,6, params.groundRes,params.groundRes)
-  ground.material = new THREE.MeshPhysicalMaterial({displacementMap:waterBumpMap,displacementScale:0.3})
+  ground.geometry = new THREE.PlaneGeometry(4,4, params.groundRes,params.groundRes);  //ground.material = new THREE.MeshPhysicalMaterial({})
   
   rotGroup = new THREE.Group();
   scene.add( rotGroup )   
@@ -79,18 +83,14 @@ function initMyScene() {
   var pLightMesh = new THREE.Mesh( new THREE.SphereGeometry( 0.05 ),  new THREE.MeshBasicMaterial({color:0xff0000,}) );
   pLight.add( pLightMesh )
 }
-function myAnimScene() {
-  camera.position.set( 0,0.5, params.camPosZ )
-  directionalLight.color = new THREE.Color( params.dirLightCol );
-  camPLight.color = new THREE.Color( params.camLightCol );
-}
+
 
 
 var lastT = performance.now()  //ms since Page Load
 animate()
 function animate(){
   if( typeof rotGroup !== 'undefined' ) rotGroup.rotation.y += 0.1*params.speedFactor;
-  myAnimScene()
+  updateBackgroundConfig()
   //
   // if(performance.now() - lastT > 30){}
   renderer.render( scene, camera );
