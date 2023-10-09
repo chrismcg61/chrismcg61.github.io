@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>THREEJS DEMO3</title>
+</head>
+
+<body>
+</body>
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r230/MyLibs/ThreeMin/My3D.js"></script>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.rawgit.com/mrdoob/three.js/r157/build/three.module.js",
+      "three/addons/": "https://cdn.rawgit.com/mrdoob/three.js/r157/examples/jsm/"
+    }
+  }
+</script>
+
+
+
+
+
+
+
+
+
+	
+
+
+	
+
+
+	
+	
+<script type="module">
+
+import * as __THREE from 'three';
+import Stats from 'three/addons/libs/stats.module.js';
+import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+//
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js';
+import { ColorCorrectionShader } from 'three/addons/shaders/ColorCorrectionShader.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { ACESFilmicToneMappingShader } from 'three/addons/shaders/ACESFilmicToneMappingShader.js';
+//
+import { FXAAShader } from 'three/addons/shaders/FXAAShader.js';
+import { RenderPixelatedPass } from 'three/addons/postprocessing/RenderPixelatedPass.js';
+import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
+import { VignetteShader } from 'three/addons/shaders/VignetteShader.js';
+import { FilmPass } from 'three/addons/postprocessing/FilmPass.js';
+import { DotScreenPass } from 'three/addons/postprocessing/DotScreenPass.js';
+import { ColorifyShader } from 'three/addons/shaders/ColorifyShader.js';
+//
+import { SSRPass } from 'three/addons/postprocessing/SSRPass.js';
+import { ReflectorForSSRPass } from 'three/addons/objects/ReflectorForSSRPass.js';
+
+
+  
+  
+
+MY3D.initComposer = function(){
+  // console.log( window.devicePixelRatio )   // console.log( renderer.getPixelRatio() )
+  composer = new EffectComposer( renderer,  );   //myRenderTarget
+  composer.setSize( MY3D.WW,MY3D.HH );
+  composer.setPixelRatio( window.devicePixelRatio )
+  renderPass = new RenderPass( scene, camera );
+  //
+  renderPixelatedPass = new RenderPixelatedPass( 4, scene, camera );
+  renderPixelatedPass.setPixelSize( 4 )  
+  renderPixelatedPass.normalEdgeStrength = 4
+  renderPixelatedPass.depthEdgeStrength = 4
+  //    
+  colorCorrectionPass = new ShaderPass( ColorCorrectionShader );
+  gammaPass = new ShaderPass( GammaCorrectionShader );
+  outputPass = new OutputPass();  // outputPass.uniforms._toneMapping = 2    
+  filmPass = new FilmPass( 0.6, true );
+  dotScreenPass = new DotScreenPass( new THREE.Vector2( 0, 0 ), 0.5, 0.8 );
+  //
+  bokehPass = new BokehPass( scene, camera, { focus: 1.0, aperture: 0.025, maxblur: 0.01 } );
+  // bokehPass.uniforms[ 'maxblur' ].value =  params.fxStr  
+  //
+  colorPass = new ShaderPass( ColorifyShader );
+  colorPass.uniforms[ 'color' ] = new THREE.Uniform( new THREE.Color( 0.1,0.5,0.9 ) );
+  //
+  tonePass = new ShaderPass( ACESFilmicToneMappingShader );
+  tonePass.uniforms.exposure.value = 1.9
+  //
+  bloomPass = new UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ),  );
+  bloomPass.strength = 1.1;
+  bloomPass.threshold = 0.1;
+  bloomPass.radius = 0.1;    
+  //
+  vignettePass = new ShaderPass( VignetteShader );
+  vignettePass.uniforms[ 'offset' ].value = 0.95;
+  vignettePass.uniforms[ 'darkness' ].value = 1.6;    
+  //
+  fxaaPass = new ShaderPass( FXAAShader );
+  var pixelRatio = renderer.getPixelRatio();
+  fxaaPass.material.uniforms[ 'resolution' ].value.x = 1 / ( MY3D.WW * pixelRatio );
+  fxaaPass.material.uniforms[ 'resolution' ].value.y = 1 / ( MY3D.HH * pixelRatio );
+  //
+  ssrPass = new SSRPass( {
+    renderer, scene, camera,
+    width:MY3D.WW,height:MY3D.HH,
+    selects:[],  // selects: params.groundReflector ? selects : null    
+  } );
+  ssrPass.maxDistance = 0.9
+
+  composer.addPass( renderPass );  
+  switch( params.fxSelect ) {
+    case 0:
+      composer.addPass( gammaPass );
+      break;
+    case 1:
+      composer.addPass( colorCorrectionPass );
+      break;        
+    case 2:
+      composer.addPass( tonePass );
+      break;
+    case 3:
+      composer.addPass( bloomPass );
+      break;
+    case 4:
+      composer.addPass( bokehPass );
+      break;
+    case 5:
+      composer.addPass( filmPass );
+      break;
+    case 6:
+      composer.addPass( dotScreenPass );
+      break;
+    case 7:
+      composer.addPass( colorPass );
+      break;
+    case 8:
+      composer.addPass( vignettePass );
+      break;
+    case 9:
+      composer.addPass( outputPass );
+      break;
+    case 10:
+      // composer.addPass( colorCorrectionPass );
+      composer.addPass( fxaaPass );
+      break;
+    case 11:
+      composer.removePass( renderPass );
+      composer.addPass( renderPixelatedPass );
+      // composer.addPass( outputPass );
+      break;
+    case 12:
+      composer.addPass( ssrPass );
+      // composer.addPass( bloomPass );
+      // composer.addPass( outputPass );
+      break;
+      //
+    default:
+      //
+  }
+}
+
+  
+
+var stats = new Stats();  document.body.appendChild( stats.dom );
+var params = {  folder1:"AAA", groundRes:512,meshNb:90,basicMaterial:false,castShadow:true,
+  fxSelect:12, ReInit:ReInit,RENDER_FX:true, 
+  groundBump:0.01,backCol:0x000088,dirLightCol:0xdddddd,camLightCol:0x000000,camPosZ:3.2,  speedFactor:0.01,  
+  folder2:"SSR", maxDistance:0.9,thickness:0.05,opacity:0.9, distanceAttenuation:false,fresnel:false,blur:false,bouncing:false,
+}
+
+MY3D.initGui(params, new GUI())
+
+MY3D.HH=720;   MY3D.WW=MY3D.HH*1.6;
+
+MY3D.initWebglRenderer(__THREE)
+MY3D.initSceneBackground()
+
+
+var composer;
+var renderPass,colorCorrectionPass,gammaPass,tonePass,outputPass,bloomPass;
+var renderPixelatedPass,bokehPass,filmPass,dotScreenPass,colorPass,vignettePass,fxaaPass,ssrPass;
+//
+var camMesh0, camMesh1;
+var rotGroup;
+initMyScene()
+function ReInit() {
+  MY3D.initSceneBackground()
+  initMyScene()
+}
+function updateBackgroundConfig() {
+  scene.background = new THREE.Color( params.backCol )
+  directionalLight.castShadow = params.castShadow
+  directionalLight.color = new THREE.Color( params.dirLightCol )
+  camera.position.set( 0,0.5, params.camPosZ )  
+  camPLight.color = new THREE.Color( params.camLightCol )
+  ground.material.displacementScale = params.groundBump
+  //
+  ssrPass.maxDistance = params.maxDistance
+  ssrPass.thickness = 0.1*params.thickness
+  ssrPass.opacity = params.opacity
+  ssrPass.distanceAttenuation = params.distanceAttenuation
+  ssrPass.fresnel = params.fresnel
+  ssrPass.blur = params.blur
+  ssrPass.bouncing = params.bouncing  
+}
+function initMyScene() {
+  ground.geometry = new THREE.PlaneGeometry(4,4, params.groundRes,params.groundRes);  //ground.material = new THREE.MeshPhysicalMaterial({})
+  
+  rotGroup = new THREE.Group();
+  scene.add( rotGroup )     
+  
+  
+  MY3D.initComposer()  
+
+  {
+    var groundReflector = new ReflectorForSSRPass( new THREE.PlaneGeometry( 10,10 ), {
+      textureWidth: MY3D.WW,textureHeight: MY3D.HH,
+      color: 0xffffff,  useDepthTexture: true,
+      // clipBias: 0.0003,
+    } );
+    groundReflector.material.depthWrite = false;
+    groundReflector.rotation.x = - Math.PI / 2;
+    groundReflector.visible = false;
+    groundReflector.position.y = -0.1
+    scene.add( groundReflector );
+    //
+    ssrPass.groundReflector = groundReflector   
+    ssrPass.groundReflector.maxDistance = 30
+  }
+
+  
+  for ( var ii=0; ii<params.meshNb; ii++ ) {
+    const myCol = new THREE.Color()
+    myCol.setHSL( rand(1),1,0.5 )
+    var newMesh = new THREE.Mesh(
+      new THREE.TorusGeometry( 0.2,0.05, 6,8 ),  
+      new THREE.MeshPhysicalMaterial({color:myCol,roughness:0.5,metalness:0.5,}) 
+    );
+    newMesh.position.set( sRand(3),0.4+rand(2),sRand(3) )
+    newMesh.castShadow = newMesh.receiveShadow = params.castShadow;
+    rotGroup.add( newMesh );
+    // ssrPass.selects.push( newMesh ) 
+  }
+  //
+  camMesh0 = new THREE.Mesh(
+    new THREE.TorusGeometry( 0.3,0.05, 6,8 ),  
+    new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:0.5,metalness:0.5,}) 
+  );
+  camMesh0.position.set( 0.4,0,-0.5 )
+  camera.add( camMesh0 );
+  ssrPass.selects.push( camMesh0 ) 
+  //
+  camMesh1 = new THREE.Mesh(
+    new THREE.TorusGeometry( 0.3,0.05, 6,8 ),  
+    new THREE.MeshBasicMaterial({color:0xffffff,}) 
+  );
+  camMesh1.position.set( -0.4,0,-0.5 )
+  camera.add( camMesh1 );
+}
+
+
+
+
+var lastT = performance.now()  //ms since Page Load
+animate()
+function animate(){
+  if( typeof rotGroup !== 'undefined' ) rotGroup.rotation.y += 0.1*params.speedFactor;
+  camMesh0.rotation.y += 0.9*params.speedFactor;
+  camMesh1.rotation.y += 0.9*params.speedFactor;
+  //
+  updateBackgroundConfig()
+  //
+  // if(performance.now() - lastT > 30){}
+  if(params.RENDER_FX)  composer.render();
+  else  renderer.render( scene, camera );
+  // 
+  stats.update()  
+  requestAnimationFrame( animate )  
+}
+  
+	
+</script>
+
+</html>
