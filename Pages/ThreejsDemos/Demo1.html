@@ -16,18 +16,16 @@ import * as THREE from 'https://cdn.rawgit.com/mrdoob/three.js/r157/build/three.
 var renderer = new THREE.WebGLRenderer( { antialias:false } );
 document.body.appendChild( renderer.domElement );  
 renderer.setSize( 900,900 );  //renderer.setPixelRatio( window.devicePixelRatio )
-renderer.shadowMap.enabled = true;
 
 var camera = new THREE.PerspectiveCamera( 70, 950/950, 0.01, 900 );
 var scene = new THREE.Scene();
-camera.position.set( 0,0.5,4 )
-scene.background = new THREE.Color( 0x000044 );
 
 var concreteMap = new THREE.TextureLoader().load("https://cdn.rawgit.com/chrismcg61/TechDemos/master/Media/Concrete.jpg")
 var waterBumpMap = new THREE.TextureLoader().load("https://cdn.rawgit.com/mrdoob/three.js/r156/examples/textures/water/Water_1_M_Normal.jpg")
 waterBumpMap.anisotropy=16;  waterBumpMap.repeat.set( 1,1 );  
 waterBumpMap.wrapS=waterBumpMap.wrapT=THREE.RepeatWrapping; waterBumpMap.minFilter=waterBumpMap.magFilter=THREE.NearestFilter;
 {
+  renderer.shadowMap.enabled = true;
   var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.9 );
   directionalLight.position.set( 1,1,1 );  
   directionalLight.receiveShadow = directionalLight.castShadow = true;
@@ -66,13 +64,17 @@ var fShader =
    vec4 colDiffuse = texture2D(diffuseMap,  vUv);   
    gl_FragColor = vec4( colDiffuse.rgb,  0.7 );
   }`;
+var canvasTexture = customTexture()
 var shaderMesh = new THREE.Mesh( new THREE.BoxGeometry(),  new THREE.ShaderMaterial({
-  uniforms:{diffuseMap:{value:concreteMap}},vertexShader:vShader,fragmentShader:fShader
+  uniforms:{diffuseMap:{value:canvasTexture}},vertexShader:vShader,fragmentShader:fShader
 }) );
 shaderMesh.position.set( -1,1,0 )
 scene.add(shaderMesh)
 
-{  
+{
+  camera.position.set( 0,0.5,4 )
+  scene.background = new THREE.Color( 0x000044 );
+  
   var myMesh = new THREE.Mesh( new THREE.BoxGeometry(), new THREE.MeshStandardMaterial({map:concreteMap,bumpMap:waterBumpMap,bumpScale:0.05,}) );
   myMesh.position.set( 0,0.6,0 )
   myMesh.receiveShadow = myMesh.castShadow = true;
@@ -84,12 +86,16 @@ scene.add(shaderMesh)
     var dummy = new THREE.Mesh( );    // dummy.scale.set(1,1,1)
     dummy.position.set( 1+Math.random(),Math.random(),-Math.random() )    
     dummy.updateMatrix();
-    newInstancedMesh.setMatrixAt( ii, dummy.matrix );  //.setColorAt ( ii, myCol )
+    newInstancedMesh.setMatrixAt( ii, dummy.matrix );
+    const myCol = new THREE.Color();  myCol.setHSL( Math.random(),1,0.5 )
+    newInstancedMesh.setColorAt( ii, myCol );
   }
   newInstancedMesh.receiveShadow = newInstancedMesh.castShadow = true;
   scene.add( newInstancedMesh );
 
-  var myPoints = new THREE.Points( new THREE.SphereGeometry(1, 32,32), new THREE.PointsMaterial({size:0.01,}) );
+  var myPoints = new THREE.Points( 
+    new THREE.SphereGeometry(1, 32,32), 
+    new THREE.PointsMaterial({size:0.01,transparent:true,blending:THREE.AdditiveBlending,opacity:0.7})); //depthTest:true,depthWrite:true
   scene.add( myPoints );
   setInterval( function(){
       var positionAttribute = myPoints.geometry.getAttribute( 'position' )
@@ -100,12 +106,31 @@ scene.add(shaderMesh)
     }, 50)
 }
 
+function customTexture(){
+  var texCanvas = document.createElement( 'canvas' );
+  texCanvas.height = texCanvas.width = 512
+  var ctx = texCanvas.getContext( '2d' );
+  ctx.clearRect( 0,0, 2048,2048 );  
+  //
+  ctx.fillStyle = "hsl("+(Math.random()*360)+", 50%, 50%)"
+  ctx.fillRect( 0,0, 2048,2048 );  
+  
+  const CHAR_SIZE = 120
+  ctx.font = "bold " +CHAR_SIZE+ "px Courier";
+  ctx.fillStyle = "rgb(255,255,255)"
+  ctx.fillText( "TEXT",  CHAR_SIZE,CHAR_SIZE);
+  
+  var canvasTex = new THREE.CanvasTexture( texCanvas );
+  canvasTex.anisotropy = 16;  canvasTex.minFilter=canvasTex.magFilter=THREE.NearestFilter;
+  return canvasTex;  
+}
+
 animate();
 function animate() {
   pLightShadowMesh.rotation.y += 0.01  
   //
-  renderer.render( scene, camera );
-  requestAnimationFrame( animate );
+	renderer.render( scene, camera );
+	requestAnimationFrame( animate );
 }
 </script>
 
