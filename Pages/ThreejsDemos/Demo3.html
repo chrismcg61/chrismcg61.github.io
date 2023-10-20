@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html>
+<body>
 <head>
 	<title>THREEJS DEMO3</title>
 </head>
 
-<body>
-</body>
-
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r230/MyLibs/ThreeMin/My3D.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r241/MyLibs/ThreeMin/My3D.js"></script>
 <script type="importmap">
   {
     "imports": {
@@ -19,26 +17,22 @@
 
 
 
-
-
-
-
-
-
-	
-
-
-	
-
-
-	
-	
+  
+  
 <script type="module">
-
 import * as __THREE from 'three';
 import Stats from 'three/addons/libs/stats.module.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+
+// UTILS :
+import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
+import { TessellateModifier } from 'three/addons/modifiers/TessellateModifier.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 //
+import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js';
+
+// POST-FX :
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
@@ -59,10 +53,9 @@ import { ColorifyShader } from 'three/addons/shaders/ColorifyShader.js';
 import { SSRPass } from 'three/addons/postprocessing/SSRPass.js';
 import { ReflectorForSSRPass } from 'three/addons/objects/ReflectorForSSRPass.js';
 
-
-  
-  
-
+/***********************************************************************************/
+/***********************************************************************************/
+// COMPOSER - POSTFX :
 MY3D.initComposer = function(){
   // console.log( window.devicePixelRatio )   // console.log( renderer.getPixelRatio() )
   composer = new EffectComposer( renderer,  );   //myRenderTarget
@@ -108,11 +101,14 @@ MY3D.initComposer = function(){
     renderer, scene, camera,
     width:MY3D.WW,height:MY3D.HH,
     selects:[],  // selects: params.groundReflector ? selects : null    
-  } );
+  } );  //ssrPass.selects.push()
   ssrPass.maxDistance = 0.9
-
+  
+  MY3D.composerAddPasses(params);
+}
+MY3D.composerAddPasses = function(_params){
   composer.addPass( renderPass );  
-  switch( params.fxSelect ) {
+  switch( _params.fxSelect ) {
     case 0:
       composer.addPass( gammaPass );
       break;
@@ -157,24 +153,71 @@ MY3D.initComposer = function(){
       // composer.addPass( bloomPass );
       // composer.addPass( outputPass );
       break;
-      //
-    default:
-      //
+    default: //Only RenderPass
   }
 }
-
-  
-
-var stats = new Stats();  document.body.appendChild( stats.dom );
-var params = {  folder1:"AAA", groundRes:512,meshNb:90,basicMaterial:false,castShadow:true,
-  fxSelect:12, ReInit:ReInit,RENDER_FX:true, 
-  groundBump:0.01,backCol:0x000088,dirLightCol:0xdddddd,camLightCol:0x000000,camPosZ:3.2,  speedFactor:0.01,  
-  folder2:"SSR", maxDistance:0.9,thickness:0.05,opacity:0.9, distanceAttenuation:false,fresnel:false,blur:false,bouncing:false,
+MY3D.addSsrGroundReflector = function(){
+  var groundReflector = new ReflectorForSSRPass( new THREE.PlaneGeometry( 90,90 ), {
+    textureWidth: MY3D.WW,textureHeight: MY3D.HH,
+    color: 0xffffff,  useDepthTexture: true,
+    // clipBias: 0.0003,
+  } );
+  groundReflector.material.depthWrite = false;
+  groundReflector.rotation.x = - Math.PI / 2;
+  groundReflector.visible = false;
+  groundReflector.position.y = 0.01
+  scene.add( groundReflector );
+  //
+  ssrPass.groundReflector = groundReflector   
+  ssrPass.groundReflector.maxDistance = 30
 }
 
-MY3D.initGui(params, new GUI())
+// CUSTOM RENDER LOOP :
+MY3D.myRender_Advanced = function(_params){
+  {
+    renderer.setRenderTarget(null)
+    renderer.setScissorTest( true );  
+    renderer.setClearColor( 0x000066 );      
+  }
+  if(_params.Scene1Factor>0){
+    renderer.setViewport( 0,0, MY3D.WW*_params.Scene1Factor,MY3D.HH*_params.Scene1Factor );
+    renderer.setScissor( 0,0, MY3D.WW*_params.Scene1Factor,MY3D.HH*_params.Scene1Factor );
+    if(_params.RENDER_FX) composer.render();
+    else  renderer.render( scene, camera );
+  }
+  if(_params.Scene2Factor>0){
+    renderer.setViewport( 0,0, MY3D.WW*_params.Scene2Factor,MY3D.HH*_params.Scene2Factor );
+    renderer.setScissor( 0,0, MY3D.WW*_params.Scene2Factor,MY3D.HH*_params.Scene2Factor );
+    renderer.render( scene2, camera2 );
+  }
+  // RESET Viewport :
+  renderer.setViewport( 0,0, MY3D.WW*_params.Scene1Factor,MY3D.HH*_params.Scene1Factor );
+  renderer.setScissor( 0,0, MY3D.WW*_params.Scene1Factor,MY3D.HH*_params.Scene1Factor );
+}
 
-MY3D.HH=720;   MY3D.WW=MY3D.HH*1.6;
+
+	
+var stats = new Stats();  document.body.appendChild( stats.dom );
+var params = {  
+  folder1:"SSR",maxDistance:1.9,thickness:0.05,opacity:0.9,distanceAttenuation:false,fresnel:false,blur:false,bouncing:false,
+  
+  folder2:"INIT_CONFIG", GroundRes:16,GroundBump:0.01, meshNb:90,  Scene1Factor:0.99,Scene2Factor:0.2,  
+  
+  folder3:"SCENE",   fxSelect:12,REINIT:ReInit,MY_VIEWPORT:true,RENDER_FX:true,castShadow:true,  
+    backCol:0x004488,dirLightCol:0x111111,camLightCol:0xaaaaaa, pLightCamPosZ:-1.1,
+  
+  folder7:"CAM",  camPosX:0.5,camPosY:0.5,camPosZ:2.5,
+  
+  folder8:"MY_OBJ", speedFactor:0.05, ObjPosX:6.5,ObjPosY:20.1,ObjPosZ:-0.8,   
+}
+
+var gui = new GUI();   
+MY3D.initGui(params, gui, {M0_Gamma:0,M1_ColorCorr:1,M2_Tone:2,M3_Bloom:3,M4_Bokeh:4,M5_Film:5,M6_DotScreen:6,M7_Color:7,M8_Vignette:8,M9_Output:9,M10_Fxaa:10,M11_Pixel:11,M12_Ssr:12,M13_None:13,})
+gui.folders[0].close()
+gui.folders[1].close()
+
+
+MY3D.HH=950;  MY3D.WW=MY3D.HH*1.0;
 
 MY3D.initWebglRenderer(__THREE)
 MY3D.initSceneBackground()
@@ -184,105 +227,109 @@ var composer;
 var renderPass,colorCorrectionPass,gammaPass,tonePass,outputPass,bloomPass;
 var renderPixelatedPass,bokehPass,filmPass,dotScreenPass,colorPass,vignettePass,fxaaPass,ssrPass;
 //
-var camMesh0, camMesh1;
+var scene2, camera2;
+var meshScene2;
 var rotGroup;
+//
+var shinyMesh;
+//
 initMyScene()
 function ReInit() {
   MY3D.initSceneBackground()
   initMyScene()
 }
 function updateBackgroundConfig() {
+  camera.position.set( params.camPosX, params.camPosY, params.camPosZ )  
   scene.background = new THREE.Color( params.backCol )
-  directionalLight.castShadow = params.castShadow
   directionalLight.color = new THREE.Color( params.dirLightCol )
-  camera.position.set( 0,0.5, params.camPosZ )  
+  directionalLight.castShadow = camPLight.castShadow = params.castShadow
+  camPLight.position.z = params.pLightCamPosZ
   camPLight.color = new THREE.Color( params.camLightCol )
-  ground.material.displacementScale = params.groundBump
-  //
-  ssrPass.maxDistance = params.maxDistance
-  ssrPass.thickness = 0.1*params.thickness
-  ssrPass.opacity = params.opacity
-  ssrPass.distanceAttenuation = params.distanceAttenuation
-  ssrPass.fresnel = params.fresnel
-  ssrPass.blur = params.blur
-  ssrPass.bouncing = params.bouncing  
+  ground.material.displacementScale = params.GroundBump
+  rotGroup.position.set(params.ObjPosX,params.ObjPosY,params.ObjPosZ)
+  if( typeof ssrPass !== 'undefined' ){
+    ssrPass.maxDistance = params.maxDistance
+    ssrPass.thickness = 0.1*params.thickness
+    ssrPass.opacity = params.opacity
+    ssrPass.distanceAttenuation = params.distanceAttenuation
+    ssrPass.fresnel = params.fresnel
+    ssrPass.blur = params.blur
+    ssrPass.bouncing = params.bouncing  
+  }
 }
 function initMyScene() {
-  ground.geometry = new THREE.PlaneGeometry(4,4, params.groundRes,params.groundRes);  //ground.material = new THREE.MeshPhysicalMaterial({})
+  ground.position.y = -0.05;
+  ground.geometry = new THREE.PlaneGeometry(90,90, params.GroundRes,params.GroundRes);  //ground.material = new THREE.MeshPhysicalMaterial({})
   
   rotGroup = new THREE.Group();
   scene.add( rotGroup )     
-  
-  
-  MY3D.initComposer()  
 
-  {
-    var groundReflector = new ReflectorForSSRPass( new THREE.PlaneGeometry( 10,10 ), {
-      textureWidth: MY3D.WW,textureHeight: MY3D.HH,
-      color: 0xffffff,  useDepthTexture: true,
-      // clipBias: 0.0003,
-    } );
-    groundReflector.material.depthWrite = false;
-    groundReflector.rotation.x = - Math.PI / 2;
-    groundReflector.visible = false;
-    groundReflector.position.y = -0.1
-    scene.add( groundReflector );
-    //
-    ssrPass.groundReflector = groundReflector   
-    ssrPass.groundReflector.maxDistance = 30
+  if( typeof MY3D.initComposer !== 'undefined' ){
+    MY3D.initComposer()    
+    MY3D.addSsrGroundReflector()    
   }
+  initScene2()
 
   
-  for ( var ii=0; ii<params.meshNb; ii++ ) {
-    const myCol = new THREE.Color()
-    myCol.setHSL( rand(1),1,0.5 )
-    var newMesh = new THREE.Mesh(
-      new THREE.TorusGeometry( 0.2,0.05, 6,8 ),  
-      new THREE.MeshPhysicalMaterial({color:myCol,roughness:0.5,metalness:0.5,}) 
-    );
-    newMesh.position.set( sRand(3),0.4+rand(2),sRand(3) )
-    newMesh.castShadow = newMesh.receiveShadow = params.castShadow;
-    rotGroup.add( newMesh );
-    // ssrPass.selects.push( newMesh ) 
+  shinyMesh = new THREE.Mesh( new THREE.TorusGeometry( 0.5,0.1, 8,16 ),  new THREE.MeshStandardMaterial({})  );
+  shinyMesh.position.set( 0.5,0.5,1.5 )
+  scene.add( shinyMesh );
+  ssrPass.selects.push( shinyMesh )
+  
+  const NB_QUAD = params.meshNb
+  var newInstancedMesh = new THREE.InstancedMesh( new THREE.TorusGeometry( 0.05,0.01, 6,8 ),  new THREE.MeshStandardMaterial(),  NB_QUAD );
+  for ( var ii=0; ii<NB_QUAD; ii++ ) {
+    var dummy = new THREE.Mesh( );    // dummy.scale.set(1,1,1)
+    dummy.position.set( Math.random(),Math.random(),Math.random() );  dummy.updateMatrix();
+    newInstancedMesh.setMatrixAt( ii, dummy.matrix );  //.setColorAt ( ii, myCol )
+    const myCol = new THREE.Color();  myCol.setHSL( rand(1),1,0.5 )
+    newInstancedMesh.setColorAt( ii, myCol );
   }
-  //
-  camMesh0 = new THREE.Mesh(
-    new THREE.TorusGeometry( 0.3,0.05, 6,8 ),  
-    new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:0.5,metalness:0.5,}) 
-  );
-  camMesh0.position.set( 0.4,0,-0.5 )
-  camera.add( camMesh0 );
-  ssrPass.selects.push( camMesh0 ) 
-  //
-  camMesh1 = new THREE.Mesh(
-    new THREE.TorusGeometry( 0.3,0.05, 6,8 ),  
-    new THREE.MeshBasicMaterial({color:0xffffff,}) 
-  );
-  camMesh1.position.set( -0.4,0,-0.5 )
-  camera.add( camMesh1 );
+  newInstancedMesh.receiveShadow = newInstancedMesh.castShadow = params.castShadow;
+  scene.add( newInstancedMesh );  
+}
+function initScene2() {
+  camera2 = new THREE.PerspectiveCamera( 60, MY3D.WW/MY3D.HH, 0.01, 1000 );
+  camera2.position.set( 0,0,1.7 )
+  scene2 = new THREE.Scene();  
+  meshScene2 = new THREE.Mesh( new THREE.BoxGeometry(),  new THREE.MeshBasicMaterial({})  );
+  scene2.add( meshScene2 );
 }
 
 
-
-
+	
 var lastT = performance.now()  //ms since Page Load
 animate()
-function animate(){
+function myAnimate(){
   if( typeof rotGroup !== 'undefined' ) rotGroup.rotation.y += 0.1*params.speedFactor;
-  camMesh0.rotation.y += 0.9*params.speedFactor;
-  camMesh1.rotation.y += 0.9*params.speedFactor;
   //
-  updateBackgroundConfig()
+  camPLight.myTorus.rotation.y += 0.9*params.speedFactor;
+  camPLight.position.x = 0.4*Math.sin( 0.001*performance.now() )
   //
-  // if(performance.now() - lastT > 30){}
-  if(params.RENDER_FX)  composer.render();
-  else  renderer.render( scene, camera );
-  // 
-  stats.update()  
+  // myNewShaderMaterial.uniforms.time.value += 0.05
+  shinyMesh.rotation.y += 0.3*params.speedFactor;
+}
+function animate(){
+  if(performance.now() - lastT > 30){
+    lastT = performance.now()
+    //
+    myAnimate()
+    updateBackgroundConfig()
+    //    
+    if(typeof MY3D.myRender_Advanced!=='undefined' && params.MY_VIEWPORT) MY3D.myRender_Advanced(params)
+    else  myRender()
+    // 
+    stats.update()  
+  }
   requestAnimationFrame( animate )  
 }
-  
-	
+function myRender(){
+  if( typeof composer !== 'undefined'  &&  params.RENDER_FX)  composer.render();
+  else  renderer.render( scene, camera );
+}
 </script>
 
+
+  
+</body>
 </html>
