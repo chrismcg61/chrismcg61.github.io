@@ -14,16 +14,15 @@
   // height: 300px; /* Should be removed. Only for demonstration */
   border-style: solid;
 }
-
 </style>
 </head>
 
 
 <body>
 
+<input id="mySlider" style="width:100%" type="range" min="0" max="100" value="50">
 <div class="row">
-  <div class="column" style="">
-  
+  <div id="col1" class="column" style="">  
     <div>
       URL:
       <input id="input1" type="text" style="width:300px;" value="Demo1.html">
@@ -34,12 +33,10 @@
         <option value="https://www.w3schools.com">https://www.w3schools.com</option>
       </select>
       <button onclick="setIframeSrc1()">GO</button>
+    </div>
+    <iframe id="iframe1" width="100%" height="800px" src="Demo1.html" title=""></iframe>    
   </div>
-  <iframe id="iframe1" width="100%" height="800px" src="Demo1.html" title=""></iframe>
-    
-  </div>
-  <div class="column" style="">
-    
+  <div id="col2" class="column" style="">    
     <div>
       URL:
       <input id="input2" type="text" style="width:300px;" value="Demo2.html">
@@ -50,9 +47,8 @@
         <option value="https://www.w3schools.com">https://www.w3schools.com</option>
       </select>
       <button onclick="setIframeSrc2()">GO</button>
-  </div>
-  <iframe id="iframe2" width="100%" height="800px" src="Demo2.html" title=""></iframe>
-  
+    </div>
+    <iframe id="iframe2" width="100%" height="800px" src="Demo2.html" title=""></iframe>  
   </div>
 </div>
 
@@ -72,6 +68,11 @@ function setIframeSrc2(){
 }
 urlSelect2.onchange = function(){
   input2.value = urlSelect2.value;
+}
+//
+mySlider.onchange = function(){
+  col1.style.width = mySlider.value+"%";
+  col2.style.width = (100-mySlider.value)+"%";
 }
 </script>
 
