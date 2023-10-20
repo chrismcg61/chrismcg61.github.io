@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html>
+<body>
 <head>
 	<title>THREEJS DEMO2</title>
 </head>
 
-<body>
-</body>
-
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r229/MyLibs/ThreeMin/My3D.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r240/MyLibs/ThreeMin/My3D.js"></script>
 <script type="importmap">
   {
     "imports": {
@@ -19,93 +17,64 @@
 
 
 
-
-
-
-
-
-
-	
-
-
-	
-
-
-	
-	
+  
+  
 <script type="module">
-
 import * as __THREE from 'three';
 import Stats from 'three/addons/libs/stats.module.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
-	
+
 var stats = new Stats();  document.body.appendChild( stats.dom );
-var params = {folder1:"AAA", groundRes:16,meshNb:90,basicMaterial:false,castShadow:true, ReInit:ReInit, groundBump:0.1,backCol:0x004488,dirLightCol:0x444444,camLightCol:0x000000,camPosZ:3, speedFactor:0.01}
+var params = {  
+  folder3:"SCENE",  meshNb:300,meshDetail:8,castShadow:true, ReInit:ReInit, backCol:0x002244,dirLightCol:0x111111,camLightCol:0x884400, pLightCamPosZ:-0.7,
+  folder7:"CAM",  camPosX:0,camPosY:0.3,camPosZ:2.2,
+}
 
-MY3D.initGui(params, new GUI())
+var gui = new GUI();  MY3D.initGui(params, gui, {M0:0,M1:1});  //gui.folders[0].close()
 
-MY3D.HH=720;   MY3D.WW=MY3D.HH*1.6;
+MY3D.HH=900;  MY3D.WW=MY3D.HH*1.3;
 
 MY3D.initWebglRenderer(__THREE)
 MY3D.initSceneBackground()
 
 
-var rotGroup;
 initMyScene()
 function ReInit() {
   MY3D.initSceneBackground()
   initMyScene()
 }
 function updateBackgroundConfig() {
+  camera.position.set( params.camPosX, params.camPosY, params.camPosZ )  
   scene.background = new THREE.Color( params.backCol )
-  directionalLight.castShadow = params.castShadow
   directionalLight.color = new THREE.Color( params.dirLightCol )
-  camera.position.set( 0,0.5, params.camPosZ )  
-  camPLight.color = new THREE.Color( params.camLightCol )
-  ground.material.displacementScale = params.groundBump
+  camPLight.position.z=params.pLightCamPosZ; camPLight.color=new THREE.Color(params.camLightCol); camPLight.castShadow=params.castShadow;
 }
 function initMyScene() {
-  ground.geometry = new THREE.PlaneGeometry(4,4, params.groundRes,params.groundRes);  //ground.material = new THREE.MeshPhysicalMaterial({})
-  
-  rotGroup = new THREE.Group();
-  scene.add( rotGroup )   
-
-  var myMeshMaterial = new THREE.MeshPhysicalMaterial({roughness:0.3,metalness:0.7,map:concreteMap,bumpMap:waterBumpMap,bumpScale:0.01})
-  if(params.basicMaterial)  myMeshMaterial = new THREE.MeshBasicMaterial()
-  var myMesh = new THREE.Mesh(new THREE.BoxGeometry(),  myMeshMaterial);
-  myMesh.position.set( 0,0.6,0 )
-  myMesh.castShadow = myMesh.receiveShadow = params.castShadow;
-  rotGroup.add( myMesh );
-  for ( var ii=0; ii<params.meshNb; ii++ ) {
-    var newMesh = new THREE.Mesh(new THREE.BoxGeometry( 0.1,0.1,0.1 ),  myMeshMaterial);
-    newMesh.position.set( sRand(3),rand(2),sRand(3) )
-    newMesh.castShadow = newMesh.receiveShadow = params.castShadow;
-    rotGroup.add( newMesh );
+  const NB_QUAD = params.meshNb
+  var newInstancedMesh = new THREE.InstancedMesh( new THREE.TorusGeometry( 0.05,0.01, 6,params.meshDetail ),  new THREE.MeshStandardMaterial(),  NB_QUAD );
+  for ( var ii=0; ii<NB_QUAD; ii++ ) {
+    var dummy = new THREE.Mesh( );    // dummy.scale.set(1,1,1)
+    dummy.position.set( Math.random(),Math.random(),Math.random() );  dummy.updateMatrix();
+    newInstancedMesh.setMatrixAt( ii, dummy.matrix );  //.setColorAt ( ii, myCol )
   }
-  //
-  const pLight = new THREE.PointLight( 0xff0000, 1.5, 3, 0.8 );
-  rotGroup.add( pLight )
-  pLight.position.set( 0,0.2,1.5 )
-  var pLightMesh = new THREE.Mesh( new THREE.SphereGeometry( 0.05 ),  new THREE.MeshBasicMaterial({color:0xff0000,}) );
-  pLight.add( pLightMesh )
+  newInstancedMesh.receiveShadow = newInstancedMesh.castShadow = params.castShadow;
+  scene.add( newInstancedMesh );
 }
 
 
-
-var lastT = performance.now()  //ms since Page Load
-animate()
-function animate(){
-  if( typeof rotGroup !== 'undefined' ) rotGroup.rotation.y += 0.1*params.speedFactor;
+animate();
+function animate() {
+  camPLight.rotation.y += 0.01  
   updateBackgroundConfig()
   //
-  // if(performance.now() - lastT > 30){}
-  renderer.render( scene, camera );
-  // 
   stats.update()  
-  requestAnimationFrame( animate )  
+  renderer.render( scene, camera );
+  requestAnimationFrame( animate );
 }
-	
 </script>
 
+
+  
+</body>
 </html>
