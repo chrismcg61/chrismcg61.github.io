@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<body>
+<head>
+	<title>THREEJS DEMO0</title>
+</head>
+
+
+
+  
+  
+<script type="module">
+import * as THREE from 'https://cdn.rawgit.com/mrdoob/three.js/r157/build/three.module.js';
+
+
+var renderer = new THREE.WebGLRenderer( { antialias:false } );
+document.body.appendChild( renderer.domElement );  
+renderer.setSize( 512,512 );  //renderer.setPixelRatio( window.devicePixelRatio )
+
+var camera = new THREE.PerspectiveCamera( 70, 512/512, 0.01, 900 );
+var scene = new THREE.Scene();
+
+{
+  camera.position.set( 0,0,2 )
+  scene.background = new THREE.Color( 0x000044 );
+  var myMesh = new THREE.Mesh( new THREE.BoxGeometry(), new THREE.MeshBasicMaterial({}) );
+  scene.add(myMesh)
+}
+
+animate();
+function animate() {
+  camera.rotation.z += 0.005
+  //
+	renderer.render( scene, camera );
+	requestAnimationFrame( animate );
+}
+</script>
+
+
+  
+</body>
+</html>
