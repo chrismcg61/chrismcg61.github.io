@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<body>
+<head>
+	<title>THREEJS DemoLib 0</title>
+</head>
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r249/MyLibs/ThreeMin/My3D.js"></script>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.rawgit.com/mrdoob/three.js/r157/build/three.module.js",
+      "three/addons/": "https://cdn.rawgit.com/mrdoob/three.js/r157/examples/jsm/"
+    }
+  }
+</script>
+
+
+	
+  
+<script type="module">
+import * as __THREE from 'three';
+import Stats from 'three/addons/libs/stats.module.js';
+import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+
+var stats = new Stats();  document.body.appendChild( stats.dom );
+var params = {
+  folder2:"SCENE", ReInit:ReInit, castShadow:true, backCol:0x004488,dirLightCol:0x111111,camLightCol:0xaa4400, pLightCamPosZ:-0.9, speedFactor:0.03, camPosX:0,camPosY:0.2,camPosZ:2,
+}
+var gui = new GUI();
+MY3D.initGui(params, gui, {M0:0})
+// gui.folders[0].close()
+
+MY3D.HH=800;  MY3D.WW=MY3D.HH*1.0;
+MY3D.initWebglRenderer(__THREE)
+// MY3D.initSceneBackground()
+
+ReInit()
+function ReInit() {
+  MY3D.initSceneBackground()  
+}
+
+// var lastT = performance.now()  //ms since Page Load
+animate();
+function animate() {
+  camPLight.rotation.y += params.speedFactor  
+  {
+    camera.position.set( params.camPosX, params.camPosY, params.camPosZ )  
+    scene.background = new THREE.Color( params.backCol )
+    directionalLight.color = new THREE.Color( params.dirLightCol )
+    camPLight.position.z=params.pLightCamPosZ; camPLight.color=new THREE.Color(params.camLightCol); camPLight.castShadow=params.castShadow;
+    // scene.rotGroup.position.set( params.objPosX, params.objPosY, params.objPosZ )  
+  }
+  stats.update()  
+  // MY3D.myRender_Advanced(params)
+  renderer.render( scene, camera );
+  requestAnimationFrame( animate );
+}
+</script>
+
+
+  
+</body>
+</html>
