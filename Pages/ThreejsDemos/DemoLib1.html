@@ -5,7 +5,7 @@
 	<title>THREEJS DemoLib 1</title>
 </head>
 
-<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r248/MyLibs/ThreeMin/My3D.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r249/MyLibs/ThreeMin/My3D.js"></script>
 <script type="importmap">
   {
     "imports": {
@@ -37,10 +37,11 @@ import { ReflectorForSSRPass } from 'three/addons/objects/ReflectorForSSRPass.js
   POSTFX.ReflectorForSSRPass = ReflectorForSSRPass
 }
 
+
 var stats = new Stats();  document.body.appendChild( stats.dom );
 var params = {
   folder1:"INIT_CONFIG", Scene1Factor:0.99,Scene2Factor:0.2,RENDER_FX:true,fxSelect:12,ReInit:ReInit,  
-  folder2:"SCENE", meshNb:300,meshDetail:8,castShadow:true, backCol:0x004488,dirLightCol:0x111111,camLightCol:0x884400, pLightCamPosZ:-0.7, camPosX:0,camPosY:0.3,camPosZ:2.2,
+  folder2:"SCENE", meshNb:300,meshDetail:8,castShadow:true, backCol:0x004488,dirLightCol:0x111111,camLightCol:0xbbbbbb, pLightCamPosZ:-0.9, camPosX:0.5,camPosY:0.5,camPosZ:2.5,
   folder3:"OBJ", speedFactor:0.01, objPosX:0,objPosY:0,objPosZ:0,
 }
 var gui = new GUI();
@@ -58,7 +59,6 @@ function ReInit() {
   MY3D.composerInit( POSTFX, params )
   MY3D.addSsrGroundReflector(POSTFX)
   //
-  ground.position.y = -0.1
   scene.rotGroup = new THREE.Group();
   scene.add( scene.rotGroup )
   {
@@ -67,17 +67,27 @@ function ReInit() {
     for ( var ii=0; ii<NB_QUAD; ii++ ) {
       var dummy = new THREE.Mesh( );    // dummy.scale.set(1,1,1)
       dummy.position.set( Math.random(),Math.random(),Math.random() );  dummy.updateMatrix();
-      newInstancedMesh.setMatrixAt( ii, dummy.matrix );  //.setColorAt ( ii, myCol )
+      newInstancedMesh.setMatrixAt( ii, dummy.matrix );
+      const myCol = new THREE.Color();  myCol.setHSL( rand(1),1,0.5 )
+      newInstancedMesh.setColorAt( ii, myCol );
     }
     newInstancedMesh.receiveShadow = newInstancedMesh.castShadow = params.castShadow;
     scene.rotGroup.add( newInstancedMesh );
+
+    var shinyMesh = new THREE.Mesh( new THREE.TorusGeometry( 0.5,0.1, 8,16 ),  new THREE.MeshStandardMaterial({})  );
+    shinyMesh.position.set( 0.5,0.5,1.5 )
+    scene.add( shinyMesh );
+    composer.ssrPass.selects.push( shinyMesh )
+    scene.shinyMesh = shinyMesh
   }  
 }
 
-var lastT = performance.now()  //ms since Page Load
+// var lastT = performance.now()  //ms since Page Load
 animate();
 function animate() {
-  camPLight.rotation.y += params.speedFactor  
+  camPLight.rotation.y += 3*params.speedFactor  
+  camPLight.position.x = 0.7*Math.sin( 0.001*performance.now() )
+  scene.shinyMesh.rotation.y += params.speedFactor  
   {
     camera.position.set( params.camPosX, params.camPosY, params.camPosZ )  
     scene.background = new THREE.Color( params.backCol )
