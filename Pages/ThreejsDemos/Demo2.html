@@ -12,122 +12,67 @@
 <script type="module">
 import * as THREE from 'https://cdn.rawgit.com/mrdoob/three.js/r157/build/three.module.js';
 
-
 var renderer = new THREE.WebGLRenderer( { antialias:false } );
 document.body.appendChild( renderer.domElement );  
 renderer.setSize( 800,800 );  //renderer.setPixelRatio( window.devicePixelRatio )
 
 var camera = new THREE.PerspectiveCamera( 70, 800/800, 0.01, 900 );
 var scene = new THREE.Scene();
-
-var concreteMap = new THREE.TextureLoader().load("https://cdn.rawgit.com/chrismcg61/TechDemos/master/Media/Concrete.jpg")
-var waterBumpMap = new THREE.TextureLoader().load("https://cdn.rawgit.com/mrdoob/three.js/r156/examples/textures/water/Water_1_M_Normal.jpg")
-waterBumpMap.anisotropy=16;  waterBumpMap.repeat.set( 1,1 );  
-waterBumpMap.wrapS=waterBumpMap.wrapT=THREE.RepeatWrapping; waterBumpMap.minFilter=waterBumpMap.magFilter=THREE.NearestFilter;
 {
+  var waterBumpMap = new THREE.TextureLoader().load("https://cdn.rawgit.com/mrdoob/three.js/r156/examples/textures/water/Water_1_M_Normal.jpg")
+  waterBumpMap.anisotropy=8;  waterBumpMap.repeat.set( 1,1 );  waterBumpMap.wrapS=waterBumpMap.wrapT=THREE.RepeatWrapping;
+  
   renderer.shadowMap.enabled = true;
-  var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.9 );
-  directionalLight.position.set( 1,1,1 );  
-  directionalLight.receiveShadow = directionalLight.castShadow = true;
-  scene.add( directionalLight );
+  scene.background = new THREE.Color( 0x0044ff );
+  camera.position.set( 0,0.5,1.9 )
 
-  var ground = new THREE.Mesh( new THREE.PlaneGeometry(6,6, 64,64),  new THREE.MeshStandardMaterial({displacementMap:waterBumpMap,displacementScale:0.12}) );
+  var directionalLight = new THREE.DirectionalLight( 0xffffff, 1.5 );
+  directionalLight.receiveShadow = directionalLight.castShadow = true;
+  scene.add( directionalLight );  directionalLight.position.set( 1,1,1 ); 
+
+  var ground = new THREE.Mesh(new THREE.PlaneGeometry(6,6, 100,100),  new THREE.MeshStandardMaterial({displacementMap:waterBumpMap,displacementScale:0.3}) );
   ground.position.y = -0.1;   ground.rotation.x = -Math.PI/2;
   ground.receiveShadow = true;  //ground.castShadow =
   scene.add( ground );
-}
-
-const pLight = new THREE.PointLight( 0xff0000, 4, 90, 1.9 );
-pLight.receiveShadow = pLight.castShadow = true;
-pLight.shadow.camera.near = 0.01;
-pLight.position.set( 0,0.2,0.8 )
-scene.add(pLight)
-var pLightMesh = new THREE.Mesh( new THREE.SphereGeometry( 0.05 ),  new THREE.MeshBasicMaterial({color:0xff0000,}) );
-pLight.add( pLightMesh ) 
-var pLightShadowMesh = new THREE.Mesh( new THREE.TorusGeometry( 0.25,0.03, 6,8 ),  new THREE.MeshStandardMaterial({}) );
-pLightShadowMesh.receiveShadow = pLightShadowMesh.castShadow = true;
-pLight.add( pLightShadowMesh ) 
-
-var vShader = 
-  `
-  varying vec2 vUv;
-  void main(){
-   vUv = uv; 
-   vec4 mvPosition = modelViewMatrix * vec4( position.xyz, 1.0 );
-   gl_Position = projectionMatrix * mvPosition;
-  }`;
-var fShader = 
-  `
-  varying vec2 vUv;
-  uniform sampler2D diffuseMap;
-  void main()	{
-   vec4 colDiffuse = texture2D(diffuseMap,  vUv);   
-   gl_FragColor = vec4( colDiffuse.rgb,  0.7 );
-  }`;
-var canvasTexture = customTexture()
-var shaderMesh = new THREE.Mesh( new THREE.BoxGeometry(),  new THREE.ShaderMaterial({
-  uniforms:{diffuseMap:{value:canvasTexture}},vertexShader:vShader,fragmentShader:fShader
-}) );
-shaderMesh.position.set( -1,1,0 )
-scene.add(shaderMesh)
-
-{
-  camera.position.set( 0,0.5,4 )
-  scene.background = new THREE.Color( 0x000044 );
   
-  var myMesh = new THREE.Mesh( new THREE.BoxGeometry(), new THREE.MeshStandardMaterial({map:concreteMap,bumpMap:waterBumpMap,bumpScale:0.05,}) );
-  myMesh.position.set( 0,0.6,0 )
-  myMesh.receiveShadow = myMesh.castShadow = true;
-  scene.add(myMesh)
-
-  const NB_QUAD = 90
-  var newInstancedMesh = new THREE.InstancedMesh( new THREE.TorusGeometry( 0.05,0.01, 6,8 ),  new THREE.MeshStandardMaterial(),  NB_QUAD );
-  for ( var ii=0; ii<NB_QUAD; ii++ ) {
-    var dummy = new THREE.Mesh( );    // dummy.scale.set(1,1,1)
-    dummy.position.set( 1+Math.random(),Math.random(),-Math.random() )    
-    dummy.updateMatrix();
-    newInstancedMesh.setMatrixAt( ii, dummy.matrix );
-    const myCol = new THREE.Color();  myCol.setHSL( Math.random(),1,0.5 )
-    newInstancedMesh.setColorAt( ii, myCol );
-  }
-  newInstancedMesh.receiveShadow = newInstancedMesh.castShadow = true;
-  scene.add( newInstancedMesh );
-
-  var myPoints = new THREE.Points( 
-    new THREE.SphereGeometry(1, 32,32), 
-    new THREE.PointsMaterial({size:0.01,transparent:true,blending:THREE.AdditiveBlending,opacity:0.7})); //depthTest:true,depthWrite:true
-  scene.add( myPoints );
-  setInterval( function(){
+  {
+    var cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 512, { generateMipmaps:true, minFilter:THREE.LinearMipmapLinearFilter } );
+    var cubeCamera = new THREE.CubeCamera( 0.1, 900, cubeRenderTarget );
+    scene.add( cubeCamera );
+    var chromeMaterial = new THREE.MeshStandardMaterial({envMap:cubeRenderTarget.texture, roughness:0.1,metalness:0.9, bumpMap:waterBumpMap,bumpScale:0.01, });
+    var shinySphere = new THREE.Mesh( new THREE.SphereGeometry( 0.5, 30,30),  chromeMaterial );
+    cubeCamera.add( shinySphere );
+    var shinyQuad = new THREE.Mesh( new THREE.PlaneGeometry( 2.5,2.5 ),  chromeMaterial );
+    cubeCamera.add( shinyQuad );  //shinyQuad.rotation.x = -Math.PI/2
+    cubeCamera.position.set( 0,0.1,0 )
+    //    
+    setInterval( function(){
+      cubeCamera.update( renderer, scene )
+    },   35)
+    
+    var myPoints = new THREE.Points( 
+      new THREE.SphereGeometry(1, 30,30), 
+      new THREE.PointsMaterial({size:0.06,transparent:true,blending:THREE.AdditiveBlending,opacity:0.3,vertexColors:true})); //depthTest:true,depthWrite:true
+    scene.add( myPoints );
+    scene.myPoints = myPoints
+    //
+    setInterval( function(){
       var positionAttribute = myPoints.geometry.getAttribute( 'position' )
-      for( var ii=0; ii<positionAttribute.array.length; ii+=3){  //positionAttribute.count
-        positionAttribute.array[ii+1] += 0.001
+      var colors = [];
+      for( var ii=0; ii<positionAttribute.count; ii++){  //positionAttribute.array.length
+        const myCol = new THREE.Color().setHSL( Math.random(),1,0.5 )
+        colors.push( myCol.r,myCol.g,myCol.b );
       }
-      positionAttribute.needsUpdate = true
-    }, 50)
+      myPoints.geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+      // myPoints.geometry.getAttribute( 'color' ).needsUpdate = true
+    },  500)
+  }
 }
 
-function customTexture(){
-  var texCanvas = document.createElement( 'canvas' );
-  texCanvas.height = texCanvas.width = 512
-  var ctx = texCanvas.getContext( '2d' );
-  ctx.clearRect( 0,0, 2048,2048 );  
-  //
-  ctx.fillStyle = "hsl("+(Math.random()*360)+", 50%, 50%)"
-  ctx.fillRect( 0,0, 2048,2048 );  
-  
-  const CHAR_SIZE = 120
-  ctx.font = "bold " +CHAR_SIZE+ "px Courier";
-  ctx.fillStyle = "rgb(255,255,255)"
-  ctx.fillText( "TEXT",  CHAR_SIZE,CHAR_SIZE);
-  
-  var canvasTex = new THREE.CanvasTexture( texCanvas );
-  canvasTex.anisotropy = 16;  canvasTex.minFilter=canvasTex.magFilter=THREE.NearestFilter;
-  return canvasTex;  
-}
-
+	
 animate();
 function animate() {
-  pLightShadowMesh.rotation.y += 0.01  
+  scene.myPoints.rotation.y += 0.005
   //
   renderer.render( scene, camera );
   requestAnimationFrame( animate );
