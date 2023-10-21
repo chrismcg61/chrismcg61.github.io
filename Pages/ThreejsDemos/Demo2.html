@@ -15,9 +15,9 @@ import * as THREE from 'https://cdn.rawgit.com/mrdoob/three.js/r157/build/three.
 
 var renderer = new THREE.WebGLRenderer( { antialias:false } );
 document.body.appendChild( renderer.domElement );  
-renderer.setSize( 900,900 );  //renderer.setPixelRatio( window.devicePixelRatio )
+renderer.setSize( 800,800 );  //renderer.setPixelRatio( window.devicePixelRatio )
 
-var camera = new THREE.PerspectiveCamera( 70, 950/950, 0.01, 900 );
+var camera = new THREE.PerspectiveCamera( 70, 800/800, 0.01, 900 );
 var scene = new THREE.Scene();
 
 var concreteMap = new THREE.TextureLoader().load("https://cdn.rawgit.com/chrismcg61/TechDemos/master/Media/Concrete.jpg")
