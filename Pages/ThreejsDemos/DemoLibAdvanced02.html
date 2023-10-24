@@ -101,7 +101,6 @@ function ReInit() {
     var shaderMaterial = myShaderMaterial()
     
     const NB_QUAD = params.meshNb
-    var newInstancedMesh = new THREE.InstancedMesh( new THREE.PlaneGeometry( ),  shaderMaterial,  NB_QUAD );
     for ( var ii=0; ii<NB_QUAD; ii++ ) {      
       var newShaderMesh = new THREE.Mesh( new THREE.PlaneGeometry( ),  shaderMaterial );
       newShaderMesh.position.set( sRand(1),0.5,-rand(1) )
