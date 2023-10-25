@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<body>
+<head>
+	<title>3D CV 2</title>
+</head>
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r253/MyLibs/ThreeMin/My3D.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r253/MyLibs/MiniCV/MiniCV.js"></script>  
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.rawgit.com/mrdoob/three.js/r157/build/three.module.js",
+      "three/addons/": "https://cdn.rawgit.com/mrdoob/three.js/r157/examples/jsm/"
+    }
+  }
+</script>
+
+  
+
+
+  
+  
+<script type="module">
+import * as __THREE from 'three';
+import Stats from 'three/addons/libs/stats.module.js';
+import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+//
+var POSTFX = {};
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+{
+  POSTFX.EffectComposer = EffectComposer
+  POSTFX.RenderPass = RenderPass
+}
+import { SSRPass } from 'three/addons/postprocessing/SSRPass.js';
+import { ReflectorForSSRPass } from 'three/addons/objects/ReflectorForSSRPass.js';
+{
+  POSTFX.SSRPass = SSRPass
+  POSTFX.ReflectorForSSRPass = ReflectorForSSRPass
+}
+//
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { TessellateModifier } from 'three/addons/modifiers/TessellateModifier.js';
+
+
+var stats = new Stats();  document.body.appendChild( stats.dom );
+var params = {
+  folder1:"INIT_CONFIG", Scene1Factor:1,Scene2Factor:0.1,RENDER_FX:true,fxSelect:12, 
+  folder2:"SCENE", ReInit:ReInit, meshNb:4,meshDetail:4, castShadow:true, backCol:0x003366,dirLightCol:0x111111,camLightCol:0xaaaaaa, pLightCamPosZ:0.5, camPosX:2.1,camPosY:1.1,camPosZ:2.2,
+  folder3:"OBJ", speedFactor:0.01, objPosX:0.9,objPosY:0.7,objPosZ:0.3, USE_POINTS:true,
+}
+var gui = new GUI();
+MY3D.initGui(params, gui, {M0_Gamma:0,M1_ColorCorr:1,M2_Tone:2,M3_Bloom:3,M4_Bokeh:4,M5_Film:5,M6_DotScreen:6,M7_Color:7,M8_Vignette:8,M9_Output:9,M10_Fxaa:10,M11_Pixel:11,M12_Ssr:12,M13_None:13,})
+gui.folders[0].close()
+// gui.folders[1].close()
+
+document.body.style.margin = 0;   document.body.style.overflow = "hidden"; 
+// MY3D.HH=800;  MY3D.WW=MY3D.HH*1.6;
+window.onresize = function(){
+  MY3D.WW=window.innerWidth; MY3D.HH=window.innerHeight;
+  camera.aspect = MY3D.WW/MY3D.HH;
+  camera.updateProjectionMatrix();
+  renderer.setSize( MY3D.WW,MY3D.HH );
+}
+//
+MY3D.initWebglRenderer(__THREE)
+// MY3D.initSceneBackground()
+
+
+ReInit()
+function ReInit() {
+  MY3D.initSceneBackground()
+  window.onresize()
+  //
+  MY3D.initScene2()
+  MY3D.composerInit( POSTFX, params )
+  MY3D.addSsrGroundReflector(POSTFX)
+  //
+  scene.rotGroup = new THREE.Group();
+  scene.add( scene.rotGroup )
+  {
+    ground.material.displacementScale = 0.3
+    ground.material.displacementMap.repeat.set( 40,40 );
+    ground.geometry = new THREE.PlaneGeometry(15,15, 90,90)
+    ground.position.y = -0.15
+    
+    
+    addTextMesh()
+    addPLights()
+    addShadowLights()
+  }  
+}
+
+function addPLights() {
+  scene.pLights = []
+  for ( var ii=0; ii<params.meshNb; ii++ ){
+    const myCol = new THREE.Color();  myCol.setHSL( rand(1),1,0.5 )
+    var pLight = new THREE.PointLight( myCol, 0.8, 2, 1.9 );
+    pLight.position.set( 0, 0.5+0.5*ii, 0.1 )
+    scene.add( pLight );
+    var lightMesh = new THREE.Mesh(  new THREE.SphereGeometry(0.02),  new THREE.MeshBasicMaterial({color:myCol}) );
+    pLight.add( lightMesh )
+    //
+    scene.pLights.push(pLight)
+  }
+}
+
+function addShadowLights() {
+  scene.rotMeshes = []
+  for ( var ii=0; ii<3; ii++ ){
+    const myCol = new THREE.Color();  myCol.setHSL( rand(1),1,0.5 )
+    var newShadowPLight = new THREE.PointLight( myCol, 1, 8, 0.9 );
+    newShadowPLight.castShadow = true;
+    newShadowPLight.shadow.camera.near = 0.01;
+    newShadowPLight.position.set( 0.8, 0.5+ii, 2.5 )
+    scene.add( newShadowPLight );
+    //
+    newShadowPLight.myTorus = new THREE.Mesh( new THREE.TorusGeometry( 0.15,0.09, 5,8 ),  new THREE.MeshLambertMaterial()  );
+    newShadowPLight.add( newShadowPLight.myTorus );
+    newShadowPLight.myTorus.castShadow = true;
+    newShadowPLight.myTorus.rotation.y = rand(9)
+    //
+    scene.rotMeshes.push( newShadowPLight )
+  }
+}
+
+function addTextMesh() {
+  const loader = new FontLoader();
+  loader.load( 'https://cdn.rawgit.com/mrdoob/three.js/r157/examples/fonts/helvetiker_bold.typeface.json', function ( font ){
+    // console.log( "FontLoader" )
+    const CHAR_SIZE = 0.2
+    const CHAR_DELTA = CHAR_SIZE*0.3
+    // var txt = "";  for ( var ii=0; ii<10; ii++ ) txt+="B"
+    var txtLines = []
+    for ( var ii=0; ii<experiences.length; ii++ ) {   
+      txtLines.push( {txt:experiences[ii].title,title:1,} )
+    }
+    
+    var myPointsMat = new THREE.PointsMaterial({size:0.012,transparent:true,blending:THREE.AdditiveBlending,opacity:0.5}); 
+    for ( var ii=0; ii<txtLines.length; ii++ ){
+      var newTextGeo = new TextGeometry( txtLines[ii].txt, {
+        font:font,size:CHAR_SIZE,height:0.03,curveSegments:2,steps:2,depth:1,  //bevelEnabled: true, bevelThickness: 0.3,  bevelSize: 0.1,   
+      } );
+      // newTextGeo.translate( 0,-1.5*ii,0 )         
+      var newTextMesh = new THREE.Mesh(newTextGeo, new THREE.MeshStandardMaterial({roughness:0.5,metalness:0.5})  );
+      if(params.USE_POINTS){
+        const tessellateModifier = new TessellateModifier( 0.01, params.meshDetail );
+        newTextGeo = tessellateModifier.modify( newTextGeo );
+        MY3D.customPointsMat_Dynamic( myPointsMat )
+        MY3D.addGeoAttributes( newTextGeo )
+        newTextMesh = new THREE.Points(  newTextGeo,  myPointsMat  );        
+      }      
+      newTextMesh.receiveShadow=newTextMesh.castShadow=params.castShadow;
+      scene.add( newTextMesh );
+      newTextMesh.position.set( 0, (txtLines.length-0.8-ii)*(CHAR_SIZE+CHAR_DELTA), 0 )    
+    }
+    // const mergedGeometry = BufferGeometryUtils.mergeGeometries( geoList ); 
+    setInterval( function(){
+      if(myPointsMat.userData.shader) myPointsMat.userData.shader.uniforms.time.value += 0.01
+    },   30)
+  } );  
+}
+
+
+
+// var lastT = performance.now()  //ms since Page Load
+animate();
+function animate() {
+  camPLight.rotation.y += 3*params.speedFactor  
+  camPLight.position.x = 0.7*Math.sin( 0.001*performance.now() )
+  // scene.rotGroup.rotation.z += 5*params.speedFactor  
+  for ( var ii=0; ii<scene.pLights.length; ii++ ){
+    var curLight = scene.pLights[ii]
+    curLight.position.x = 1.5 + 2*Math.sin( 0.001 * (1+0.5*curLight.position.y) * performance.now() )
+  }
+  for ( var ii=0; ii<scene.rotMeshes.length; ii++ ){
+    scene.rotMeshes[ii].rotation.y += params.speedFactor  
+  }
+  
+  {
+    camera.position.set( params.camPosX, params.camPosY, params.camPosZ )  
+    scene.background = new THREE.Color( params.backCol )
+    directionalLight.color = new THREE.Color( params.dirLightCol )
+    camPLight.position.z=params.pLightCamPosZ; camPLight.color=new THREE.Color(params.camLightCol); camPLight.castShadow=params.castShadow;
+    scene.rotGroup.position.set( params.objPosX, params.objPosY, params.objPosZ )  
+  }
+  //
+  stats.update()  
+  MY3D.myRender_Advanced(params)
+  // renderer.render( scene, camera );
+  requestAnimationFrame( animate );
+}
+</script>
+
+
+  
+</body>
+</html>
