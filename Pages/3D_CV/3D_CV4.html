@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<body>
+<head>
+	<title>3D CV 4</title>
+</head>
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r253/MyLibs/ThreeMin/My3D.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r253/MyLibs/MiniCV/MiniCV.js"></script>  
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.rawgit.com/mrdoob/three.js/r157/build/three.module.js",
+      "three/addons/": "https://cdn.rawgit.com/mrdoob/three.js/r157/examples/jsm/"
+    }
+  }
+</script>
+
+  
+
+
+  
+  
+<script type="module">
+import * as __THREE from 'three';
+import Stats from 'three/addons/libs/stats.module.js';
+import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+//
+var POSTFX = {};
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+{
+  POSTFX.EffectComposer = EffectComposer
+  POSTFX.RenderPass = RenderPass
+}
+import { SSRPass } from 'three/addons/postprocessing/SSRPass.js';
+import { ReflectorForSSRPass } from 'three/addons/objects/ReflectorForSSRPass.js';
+{
+  POSTFX.SSRPass = SSRPass
+  POSTFX.ReflectorForSSRPass = ReflectorForSSRPass
+}
+import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js';
+
+
+
+var stats = new Stats();  document.body.appendChild( stats.dom );
+var params = {
+  folder1:"INIT_CONFIG", Scene1Factor:1,Scene2Factor:0.05,RENDER_FX:true,fxSelect:12, 
+  folder2:"SCENE", ReInit:ReInit, meshNb:3,meshDetail:4, castShadow:true, backCol:0x0066aa,dirLightCol:0x111111,camLightCol:0x884422, pLightCamPosZ:-0.8, camPosX:0.5,camPosY:0.42,camPosZ:0.82,
+  folder3:"OBJ", speedFactor:0.01, objPosX:0,objPosY:0,objPosZ:0,  CHANGE_VertexShader:CHANGE_VertexShader,
+}
+var gui = new GUI();
+MY3D.initGui(params, gui, {M0_Gamma:0,M1_ColorCorr:1,M2_Tone:2,M3_Bloom:3,M4_Bokeh:4,M5_Film:5,M6_DotScreen:6,M7_Color:7,M8_Vignette:8,M9_Output:9,M10_Fxaa:10,M11_Pixel:11,M12_Ssr:12,M13_None:13,})
+gui.folders[0].close()
+gui.folders[1].close()
+
+
+document.body.style.margin = 0;   document.body.style.overflow = "hidden"; 
+// MY3D.HH=800;  MY3D.WW=MY3D.HH*1.6;
+window.onresize = function(){
+  MY3D.HH=window.innerHeight;  MY3D.WW=window.innerWidth;
+  camera.aspect = MY3D.WW/MY3D.HH;
+  camera.updateProjectionMatrix();
+  renderer.setSize( MY3D.WW,MY3D.HH );
+  //
+  camera2.aspect = MY3D.WW/MY3D.HH;
+  camera2.updateProjectionMatrix();
+}
+//
+MY3D.initWebglRenderer(__THREE)
+// MY3D.initSceneBackground()
+
+
+
+const WW_GPUC = 256+128
+var gpuCompute;
+var gpucInterval;
+var partSys0;
+var myCanvasTexture;
+//
+ReInit()
+function ReInit() {
+  MY3D.initSceneBackground()
+  MY3D.initScene2()
+  //
+  window.onresize() 
+  MY3D.composerInit( POSTFX, params )
+  MY3D.addSsrGroundReflector(POSTFX)
+  //
+  scene.rotGroup = new THREE.Group();
+  scene.add( scene.rotGroup )
+  {
+    ground.material.displacementScale = 0.2
+    
+    
+    var txtLines = []
+    for ( var ii=0; ii<experiences.length; ii++ ) {   
+      var experience = experiences[ii]
+      txtLines.push( {txt:experience.title,title:1,} )
+      if(experience.display!="none"){
+        for ( var jj=0; jj<experience.subLines.length; jj++ ) {   
+          txtLines.push( {txt:experience.subLines[jj].title,}   )
+        }
+      }
+    }
+    // var canvasMap =  customTexture( txtLines )
+
+    var testGeo = new THREE.PlaneGeometry(1,1, WW_GPUC,WW_GPUC)
+    MY3D.addGeoAttributes( testGeo )
+
+    var myNewShaderMaterial = MY3D.newShaderMaterial()  
+    myNewShaderMaterial.defines.USE_TEX_POS = true
+    myNewShaderMaterial.uniforms.noiseScale.value = 0
+
+    partSys0 = new THREE.Points( testGeo,  myNewShaderMaterial  );
+    scene.add( partSys0 );
+    // partSys0.position.y = 0.5    
+    
+    myCanvasTexture = customTexture( txtLines )
+
+    initGpuCompute()
+  }  
+}
+
+
+function initGpuCompute() {
+  gpuCompute = new GPUComputationRenderer( WW_GPUC,WW_GPUC, renderer );
+  // initPosTexture( partSys0 )
+  initGpuCompute_PartSys( partSys0 )
+  // initGpuCompute_PartSys( partSys1 )
+  const error = gpuCompute.init();
+}
+  
+function initPosTexture(_partSys) {
+  var dtPosition = gpuCompute.createTexture();  //dtVelocity
+  var posArray = dtPosition.image.data;
+  for ( var ii=0; ii<posArray.length; ii+=4 ) {
+    posArray[ ii+0 ] = 0.5+rand(0.5)
+    posArray[ ii+1 ] = 0.5+rand(0.5)
+    posArray[ ii+2 ] = 0
+    posArray[ ii+3 ] = 0.1
+  }
+  _partSys.material.uniforms.texturePosition.value = dtPosition;
+  return dtPosition;
+}
+  
+function initGpuCompute_PartSys(_partSys) {  
+  // var partSys_VertexArray = _partSys.geometry.attributes.position.array;
+  // if ( renderer.capabilities.isWebGL2 === false ) { gpuCompute.setDataType( THREE.HalfFloatType ); }
+  var dtPosition = initPosTexture(_partSys)
+  var dtVelocity = initPosTexture(_partSys)
+  
+  var gpucShaderPos = `
+  uniform sampler2D diffuseMap;
+  void main(void) {
+    vec2 uv = gl_FragCoord.xy / resolution.xy;
+    vec4 tmpPos = texture2D( texturePosition, uv );
+    vec4 tmpVel = texture2D( textureVelocity, uv );
+    
+    vec4 colDiffuse = texture2D( diffuseMap, tmpPos.xy );
+    if(colDiffuse.r < 0.1){
+      tmpPos += tmpVel;
+      tmpPos.xy = mod(tmpPos.xy, vec2(1.0,1.0));
+    }
+
+    gl_FragColor = tmpPos; 
+  }`;
+  var gpucShaderVel = `
+  void main(void) {
+    vec2 uv = gl_FragCoord.xy / resolution.xy;
+    vec4 tmpVel = texture2D( textureVelocity, uv );
+
+    tmpVel *= 0.9;
+
+    gl_FragColor = tmpVel; 
+  }`;
+  _partSys.posVar = gpuCompute.addVariable( 'texturePosition', gpucShaderPos, dtPosition );
+  _partSys.velVar = gpuCompute.addVariable( 'textureVelocity', gpucShaderVel, dtVelocity );
+  _partSys.posVar.material.uniforms[ 'diffuseMap' ] = { value: myCanvasTexture };
+  //
+  gpuCompute.setVariableDependencies( _partSys.posVar, [_partSys.posVar,_partSys.velVar ] );
+  gpuCompute.setVariableDependencies( _partSys.velVar, [_partSys.posVar,_partSys.velVar ] );
+  //
+  gpucInterval = setInterval( function(){
+    // _partSys.material.uniforms.texturePosition.value = dtPosition;
+    gpuCompute.compute()
+    _partSys.material.uniforms.texturePosition.value = gpuCompute.getCurrentRenderTarget( _partSys.posVar ).texture;
+  }, 150 )  
+}
+
+
+function CHANGE_VertexShader(){
+  var myNewShaderMaterial = MY3D.newShaderMaterial()  
+  myNewShaderMaterial.defines.USE_TEX_POS = true
+  myNewShaderMaterial.uniforms.noiseScale.value = 0
+  //
+  myNewShaderMaterial.vertexShader = 
+  `
+  attribute float size;
+  attribute vec3 color;
+  //
+  varying vec2 vUv;
+  varying vec3 vColor;
+  varying vec4 vPos;
+  uniform float time;
+  uniform sampler2D texturePosition;
+  void main(){
+   vUv = uv; 
+   vColor = color; 
+   vec4 posTemp = vec4( position, 1.0 );
+   #if defined( USE_TEX_POS )
+    posTemp = texture2D( texturePosition, uv );
+   #endif
+   
+   float deltaY = color.r*time;
+   deltaY = mod(deltaY, color.g*0.01);
+   posTemp.y += deltaY;
+   
+   vec4 mvPosition = modelViewMatrix * vec4( posTemp.xyz, 1.0 );   
+
+   gl_Position = projectionMatrix * mvPosition;
+   vPos = modelMatrix * posTemp;            //*instanceMatrix
+
+   // POINTS :
+   gl_PointSize = 1.0 / -mvPosition.z;   //*size
+   #if defined( USE_TEX_POS )
+     gl_PointSize *= posTemp.w;
+   #endif
+  }`;
+  //
+  partSys0.material = myNewShaderMaterial;
+  partSys0.material.uniforms.texturePosition.value = gpuCompute.getCurrentRenderTarget( partSys0.posVar ).texture;
+  clearInterval( gpucInterval );
+  //
+  var myInterval = setInterval( function(){
+    partSys0.material.uniforms.time.value += 0.002;
+  }, 50 ) 
+}
+
+
+function customTexture( _txtLines ){
+  var texCanvas = document.createElement( 'canvas' );
+  texCanvas.height = texCanvas.width = 2048
+  var ctx = texCanvas.getContext( '2d' );
+  ctx.clearRect( 0,0, 2048,2048 );  
+  //
+  // ctx.fillStyle = "hsl("+rand(360)+", 50%, 50%)"
+  //
+  ctx.fillStyle = "rgb(255,255,255)"
+  //   ctx.fillRect( 0,0, 2048,2048 );
+
+  //   ctx.fillStyle = "rgb(0,0,0)"  
+  const CHAR_SIZE = 78
+  ctx.font = "bold " +CHAR_SIZE+ "px Courier";  
+  for ( var ii=0; ii<_txtLines.length; ii++ ) {
+    ctx.fillText( _txtLines[ii].txt,  CHAR_SIZE*0.2,CHAR_SIZE*(ii+1)); 
+    if(_txtLines[ii].title)  ctx.fillRect( 0,CHAR_SIZE*(ii+1), 2048,20 );
+  }
+  
+  var canvasTex = new THREE.CanvasTexture( texCanvas );
+  canvasTex.anisotropy = 16;  canvasTex.minFilter=canvasTex.magFilter=THREE.NearestFilter;
+  return canvasTex;  
+}
+
+
+
+
+// var lastT = performance.now()  //ms since Page Load
+animate();
+function animate() {
+  camPLight.rotation.y += 3*params.speedFactor  
+  camPLight.position.x = 0.7*Math.sin( 0.001*performance.now() )
+  // scene.rotGroup.rotation.z += 5*params.speedFactor  
+  
+  {
+    camera.position.set( params.camPosX, params.camPosY, params.camPosZ )  
+    scene.background = new THREE.Color( params.backCol )
+    directionalLight.color = new THREE.Color( params.dirLightCol )
+    camPLight.position.z=params.pLightCamPosZ; camPLight.color=new THREE.Color(params.camLightCol); camPLight.castShadow=params.castShadow;
+    scene.rotGroup.position.set( params.objPosX, params.objPosY, params.objPosZ )  
+  }
+  //
+  stats.update()  
+  MY3D.myRender_Advanced(params)
+  // renderer.render( scene, camera );
+  requestAnimationFrame( animate );
+}
+</script>
+
+
+  
+</body>
+</html>
