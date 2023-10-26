@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<body>
+<head>
+	<title>WebCV Oct.2023</title>
+</head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r254/MyLibs/MiniCV/MiniCV.js"></script>
+	
+<style>
+:root {
+  --txtCol: #000000;
+  --bodyCol: #ffffff;
+  --hoverCol: #00bbff;
+  --titleBackCol: #bbdddd;
+  --subTitleBackCol: #dddddd;
+  --skillHighlight:rgba(0,0,255, 0.5);
+}
+
+body{
+  font-family: "Lucida Console", monospace;
+  font-weight: bold;
+  font-size: 32px;
+  background-color: var(--bodyCol);
+  color: var(--txtCol);
+}
+
+  
+.myTitle{
+  background-color: var(--titleBackCol);  
+  border: 2px solid black;
+  border-radius: 6px;
+  cursor: pointer;
+  
+  transition-duration: 0.4s;
+}
+.myTitle:hover {
+  background-color: var(--hoverCol);
+}
+
+.mySubTitle{
+  background-color: var(--subTitleBackCol);
+  border-color: #bbb;
+}
+.mySubTitle:hover {
+  background-color: var(--hoverCol);
+}
+
+
+.column {
+  float: left;
+  //width: 50%;
+  //width: 600px;
+  border: 2px solid grey;
+  //background-color: hsl(180, 50%, 70%);
+}
+
+
+.dynSizeDiv {
+  position: absolute;
+  width: 20px;
+  height: 30px;
+  background-color:rgba(255,50,50, 0.95);
+/*   transition: width height 1s; */
+  transition-duration: 0.3s;
+  overflow: hidden;
+  z-index : 1;
+}
+.dynSizeDiv:hover {
+  height: 1200px;
+  width: 950px;
+}
+
+
+.smallText {
+  font-size:80%;
+  font-style: italic;
+  opacity:0.3;
+}
+
+
+.animTest {
+  //text-shadow: -2px -2px 8px #FF0000, 2px 2px 8px #0000FF;
+  animation: myAnim 2.5s infinite alternate;
+}
+@keyframes myAnim {
+     0%,1% { text-shadow: 0px 0px 12px #f00; }  
+   35%,65% { text-shadow: 0px 0px 12px #fa0; }  
+  99%,100% { text-shadow: 0px 0px 12px #0a0; }  
+  /* 90%, 100%  { text-shadow: 0px -0px 12px #f80,  0px 0px  0px #000; } */
+}
+
+
+.mainTitle {
+  font-size:140%;
+}
+.mainTitle2 {
+  font-size:70%;
+}
+
+
+.skillHilight{
+  background-color: var(--skillHighlight);
+  border-radius: 5px;
+  padding: 0px 4px 0px 4px;
+}
+
+
+table, th , td  {
+  border: 4px solid grey;
+  border-collapse: collapse;
+  padding: 5px;
+}
+table tr:nth-child(odd) {
+  background-color: var(--titleBackCol);
+}
+table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+<div ng-app="myApp" ng-controller="myCtrl" style="position:relative;width:100%;"> 
+  <div class="dynSizeDiv">
+    <div style="font-size:60%;cursor:pointer;"> ☰ </div>
+    <div style="text-align:center;  border: 4px solid black;"> TIMELINE </div>
+    <div>{{ dynStartDate }}</div>
+    <div  ng-repeat="eltExp in experienceList" style="background-color:{{eltExp.backCol}}; font-size:135%;">
+<!--       {{ eltExp.title }} -->
+      <div  ng-repeat="eltDuration in eltExp.duration">
+        ◼  <span ng-if="$index==0">{{ eltExp.title }}</span>
+      </div>
+    </div>  
+    <div>{{ startDate0 }}</div>
+  </div>  
+  
+  <div style="border: 4px solid black;  border-radius: 20px; padding:8px;">
+    <div style="width:900px; display:inline-block; box-shadow: 4px 4px #888888;">
+      <div class="animTest mainTitle" style="">CHRISTOPHER McGARRY</div>
+      <div class="mainTitle2">AGE:{{age}} - XP:{{ dynStartDate-startDate_ForXp }}</div>              
+    </div>
+    <div style="width:auto; display:inline-block; box-shadow: 2px 2px #888888;">
+      <div class="animTest mainTitle" style="">SENIOR PROGRAMMER</div>      
+      <div class="mainTitle2">GameDev, 3D/GPU-Dev, WebApp, AI, Embedded</div>     
+    </div>
+  </div>
+  
+<!--   <div class="column" style="width:auto;"> -->
+  <div  ng-repeat="eltCol in columnList"  class="column" style="width:{{eltCol.width}}; float:{{eltCol.float}};"   >     
+    
+<!--     <div  ng-repeat="eltXpSkill in mainTitles"   >     -->
+    <div  ng-repeat="eltXpSkill in eltCol"   >    
+      <div  class="myTitle" style="padding:4px;"   ng-click="myToggle( 'col'+eltCol.id+ '_subDiv'+eltXpSkill.id )">
+        <span> {{ eltXpSkill.startDate }} {{ eltXpSkill.title }} </span>    <span class="smallText">{{ eltXpSkill.titleExt }}</span> 
+      </div>  
+      <!--     subDiv{{$index}} -->             <!--  ng-if="eltXpSkill.title!='McGARRY'" -->
+      <div id="col{{eltCol.id}}_subDiv{{eltXpSkill.id}}" style="font-size:80%; display:{{eltXpSkill.display}};"  >  
+        <div ng-if="eltXpSkill.subSkills" class="myTitle mySubTitle" style="font-size:70%;">  
+          <span ng-repeat="eltSubSkill in eltXpSkill.subSkills" class="skillHilight" style="margin-right:8px;">{{eltSubSkill}}</span>      
+        </div>
+        <div  ng-repeat="eltSubLine in eltXpSkill.subLines"> 
+          <!--           ng-bind-html-unsafe="eltSubLine.title"   -->
+          <div ng-click="myToggle( 'col'+eltCol.id+ '_subDiv'+eltXpSkill.id+ '_subSubDiv'+eltSubLine.id )" class="myTitle mySubTitle" >
+            <span style="">{{ eltSubLine.title }}</span>   <span class="smallText">{{ eltSubLine.titleExt }}</span>         
+            <div ng-if="eltSubLine.rating" style="width:480px;display:inline-block; box-shadow: 4px 4px #888888;">
+              <span class="{{eltXpSkill.highlightClass}}">{{ eltSubLine.titleSkill }}</span>   <span class="smallText">{{ eltSubLine.titleSkillExt }}</span>  
+            </div>
+            <div ng-if="eltSubLine.rating" style="width:auto;display:inline-block; box-shadow: 2px 2px #888888;"> 
+              <span  class="animTest" ng-repeat="eltRating in eltSubLine.rating">◼</span> 
+            </div>   
+<!--   ★★★★☆ -->    <!--   ◼◼◼◼◻ -->
+          </div>  
+
+          <div id="col{{eltCol.id}}_subDiv{{eltXpSkill.id}}_subSubDiv{{eltSubLine.id}}" style="font-size:80%; display:none;">  
+            <div ng-repeat="eltSubSubLine in eltSubLine.subLines">  
+                  {{ eltSubSubLine.title }}  
+            </div>
+          </div>
+
+        </div>  
+      </div>  
+    </div>
+  </div>
+</div>
+
+
+
+  
+
+
+
+  
+
+  
+  
+<script type="module">
+import * as THREE from 'https://cdn.rawgit.com/mrdoob/three.js/r157/build/three.module.js';
+import { GUI } from 'https://cdn.rawgit.com/mrdoob/three.js/r157/examples/jsm/libs/lil-gui.module.min.js';
+var gui = new GUI();
+var params = {
+  EXPAND_ALL:EXPAND_ALL,UpdateConfig:UpdateConfig, 
+  txtCol:0x000000,bodyCol:0xffffff,titleCol:0x99eeee,subTitleCol:0xcceeee, highlightCol:0x88aaff,highlightOpacity:0.35, }
+// gui.add(params, "UpdateConfig",  );  
+for(var key in params){  
+  if(key.includes('Col'))   gui.addColor(params, key,  ).onChange(UpdateConfig)
+  else  gui.add(params, key, 0,1 ).onChange(UpdateConfig)
+}
+gui.close()  
+/*****************************************************************************************************/
+var root = document.querySelector(':root');
+//
+UpdateConfig()
+function UpdateConfig(){
+  root.style.setProperty('--txtCol', "#" + params.txtCol.toString(16));
+  root.style.setProperty('--bodyCol', "#" + params.bodyCol.toString(16));
+  root.style.setProperty('--titleBackCol', "#" + params.titleCol.toString(16));
+  root.style.setProperty('--subTitleBackCol', "#" + params.subTitleCol.toString(16));
+  const newColor = new THREE.Color( params.highlightCol );
+  root.style.setProperty('--skillHighlight', "rgba("+newColor.r*255+","+newColor.g*255+","+newColor.b*255+","+params.highlightOpacity+")" );
+  //
+  // const titles = document.getElementsByClassName("myTitle");
+  // const subTitles = document.getElementsByClassName("mySubTitle");
+  // for (let i = 0; i < titles.length; i++) {
+  //   titles[i].style.backgroundColor = "#"+hexStrTitle;
+  // }  
+}
+function EXPAND_ALL(){
+  const subTitles = document.getElementsByClassName("mySubTitle");
+  for (let i = 0; i < subTitles.length; i++) {
+    subTitles[i].click()
+  }
+  const titles = document.getElementsByClassName("myTitle");
+  for (let i = 0; i < titles.length; i++) {
+    if( titles[i].innerHTML.includes("Management") )  titles[i].click()
+  }
+}
+/******************************************************************************************************/
+
+
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $http) {
+    // $http.get("customers.php").then(function (response) {
+    //   $scope.names = response.data.records;
+    // });
+  $scope.myToggle = function(_id) {
+    console.log( _id )
+    var dynElt = document.getElementById(_id)
+    if(dynElt.style.display=="none") dynElt.style.display = "block"
+    else dynElt.style.display = "none"    
+  };
+  //
+  // for ( var ii=0; ii<experiences.length; ii++ ) {  }
+  experiences[0].backCol = "hsla(20, 80%, 70%, 0.9)"    
+  experiences[1].backCol = "hsla(40, 80%, 70%, 0.9)"
+  experiences[2].backCol = "hsla(60, 80%, 70%, 0.9)"
+  //
+  experiences[3].backCol = "hsla(100, 80%, 70%, 0.9)"
+  experiences[4].backCol = "hsla(120, 80%, 70%, 0.9)"
+  experiences[5].backCol = "hsla(140, 80%, 70%, 0.9)"
+  //
+  experiences[6].backCol = "hsla(230, 80%, 70%, 0.9)"
+  //
+  experiences[7].backCol = "hsla(320, 80%, 70%, 0.9)"
+  experiences[8].backCol = "hsla(340, 80%, 70%, 0.9)"
+  //
+  experiences.float = "left"
+  skills.float = "right"
+  //
+  experiences.width = "auto"
+  skills.width = "620px"
+  //
+  $scope.age = Math.floor( age )
+  $scope.startDate0 = startDate0
+  $scope.startDate_ForXp = startDate_ForXp
+  $scope.dynStartDate = dynStartDate
+  $scope.experienceList =  experiences
+  $scope.columnList = [
+    experiences,
+    skills
+  ];
+});
+</script>
+
+
+  
+</body>
+</html>
