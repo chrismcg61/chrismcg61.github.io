@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<body>
+<head>
+	<title>3D CV 3</title>
+</head>
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r253/MyLibs/ThreeMin/My3D.js"></script>
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r253/MyLibs/MiniCV/MiniCV.js"></script>  
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.rawgit.com/mrdoob/three.js/r157/build/three.module.js",
+      "three/addons/": "https://cdn.rawgit.com/mrdoob/three.js/r157/examples/jsm/"
+    }
+  }
+</script>
+
+  
+
+
+  
+  
+<script type="module">
+import * as __THREE from 'three';
+import Stats from 'three/addons/libs/stats.module.js';
+import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+//
+var POSTFX = {};
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+{
+  POSTFX.EffectComposer = EffectComposer
+  POSTFX.RenderPass = RenderPass
+}
+import { SSRPass } from 'three/addons/postprocessing/SSRPass.js';
+import { ReflectorForSSRPass } from 'three/addons/objects/ReflectorForSSRPass.js';
+{
+  POSTFX.SSRPass = SSRPass
+  POSTFX.ReflectorForSSRPass = ReflectorForSSRPass
+}
+
+
+
+var stats = new Stats();  document.body.appendChild( stats.dom );
+var params = {
+  folder1:"INIT_CONFIG", Scene1Factor:1,Scene2Factor:0.05,RENDER_FX:true,fxSelect:12, 
+  folder2:"SCENE", ReInit:ReInit, meshNb:3,meshDetail:4, castShadow:true, backCol:0x0066aa,dirLightCol:0x111111,camLightCol:0x444444, pLightCamPosZ:0.5, camPosX:0,camPosY:0.4,camPosZ:1.4,
+  folder3:"OBJ", speedFactor:0.01, objPosX:-0.1,objPosY:0.4,objPosZ:1.3, emitCol:0x00ffff,bumpScale:0.2,
+}
+var gui = new GUI();
+MY3D.initGui(params, gui, {M0_Gamma:0,M1_ColorCorr:1,M2_Tone:2,M3_Bloom:3,M4_Bokeh:4,M5_Film:5,M6_DotScreen:6,M7_Color:7,M8_Vignette:8,M9_Output:9,M10_Fxaa:10,M11_Pixel:11,M12_Ssr:12,M13_None:13,})
+gui.folders[0].close()
+// gui.folders[1].close()
+gui.close()
+
+document.body.style.margin = 0;   document.body.style.overflow = "hidden"; 
+// MY3D.HH=800;  MY3D.WW=MY3D.HH*1.6;
+window.onresize = function(){
+  MY3D.HH=window.innerHeight;
+  MY3D.WW=MY3D.HH*1.8;  //window.innerWidth;
+  camera.aspect = MY3D.WW/MY3D.HH;
+  camera.updateProjectionMatrix();
+  renderer.setSize( MY3D.WW,MY3D.HH );
+  //
+  camera2.aspect = MY3D.WW/MY3D.HH;
+  camera2.updateProjectionMatrix();
+}
+//
+MY3D.initWebglRenderer(__THREE)
+// MY3D.initSceneBackground()
+
+
+
+ReInit()
+function ReInit() {
+  MY3D.initSceneBackground()
+  MY3D.initScene2()
+  //
+  window.onresize() 
+  MY3D.composerInit( POSTFX, params )
+  MY3D.addSsrGroundReflector(POSTFX)
+  //
+  scene.rotGroup = new THREE.Group();
+  scene.add( scene.rotGroup )
+  {
+    ground.geometry = new THREE.PlaneGeometry(6,6, 128,128)
+    //
+    composer.ssrPass.maxDistance = 0.5
+    composer.ssrPass.opacity = composer.ssrPass.groundReflector.opacity = 0.4
+
+    
+    scene.emitMaterial = new THREE.MeshStandardMaterial({emissive:params.emitCol, bumpScale:params.bumpScale, roughness:0.7,metalness:0.4,}); 
+
+    var txtLines = []
+    for ( var ii=0; ii<experiences.length; ii++ ) {   
+      var experience = experiences[ii]
+      txtLines.push( {txt:experience.title,title:1,} )
+      if(experience.display!="none"){
+        for ( var jj=0; jj<experience.subLines.length; jj++ ) {   
+          txtLines.push( {txt:experience.subLines[jj].title,}   )
+        }
+      }
+    }
+    addEmitCube( txtLines, new THREE.Vector3( -0.6,0.5,0 ) )
+    //
+    txtLines = []
+    for ( var ii=0; ii<skills.length; ii++ ) {   
+      var skill = skills[ii]
+      txtLines.push( {txt:skill.title,title:1,} )
+      if(skill.display!="none"){
+        for ( var jj=0; jj<skill.subLines.length; jj++ ) {   
+          txtLines.push( {txt:skill.subLines[jj].titleSkill,}   )
+        }
+      }
+    }
+    addEmitCube( txtLines, new THREE.Vector3( 0.6,0.5,0 ) )
+    //
+    txtLines = []
+    for ( var ii=0; ii<skills.length; ii++ ) {   
+      var skill = skills[ii]
+      txtLines.push( {txt:"◼",title:1,} )
+      if(skill.display!="none"){
+        for ( var jj=0; jj<skill.subLines.length; jj++ ) {   
+          var ratingTxt = ""
+          for ( var kk=0; kk<skill.subLines[jj].rating.length; kk++ ) ratingTxt+="◼"
+          txtLines.push( {txt:ratingTxt}   )
+        }
+      }
+    }
+    addEmitCube( txtLines, new THREE.Vector3( 1.2,0.5,0.02 ) )
+    
+    
+    addPLights()
+
+
+    var shinyTorus = new THREE.Mesh( 
+      new THREE.TorusGeometry( 0.3,0.05, 8,24 ),  
+      new THREE.MeshPhysicalMaterial({
+        roughness:0.3,metalness:0.7,
+        // flatShading:true,
+      })  );
+    // shinyTorus.position.set( 0,0.5,0.5 )
+    // shinyTorus.scale.set( 1,1,1.9 )
+    scene.rotGroup.add( shinyTorus );
+    composer.ssrPass.selects.push( shinyTorus )    
+    //
+    setInterval( function(){
+      shinyTorus.rotation.z += 0.01
+    },   50)  
+  }  
+}
+
+function addEmitCube( _txtLines, _pos ) {  
+  var canvasMap =  customTexture( _txtLines )
+  //
+  var emitMaterial = scene.emitMaterial.clone()
+  emitMaterial.emissiveMap = emitMaterial.bumpMap = canvasMap
+  customMaterial( emitMaterial )
+  var emitMesh = new THREE.Mesh( new THREE.BoxGeometry(),  emitMaterial  );
+  emitMesh.receiveShadow = emitMesh.castShadow = params.castShadow; 
+  emitMesh.position.copy( _pos );   // set( -0.6,0.5,0 )
+  scene.add( emitMesh )
+  //
+  setInterval( function(){
+    emitMaterial.emissive = new THREE.Color( params.emitCol )
+    emitMaterial.bumpScale = 0.01*params.bumpScale
+    if(emitMaterial.userData.shader) emitMaterial.userData.shader.uniforms.time.value += 0.03
+  },   50)  
+}
+
+function addPLights() {
+  scene.pLights = []
+  for ( var ii=0; ii<params.meshNb; ii++ ){
+    const myCol = new THREE.Color();  myCol.setHSL( rand(1),1,0.5 )
+    var pLight = new THREE.PointLight( myCol, 0.5, 4, 1.1 );
+    pLight.position.set( 0.5, 0.1+0.4*ii, 0.7 )
+    scene.add( pLight );
+    var lightMesh = new THREE.Mesh(  new THREE.SphereGeometry(0.007),  new THREE.MeshBasicMaterial({color:myCol}) );
+    pLight.add( lightMesh )
+    //
+    scene.pLights.push(pLight)
+  }
+}
+
+function customMaterial(_mat){
+  _mat.onBeforeCompile = function ( shader ) {
+    shader.uniforms.time = { value: 0 };
+    shader.uniforms.noiseScale = { value: 0.15 };
+    shader.uniforms.noiseMap = { value: noiseMap };
+    shader.fragmentShader = `uniform float time;\n`+ shader.fragmentShader;
+    shader.fragmentShader = `uniform float noiseScale;\n`+ shader.fragmentShader;
+    shader.fragmentShader = `uniform sampler2D noiseMap;\n`+ shader.fragmentShader;
+    shader.fragmentShader = shader.fragmentShader.replace(
+      '#include <emissivemap_fragment>',
+      ` 
+          #ifdef USE_EMISSIVEMAP
+            vec4 emissiveColor = texture2D( emissiveMap, vEmissiveMapUv );
+            //
+            float myCos = 0.9 + 0.9*cos( time );
+            //
+            vec4 noiseCol = texture2D( noiseMap, vEmissiveMapUv * noiseScale );
+            float aaNoise = (noiseCol.r + noiseCol.g + noiseCol.b) / 3.0;
+            myCos += 0.2*cos(5.0 * time * aaNoise );            
+            if(myCos < 0.0)  myCos = 0.0;
+            //
+            totalEmissiveRadiance *= emissiveColor.rgb * myCos;
+            // totalEmissiveRadiance *= noiseCol.rgb;
+          #endif
+    `);
+    _mat.userData.shader = shader;
+  };
+}
+function customTexture( _txtLines ){
+  var texCanvas = document.createElement( 'canvas' );
+  texCanvas.height = texCanvas.width = 2048
+  var ctx = texCanvas.getContext( '2d' );
+  ctx.clearRect( 0,0, 2048,2048 );  
+  //
+  // ctx.fillStyle = "hsl("+rand(360)+", 50%, 50%)"
+  //
+  ctx.fillStyle = "rgb(255,255,255)"
+  //   ctx.fillRect( 0,0, 2048,2048 );
+
+  //   ctx.fillStyle = "rgb(0,0,0)"  
+  const CHAR_SIZE = 78
+  ctx.font = "bold " +CHAR_SIZE+ "px Courier";  
+  for ( var ii=0; ii<_txtLines.length; ii++ ) {
+    ctx.fillText( _txtLines[ii].txt,  CHAR_SIZE*0.2,CHAR_SIZE*(ii+1)); 
+    if(_txtLines[ii].title)  ctx.fillRect( 0,CHAR_SIZE*(ii+1), 2048,20 );
+  }
+  
+  var canvasTex = new THREE.CanvasTexture( texCanvas );
+  canvasTex.anisotropy = 16;  canvasTex.minFilter=canvasTex.magFilter=THREE.NearestFilter;
+  return canvasTex;  
+}
+
+
+
+
+
+// var lastT = performance.now()  //ms since Page Load
+animate();
+function animate() {
+  camPLight.rotation.y += 3*params.speedFactor  
+  camPLight.position.x = 0.7*Math.sin( 0.001*performance.now() )
+  // scene.rotGroup.rotation.z += 5*params.speedFactor
+  for ( var ii=0; ii<scene.pLights.length; ii++ ){
+    var curLight = scene.pLights[ii]
+    curLight.position.x = 0.0 + 0.95*Math.cos( 0.001 * (1+0.5*curLight.position.y) * performance.now() )
+  }  
+  
+  {
+    camera.position.set( params.camPosX, params.camPosY, params.camPosZ )  
+    scene.background = new THREE.Color( params.backCol )
+    directionalLight.color = new THREE.Color( params.dirLightCol )
+    camPLight.position.z=params.pLightCamPosZ; camPLight.color=new THREE.Color(params.camLightCol); camPLight.castShadow=params.castShadow;
+    scene.rotGroup.position.set( params.objPosX, params.objPosY, params.objPosZ )  
+  }
+  //
+  stats.update()  
+  MY3D.myRender_Advanced(params)
+  // renderer.render( scene, camera );
+  requestAnimationFrame( animate );
+}
+</script>
+
+
+  
+</body>
+</html>
