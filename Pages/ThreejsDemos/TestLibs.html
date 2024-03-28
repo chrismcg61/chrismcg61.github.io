@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<body>
+<head>
+	<title>TestLibs</title>
+</head>
+
+<script src="https://cdn.rawgit.com/chrismcg61/TechDemos/r256/MyLibs/ThreeMin/My3D.js"></script>
+<!-- <script src="../../../TechDemos/MyLibs/ThreeMin/My3D.js"></script> -->
+<script type="importmap">
+  {
+    "imports": {      
+      "three": "https://cdn.rawgit.com/mrdoob/three.js/r162/build/three.module.js",
+      "three/addons/": "https://cdn.rawgit.com/mrdoob/three.js/r162/examples/jsm/",
+      "three/libs/": "https://cdn.rawgit.com/mrdoob/three.js/r162/examples/jsm/libs/",
+      "three/postfx/": "https://cdn.rawgit.com/mrdoob/three.js/r162/examples/jsm/postprocessing/"
+    }
+  }
+</script>
+
+<style>
+.lil-gui { 
+	//--background-color: #000;
+	--widget-color: #068;
+	//--padding: 2px;
+}
+</style>
+
+
+	
+  
+<script type="module">
+import Stats from 'three/libs/stats.module.js';
+var stats;
+function initStats(){
+  stats = new Stats();  document.body.appendChild( stats.dom );  
+  // setTimeout( function(){ stats.update(); }, 1000);
+}
+
+import { GUI } from 'three/libs/lil-gui.module.min.js';
+var gui;
+var params;
+function initGui(){
+  gui = new GUI();  //addFolder  //addColor
+  params = {tesParam:0,}
+  gui.add(params, "tesParam",   0,1,0.01 );  
+}
+
+
+import * as __THREE from 'three';
+function init3D(){
+	MY3D.myDefaultConfig( )
+	ReInit()
+	animate();
+}
+MY3D.myDefaultConfig = function( ){
+	gui = new GUI();  //addFolder  //addColor
+	params = {
+		folder1:"INIT_CONFIG", Scene1Factor:1,Scene2Factor:0.05,AUTO_RESIZE:false,RENDER_FX:true,fxSelect:12, meshNb:3,meshDetail:4,bumpFactor:0.22,
+		folder2:"SCENE", ReInit:ReInit, castShadow:true, fogFactor:0.0, backCol:0x66aadd,dirLightCol:0x111111,camLightCol:0x770000, pLightCamPosZ:-0.3, camPosX:0,camPosY:0.2,camPosZ:0.8,
+		folder3:"OBJ", speedFactor:0.03, objPosX:0,objPosY:0,objPosZ:0,  
+	}
+	MY3D.initGui(params, gui, {M0_Gamma:0,M1_ColorCorr:1,M2_Tone:2,M3_Bloom:3,M4_Bokeh:4,M5_Film:5,M6_DotScreen:6,M7_Color:7,M8_Vignette:8,M9_Output:9,M10_Fxaa:10,M11_Pixel:11,M12_Ssr:12,M13_None:13,})
+	gui.folders[0].close();   gui.folders[1].close();
+	//
+	MY3D.HH=600;   MY3D.WW=MY3D.HH*1.95;
+	MY3D.initWebglRenderer(__THREE, params)  // MY3D.initWebglRenderer(__THREE, {AUTO_RESIZE:false} )
+}
+
+function ReInit() {
+  MY3D.initSceneBackground();
+  MY3D.initScene2();
+  if(params.AUTO_RESIZE) myWindowResize();
+  if(typeof POSTFX!=='undefined'){  MY3D.composerInit( POSTFX, params );   MY3D.addSsrGroundReflector(POSTFX); }
+  scene.rotMeshes=[];   scene.rotMeshes.push(camPLight);
+  scene.mainGroup = new THREE.Group();   scene.add( scene.mainGroup );    
+  myInit();
+}
+function myInit() {
+}
+
+
+function myUpdate() {
+}
+function animate() {
+	myUpdate()
+	MY3D.myDefaultUpdate( params )
+	//
+	stats.update()  
+	// renderer.render( scene, camera ); 
+	MY3D.myRender_Advanced(params)
+	requestAnimationFrame( animate );
+}
+
+
+
+var POSTFX = {};
+import { EffectComposer } from 'three/postfx/EffectComposer.js';  import { RenderPass } from 'three/postfx/RenderPass.js';
+POSTFX.EffectComposer=EffectComposer;   POSTFX.RenderPass=RenderPass;
+//
+import { SSRPass } from 'three/postfx/SSRPass.js';  import { ReflectorForSSRPass } from 'three/addons/objects/ReflectorForSSRPass.js';
+POSTFX.SSRPass=SSRPass;   POSTFX.ReflectorForSSRPass=ReflectorForSSRPass;
+
+
+
+
+function createBtn(title, myFunc){
+  var statsBtn = document.createElement('button');
+  statsBtn.innerHTML = title
+  statsBtn.onclick = myFunc
+  document.body.appendChild(statsBtn);
+}
+createBtn("initStats",initStats)
+createBtn("initGui",initGui)
+createBtn("init3D",init3D)
+</script>
+
+
+  
+</body>
+</html>
